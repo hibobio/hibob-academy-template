@@ -1,6 +1,5 @@
 package com.hibob.kotlinEx
 
-package com.hibob.kotlin_basics
 //change the 'sum\ function so that it was declared as an extension to List<Int>
 fun sum(list: List<Int>): Int{
     var result = 0
