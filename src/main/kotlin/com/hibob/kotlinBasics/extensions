@@ -1,18 +1,19 @@
-fun List.sum = {var sum
-for(element in this){
-    sum += element }
+fun List<Number>.sum : Number {
+    var sum = 0
+    for(element in this){
+        sum += element.toDouble() }
     return sum
 }
 
 fun main( ){
-    val sum = ListOf(1,2,3).sum()
+    val sum = listOf(1,2,3).sum()
     println(sum)
 }
 
-infix fun Number.toPowerOf(exponent: Number):Double = {
-    var output = 1
-    for(i in range 0..exponent){
-        output *= this.
+infix fun Number.toPowerOf(exponent: Number):Double {
+    var output = 1.0
+    for(i in 0 until exponent.toInt()){
+        output *= this.toDouble()
     }
     return output
 }
