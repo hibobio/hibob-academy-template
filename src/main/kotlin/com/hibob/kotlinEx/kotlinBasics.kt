@@ -26,5 +26,5 @@ fun main() {
     val x4 = multiplication(a=1)
     val x5 = multiplication(b=1)
     //a=3, b= 2
-    val x6 = multiplication(a=3, b=2)
+    val x6 = multiplication(a=3, b=2)//
 }
