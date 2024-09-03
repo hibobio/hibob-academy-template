@@ -16,7 +16,7 @@ package com.hibob.kotlinBasics
 //      print(sun) // 6
 //  }
 
-fun List<Int>.sum() : Int {
+fun List<Int>.sum(): Int {
     var result = 0
     for(i in this){
         result += i
