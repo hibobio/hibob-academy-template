@@ -13,9 +13,9 @@ fun Number.toPowerOf(num: Double, exponent: Double): Double {
     return num.pow(exponent)
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val sum = listOf(1,2,3).sum()
-    val num = sum.toPowerOf(2.0, 3.0)
+    val num: Number = 2
     println(sum)
-    println(num)
+    println(num.toPowerOf(2.0, 3.0))
 }
