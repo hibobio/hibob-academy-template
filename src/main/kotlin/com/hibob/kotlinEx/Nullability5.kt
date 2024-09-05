@@ -17,4 +17,5 @@ fun main() {
     )
 
     // Task: Print the details of products only if both name and price are not null.
+    products.map { product: Product ->  product?.name?.let{product?.price?.let { println("[${product.name}] - [${product.price}}") }}}
 }

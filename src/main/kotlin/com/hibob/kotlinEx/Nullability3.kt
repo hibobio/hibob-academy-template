@@ -9,6 +9,7 @@ package com.hibob.bootcamp
  **/
 fun main() {
     val text: String? = "Learn Kotlin"
+    text?.let { println(it.toUpperCase()) }?: println("NO TEXT PROVIDED")
     // Task: Create and use an extension function to print text in uppercase if it's not null, or "NO TEXT PROVIDED" if it is null.
 }
 

@@ -7,9 +7,12 @@ fun main() {
         Department("Engineering", EmployeeDetails("Alice", ContactInfo("alice@example.com", null))),
         Department("Human Resources", null),
         Department(null, EmployeeDetails("Bob", ContactInfo(null, "123-456-7890"))),
-        Department("Marketing", EmployeeDetails(null, ContactInfo("marketing@example.com", "987-654-3210")))
+        Department("Marketing", EmployeeDetails(null, ContactInfo("marketing@example.com", "987-654-3210"))),
+        Department("hibob", EmployeeDetails("Gilad", ContactInfo("Gilad@hibob.com", "987-654-3210")))
+
     )
 
     // Task: Print each department's name and manager's contact information.
     // If any information is missing, use appropriate defaults.
+    departments.map { department: Department -> department?.name?.let{ department.manager?.name?.let { department.manager.contactInfo?.phone?.let { department.manager.contactInfo.email?.let { println(department) } } } } }
 }

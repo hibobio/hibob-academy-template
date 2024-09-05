@@ -19,6 +19,8 @@ fun main() {
         Employee("Alice", Address("Los Angeles", null))
     )
 
+    employees.map { employee: Employee -> employee?.address?.city?.let { println(it) }?:println("City Unknown")}
+
     // Task: Print each employee's city safely. If the city is not available, print "City Unknown".
 }
 

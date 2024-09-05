@@ -13,4 +13,7 @@ fun main() {
     val user2: User = User(null, "alice@example.com")
 
     // Task: Print user email or "Email not provided" if null
+    println(user1.email?.toString())
+    println(user2.email?.toString())
+
 }
