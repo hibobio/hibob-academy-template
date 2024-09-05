@@ -4,19 +4,23 @@ import java.time.LocalDate
 
 /*
 1. Make the Runner.init function more readable using Lambda with Receiver function usage
-2. Initiate the variable movie in line 18 with the function createGoodMovie()
+2. Initiate the variable movie in line 12 with the function createGoodMovie()
 3. Implement pretty print using buildString function
 4. Make SpidermanMovieProduceActions nullable (if not so yet) and make the relevant adjustments
 */
 
 fun main() {
-    val movie = SpidermanNoWayHome()
+    val movie = createGoodMovie()
     val runner = Runner(movie)
     val success = runner.init()
 
     printSuccessMessage(success)
     println("Pretty print: ${movie.prettyPrint()}")
 //    println("Json: ${movie.toJson()}")
+}
+
+fun createGoodMovie() : SpidermanNoWayHome{
+    return SpidermanNoWayHome()
 }
 
 fun printSuccessMessage(success: Boolean) {
@@ -33,7 +37,7 @@ interface SpidermanMovieProduceActions {
     fun signTom()
     fun getVillains()
     fun isThereLockdown(): Boolean
-    fun publish():Boolean
+    fun publish(): Boolean
 
     val title: String
     val airDate: LocalDate
@@ -43,16 +47,17 @@ interface SpidermanMovieProduceActions {
 class SpidermanNoWayHome() : SpidermanMovieProduceActions {
 
     override val title: String = "Spiderman - No Way Home"
-    override val airDate: LocalDate = LocalDate.of(2021,12,16)
+    override val airDate: LocalDate = LocalDate.of(2021, 12, 16)
     override val imdbRank: Double = 9.6
 
     fun prettyPrint(): String {
-        //            Title: title
-        //            Air date: airDate
-        //            IMDB rank: rank
-        //            use buildString function!
-        return "pretty print was not implemented yet"
+        val s = buildString { appendLine(title)
+                    appendLine(airDate)
+                    appendLine(imdbRank)
+                }
+        return s
     }
+
     override fun signTobeyMaguire() {
         //  Tobey signed!
     }
@@ -93,20 +98,21 @@ class SpidermanNoWayHome() : SpidermanMovieProduceActions {
 
 }
 
-fun buildString(actions: StringBuilder.() -> Unit):String{
+fun buildString(actions: StringBuilder.() -> Unit): String {
     val builder = StringBuilder()
     builder.actions()
     return builder.toString()
 }
 
-class Runner(private val movieProducer: SpidermanMovieProduceActions){
-    fun init(): Boolean{
-        return if (!movieProducer.isThereLockdown()) {
-            movieProducer.signTobeyMaguire()
-            movieProducer.signAndrew()
-            movieProducer.signTom()
-            movieProducer.getVillains()
-            movieProducer.publish()
-        } else false
-    }
+class Runner(private val movieProducer: SpidermanMovieProduceActions?) {
+    fun init(): Boolean = movieProducer?.run {
+            if (!isThereLockdown()) {
+                isThereLockdown()
+                signAndrew()
+                signTom()
+                getVillains()
+                publish()
+            } else
+                false
+        } ?: false
 }
