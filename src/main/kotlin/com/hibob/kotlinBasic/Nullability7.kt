@@ -26,11 +26,12 @@ fun main() {
     val customers = initializeNullableCustomers()
     for (customer in customers) {
         customer?.let {
-
-
-        } ?: println("Customer data is not available.")
+            val customerName = customer.name ?: "Unknown customer name"
+            val customerAccountId = customer.account?.id ?: "Unknown account id"
+            val customerAccountType = customer.account?.details?.type ?: "Unknown account type"
+            val customerAccountBalance = customer.account?.details?.balance ?: "Unknown balance"
+            println("Customer name: $customerName, Account id: $customerAccountId, Account type: $customerAccountType, Account balance: $customerAccountBalance")
+        } ?: println("Customer not initialized")
     }
-
-
     // Task: Print each customer's name, account ID, and account balance. Handle all null cases appropriately.
 }
