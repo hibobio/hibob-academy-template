@@ -24,6 +24,13 @@ fun initializeNullableCustomers(): List<Customer?> {
 
 fun main() {
     val customers = initializeNullableCustomers()
+    for (customer in customers) {
+        customer?.let {
+
+
+        } ?: println("Customer data is not available.")
+    }
+
 
     // Task: Print each customer's name, account ID, and account balance. Handle all null cases appropriately.
 }
