@@ -15,6 +15,12 @@ fun main() {
         Product("Smartphone", null),
         Product(null, null)
     )
-
+    for (product in products) {
+        product.name?.let { name ->
+            product.price?.let { price ->
+                println("Product: $name - $price")
+            }
+        }
+    }
     // Task: Print the details of products only if both name and price are not null.
 }

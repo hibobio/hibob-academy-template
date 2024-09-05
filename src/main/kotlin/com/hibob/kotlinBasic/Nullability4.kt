@@ -18,7 +18,11 @@ fun main() {
         Employee(null, Address(null, "Unknown Street")),
         Employee("Alice", Address("Los Angeles", null))
     )
-
+    employees.forEach { employee ->
+        employee.address?.city?.let { city ->
+            println("${city}")
+        } ?: println("City Unknown")
+    }
     // Task: Print each employee's city safely. If the city is not available, print "City Unknown".
 }
 

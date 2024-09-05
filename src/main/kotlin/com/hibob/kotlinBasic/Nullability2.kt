@@ -7,5 +7,8 @@ package com.hibob.bootcamp
  **/
 fun main() {
     val numbers: List<Int?> = listOf(1, null, 3, null, 5)
-    // Task: Calculate the sum of all non-null numbers
+    val sum = numbers.filterNotNull().sum()
+    println(sum)
 }
+    // Task: Calculate the sum of all non-null numbers
+

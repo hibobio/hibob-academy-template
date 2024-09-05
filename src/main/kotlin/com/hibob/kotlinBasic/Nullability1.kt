@@ -12,5 +12,8 @@ fun main() {
     val user1: User = User("Alice", null)
     val user2: User = User(null, "alice@example.com")
 
+    println(user1?.email ?: "Email not provided")
+    println(user2?.email ?: "Email not provided")
+
     // Task: Print user email or "Email not provided" if null
 }
