@@ -44,29 +44,31 @@ fun printCompany(company: Company) {
     val departments = company.departments?.forEach { departmentDetails ->
         val departmentName = departmentDetails?.name ?: "NO DEPARTMENT NAME"
         val teams = departmentDetails?.teams?.let { it.map { team -> getTeam(team) } } ?: "NO TEAMS"
-        //"Department: $departmentName, Teams: $teams"
-        println("Department: $departmentName, Teams: $teams")
+        "Department: $departmentName, Teams: $teams"
     } ?: println("NO DEPARTMENT")
     println("Departments: $departments")
 }
 
 fun getTeam(team: Team?): String {
-    team.let {
-        val name = it?.name ?: "NO TEAM NAME"
-        val leader = it?.leader?.let {getLeader(team) } ?: "NO LEADER"
-        val members = it?.members?.let { memberList -> memberList.map { member -> getMember(member) } } ?: "NO MEMBERS"
-        return "Team: $name, $leader, $members" }
+    return team?.let {
+        val name = it.name ?: "NO TEAM NAME"
+        val leader = it.leader?.let {getLeader(team) } ?: "NO LEADER"
+        val members = it.members?.let { memberList -> memberList.map { member -> getMember(member) } } ?: "NO MEMBERS"
+        "Team: $name, $leader, $members" } ?: "NO TEAM"
 }
 
 fun getLeader(team: Team?): String {
-    val leaderName = team?.leader?.name ?: "NO LEADER NAME"
-    val title = team?.leader?.title ?: "NO TITLE"
-    return "Leader: $leaderName, $title"
+    return team.let {
+        val leaderName = it?.leader?.name ?: "NO LEADER NAME"
+        val title = it?.leader?.title ?: "NO TITLE"
+        "Leader: $leaderName, $title"
+    }
 }
 
 fun getMember(member: Member?): String {
-    val memberName = member?.name ?: "NO MEMBER NAME"
-    val memberRole = member?.role ?: "NO ROLE"
-    return "Member: $memberName, $memberRole"
+    return member?.let {
+        val memberName = member.name ?: "NO MEMBER NAME"
+        val memberRole = member.role ?: "NO ROLE"
+        "Member: $memberName, $memberRole" } ?: "NO MEMBER"
 }
 
