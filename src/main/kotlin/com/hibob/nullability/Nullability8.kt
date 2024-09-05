@@ -41,12 +41,23 @@ fun main() {
 fun printCompany(company: Company) {
     val companyName = company.name ?: "NO COMPANY NAME"
     println("Company: $companyName")
-    val departments = company.departments?.forEach { departmentDetails ->
-        val departmentName = departmentDetails?.name ?: "NO DEPARTMENT NAME"
-        val teams = departmentDetails?.teams?.let { it.map { team -> getTeam(team) } } ?: "NO TEAMS"
-        "Department: $departmentName, Teams: $teams"
-    } ?: println("NO DEPARTMENT")
-    println("Departments: $departments")
+
+    val departments = company.departments?.let { departmentList ->
+        departmentList.map { departmentDetails ->
+            getDepartment(departmentDetails)
+        }
+    } ?: listOf("NO DEPARTMENTS")
+
+    for (department in departments) {
+        println("Department: $department")
+    }
+}
+
+fun getDepartment(departmentDetails: DepartmentDetails?): String {
+    return departmentDetails?.let {
+        val departmentName = departmentDetails.name ?: "NO DEPARTMENT NAME"
+        val teams = departmentDetails.teams?.let { it.map { team -> getTeam(team) } } ?: "NO TEAMS"
+        "Department: $departmentName, Teams: $teams" } ?: "NO DEPARTMENT"
 }
 
 fun getTeam(team: Team?): String {
