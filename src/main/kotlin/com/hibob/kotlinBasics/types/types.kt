@@ -23,7 +23,7 @@ data class Cart(val clientId: String, val products: List<Product>)
 
 data class Product(val productId: String, val name: String, val price: Double, val custom: Any)
 
-data class Check(val employeeId: String, val status : Statuses, val total: Double)
+data class Check(val employeeId: String, val status: Statuses, val total: Double)
 
 enum class CreditCardType {
     VISA,
@@ -38,8 +38,10 @@ enum class Statuses {
 }
 
 
-sealed class Payment{
-    data class CreditCard(val number: String, val expiryDate: LocalDate, val type: CreditCardType, val limit: Double) : Payment()
+sealed class Payment {
+    data class CreditCard(val number: String, val expiryDate: LocalDate, val type: CreditCardType, val limit: Double) :
+        Payment()
+
     data class PayPal(val email: String) : Payment()
     data object Cash : Payment() //May be need to be class
 }

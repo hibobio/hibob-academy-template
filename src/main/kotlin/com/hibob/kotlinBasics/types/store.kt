@@ -13,11 +13,13 @@ import java.time.DayOfWeek
 class Store(val dayOfWeek: DayOfWeek, val products: List<Product>) {
     //2
     var isOpen: Boolean = dayOfWeek != DayOfWeek.SATURDAY
+
     //3
     val numberOfProducts: Int = products.size
+
     //4-6
     val recipet: List<Boolean>
-        get(){
+        get() {
             recipetCallingCounter++
             return listOf(true)
         }
@@ -25,7 +27,7 @@ class Store(val dayOfWeek: DayOfWeek, val products: List<Product>) {
 
     //6
     lateinit var lazyVar: Any
-    fun create(valueToLazyVal: Any){
+    fun create(valueToLazyVal: Any) {
         lazyVar = valueToLazyVal
     }
 }

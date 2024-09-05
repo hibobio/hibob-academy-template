@@ -8,37 +8,45 @@ import java.time.LocalDate
 class StoreService {
 
     fun pay(cart: List<Cart>, payment: Payment): Map<String, Check> {
-       return cart.map({it -> it.clientId to checkout(it, payment)}).toMap()
-
+        return cart.associate { it.clientId to checkout(it, payment) }
     }
 
-    fun checkout(cart: Cart, payment: Payment):Check {
+    fun checkout(cart: Cart, payment: Payment): Check {
         val total = cart.products.filter { isCustomTrue(it) }.sumOf { it.price }
 
-        if(!validatePaymentMethod(payment, total)){
+        if (!isValidPaymentMethod(payment, total)) {
             return Check(cart.clientId, Statuses.FAILURE, 0.0)
         }
         return Check(cart.clientId, Statuses.SUCCESS, total)
     }
 
-    fun validatePaymentMethod(payment: Payment, total: Double): Boolean {
+    private fun isValidPaymentMethod(payment: Payment, total: Double): Boolean {
         return when (payment) {
             is Payment.Cash -> fail("invalid payment method")
             is Payment.PayPal -> payment.email.contains("@")
-            is Payment.CreditCard -> validateCard(payment, total)
+            is Payment.CreditCard -> isValidateCreditCard(payment, total)
         }
     }
 
-    fun validateCard(card : Payment.CreditCard, total: Double): Boolean {
-        return (card.type == CreditCardType.VISA || card.type == CreditCardType.MASTERCARD) && card.limit > total &&
-                card.number.length > 9 && card.expiryDate.isAfter(LocalDate.now())
+    private fun isValidateCreditCard(card: Payment.CreditCard, total: Double): Boolean {
+        return isSupportedType(card.type) && isNotOverLimit(limit = card.limit, total = total) && isCardDetailsValid(
+            card
+        )
     }
 
-    fun fail(errorMsg: String): Nothing {
+    private fun isSupportedType(cardType: CreditCardType): Boolean =
+        (cardType == CreditCardType.VISA || cardType == CreditCardType.MASTERCARD)
+
+    private fun isCardDetailsValid(card: Payment.CreditCard): Boolean =
+        card.expiryDate.isAfter(LocalDate.now()) && card.number.length == 10
+
+    private fun isNotOverLimit(limit: Double, total: Double): Boolean = limit > total
+
+    private fun fail(errorMsg: String): Nothing {
         throw IllegalStateException(errorMsg)
     }
 
-    fun isCustomTrue(product: Product): Boolean {
+    private fun isCustomTrue(product: Product): Boolean {
         return (product.custom as? Boolean) ?: false
     }
 }
