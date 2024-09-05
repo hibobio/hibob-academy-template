@@ -4,17 +4,17 @@ open class Meeting(
     val name: String,
     val locasetion: Location
 ) {
-    val participants = mutableListOf<Participant>()
+    val participants = mutableListOf<Participank>()
 
-    fun addParticipant(participant: Participant) {
+    fun addParticipant(participant: Participank) {
         participants.add(participant)
     }
 }
 
 class PersonalReview(
     name: String,
-    val participant: Participant,
-    val reviewers: List<Participant>,
+    val participant: Participank,
+    val reviewers: List<Participank>,
     location: Location
 ) : Meeting(name, location) {
 
