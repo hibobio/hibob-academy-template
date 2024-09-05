@@ -13,17 +13,17 @@ class StoreService {
         }
     }
 
-    fun fail(message: String): Nothing {
+    private fun fail(message: String): Nothing {
         throw IllegalStateException(message)
     }
 
-    fun customTrueFilter(cart: Cart): List<Product> {
+    private fun customTrueFilter(cart: Cart): List<Product> {
         return cart.products.filter {product ->
             product.custom as? Boolean ?: false
         }
     }
 
-    fun checkout(cart: Cart, payment: Payment) : Check {
+    private fun checkout(cart: Cart, payment: Payment) : Check {
         val products = customTrueFilter(cart)
         Statuses.FAILURE
         val total = products.sumOf { product -> product.price }
@@ -31,7 +31,7 @@ class StoreService {
         return checkPayment(cart, payment, total)
     }
 
-    fun checkPayment(cart: Cart, payment: Payment, total: Double) : Check {
+    private fun checkPayment(cart: Cart, payment: Payment, total: Double) : Check {
         val status = when (payment) {
             is Payment.Cash -> fail("Payment cannot be cash")
             is Payment.CreditCard -> isCreditCardSupported(payment, total)
@@ -42,14 +42,14 @@ class StoreService {
         return Check(cart.clientId, Statuses.FAILURE, 0.0)
     }
 
-    fun isCreditCardSupported(credit: Payment.CreditCard, total: Double) : Boolean {
+    private fun isCreditCardSupported(credit: Payment.CreditCard, total: Double) : Boolean {
         return credit.number.length == 10 &&
                credit.expiryDate.isAfter(LocalDate.now()) &&
                credit.limit >= total &&
                isCreditTypeSupported(credit)
     }
 
-    fun isCreditTypeSupported(credit: Payment.CreditCard): Boolean {
+    private fun isCreditTypeSupported(credit: Payment.CreditCard): Boolean {
         if (credit.type == CreditCardType.VISA ||
             credit.type == CreditCardType.MASTERCARD)
             return true
@@ -57,7 +57,7 @@ class StoreService {
             return false
     }
 
-    fun isPayPalSupported(payment: Payment.PayPal) : Boolean {
+    private fun isPayPalSupported(payment: Payment.PayPal) : Boolean {
         return payment.email.contains('@')
     }
 }
