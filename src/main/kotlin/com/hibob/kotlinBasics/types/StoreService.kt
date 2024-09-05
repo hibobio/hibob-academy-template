@@ -11,7 +11,7 @@ class StoreService {
         return cart.associate { it.clientId to checkout(it, payment) }
     }
 
-    fun checkout(cart: Cart, payment: Payment): Check {
+    private fun checkout(cart: Cart, payment: Payment): Check {
         val total = cart.products.filter { isCustomTrue(it) }.sumOf { it.price }
 
         if (!isValidPaymentMethod(payment, total)) {
