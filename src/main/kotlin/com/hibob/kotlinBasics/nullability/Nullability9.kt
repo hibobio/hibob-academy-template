@@ -24,7 +24,23 @@ fun main() {
         DepartmentData("Operations", EmployeeData("Bob", Contact(null, "234-567-8901"))),
         DepartmentData("Marketing", EmployeeData(null, Contact("marketing@example.com", "345-678-9012"))),
         DepartmentData("Finance", EmployeeData("Carol", Contact("", "456-789-0123")))
+
     )
 
-    // Implement the features here.
+    fun noContactInfo(contact: Contact?): Boolean = contact == null || (contact.email == null && contact.phone == null)
+
+    fun noManagerDepartments(): List<DepartmentData> {
+        return departments.filter { it.manager == null || noContactInfo(it.manager.contactInfo) }
+    }
+
+    fun uniqueEmails(): List<String> {
+        val emails: List<String> = departments.filter { (it.manager?.contactInfo?.email != "") }
+            .map { it.manager?.contactInfo?.email ?: "" }.filter { it != "" }
+
+        return emails.toSet().toList()
+    }
+
+    fun Reporting(): String {
+        return buildString { departments.forEach { appendLine("The department name is ${it.name ?: "Unknown"} and the manager name is ${it.manager?.name ?: "Unknown"}, his email is ${it.manager?.contactInfo?.email ?: "Unknown"} and his phone is ${it.manager?.contactInfo?.phone ?: "Unknown"}") } }
+    }
 }
