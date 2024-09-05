@@ -18,9 +18,9 @@ class Store(val day: DayOfWeek, val products: List<Product>) {
     val numberOfProducts: Int
         get() = products.size
 
-    var count: Int = 0
+    var countCallingNumber: Int = 0
     val receipts: Int
-        get() = count++
+        get() = countCallingNumber++
 
 
     lateinit var receiptsCalls: String
