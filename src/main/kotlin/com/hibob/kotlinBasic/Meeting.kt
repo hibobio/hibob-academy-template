@@ -1,21 +1,23 @@
 package com.hibob.kotlinBasic
 
+class Participant(val name: String, val email: String)
+
 open class Meeting(
     val name: String,
-    val locasetion: Location
+    val location: Location
 ) {
-    val participants = mutableListOf<Participank>()
+    private val participants = mutableListOf<Participant>()
 
-    fun addParticipant(participant: Participank) {
+    fun addParticipant(participant: Participant) {
         participants.add(participant)
     }
 }
 
 class PersonalReview(
     name: String,
-    val participant: Participank,
-    val reviewers: List<Participank>,
-    location: Location
+    location: Location,
+    val participant: Participant,
+    val reviewers: List<Participant>,
 ) : Meeting(name, location) {
 
     init {
