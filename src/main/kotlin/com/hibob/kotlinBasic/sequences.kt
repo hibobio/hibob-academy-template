@@ -1,6 +1,5 @@
 package com.hibob.kotlinexercise
 
-import kotlin.system.exitProcess
 fun main() {
     println("ex1")
     ex1()
@@ -115,7 +114,7 @@ fun ex4() {
         }
     }
 
-    val fibonacciSequence = fibonacciSequence().take(10).forEach(::println)
+    fibonacciSequence().take(10).forEach(::println)
     // create the list of the first 10 items of the Fibonacci seq
 }
 
