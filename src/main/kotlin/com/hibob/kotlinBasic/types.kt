@@ -20,10 +20,9 @@ import java.time.LocalDate
 
 
 
-
 data class Cart(
     val clientId: String,
-    val producs: List<Product>
+    val products: List<Product>
 )
 
 data class Product(
@@ -33,15 +32,12 @@ data class Product(
     val custom: Any?
 )
 
-fun isValidProduct(product: Product): Boolean {
-    return product.custom == true
-}
 
 sealed class Payment {
     data class CreditCard(
         val cradNumber: String,
         val expiryDate: LocalDate,
-        val type: CardType,
+        val type: CreditCardType,
         val limit: Double
     ) : Payment()
 
@@ -52,18 +48,18 @@ sealed class Payment {
     data object Cash: Payment()
 }
 
-enum class CardType{
+enum class CreditCardType{
     VISA,
     MASTERCARD,
     DISCOVER,
     AMERICAN_EXPRESS
 }
-
+/*
 fun fail(message: String): Nothing {
     throw IllegalStateException(message)
 
 }
-
+*/
 data class Check(
     val clientId: String,
     val status: Statuses,
@@ -74,43 +70,42 @@ enum class Statuses {
     SUCCESS,
     FAILURE,
 }
+/*
+private fun processCreditCard(creditCard: Payment.CreditCard, total: Double): Boolean {
+    if (creditCard.cradNumber.length < 10) return false
+
+    if (creditCard.expiryDate.isBefore(LocalDate.now())) return false
+
+    if(creditCard.type != CreditCardType.VISA && creditCard.type != CreditCardType.MASTERCARD) return false
+
+    if(creditCard.limit < total) return false
+
+    return true
+}
+
+private fun processPayPal(payPal: Payment.PayPal): Boolean {
+    return payPal.email.contains("@")
+}
 
 fun checkout(cart: Cart, payment: Payment): Check {
 
-    val validProducts = cart.producs.filter { isValidProduct(it) }
+    val validProduct = cart.products.filter { isValidProduct(it.custom) }
 
-    val total = validProducts.sumOf { it.productPrice }
+    val total = validProduct.sumOf { it.productPrice }
 
-    return when (payment) {
-        is Payment.CreditCard -> {
-            if (payment.type != CardType.VISA && payment.type != CardType.MASTERCARD) {
-                return Check(cart.clientId, Statuses.FAILURE, 0.0)
-            }
-            if ( payment.expiryDate.isBefore(LocalDate.now())) {
-                return Check(cart.clientId, Statuses.FAILURE, 0.0)
-            }
-            if (payment.limit < total) {
-                return Check(cart.clientId, Statuses.FAILURE, 0.0)
-            }
-            return Check(cart.clientId, Statuses.SUCCESS, total)
-        }
-        is Payment.PayPal -> {
-            if (!payment.email.contains("@")) {
-                return Check(cart.clientId, Statuses.FAILURE, 0.0)
-            }
-            return Check(cart.clientId, Statuses.SUCCESS, total)
-        }
-        is Payment.Cash -> {
-            fail("Cash payment is not accepted.")
-        }
-        else -> {
-            return Check(cart.clientId, Statuses.FAILURE, 0.0)
-        }
-
+    val status = when (payment) {
+        is Payment.CreditCard -> processCreditCard(payment, total)
+        is Payment.PayPal -> processPayPal(payment)
+        is Payment.Cash -> fail("Cash payment is not allowed")
+        else -> false
     }
+
+    val checkStatuses = if (status) Statuses.SUCCESS else Statuses.FAILURE
+
+    val finalTotal = if (status) total else 0.0
+
+    cart.clientId to Check(cart.clientId, checkStatuses, finalTotal)
 }
 
-fun pay(cart: Cart, payment: Payment): Check {
-    return checkout(cart, payment)
-}
+
 
