@@ -4,8 +4,7 @@ import kotlin.math.pow
 
 fun List<Int>.sum(): Int {
     var result = 0
-    for (i in this)
-        result += i
+    map { result += it }
     return result
 }
 
