@@ -1,4 +1,6 @@
-package com.hibob.academy.types
+package com.hibob.kotlinBasic
+
+
 
 import org.jooq.impl.QOM
 import java.io.ObjectInputFilter

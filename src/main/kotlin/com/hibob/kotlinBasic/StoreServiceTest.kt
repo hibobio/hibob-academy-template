@@ -1,4 +1,4 @@
-package com.hibob.academy.types
+package com.hibob.kotlinBasic
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers

@@ -1,4 +1,4 @@
-package com.hibob.academy.types
+package com.hibob.kotlinBasic
 
 import org.springframework.stereotype.Component
 import java.time.LocalDate
