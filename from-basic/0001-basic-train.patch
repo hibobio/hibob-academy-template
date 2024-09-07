@@ -1,0 +1,55 @@
+From 2592ae339b54098df72da5f69a835d11e82531b4 Mon Sep 17 00:00:00 2001
+From: "yechezkel.nikop" <yechezkelnikop@gmail.com>
+Date: Wed, 4 Sep 2024 08:35:37 +0300
+Subject: [PATCH] basic train
+
+---
+ .../kotlin/com/hibob/kotlinBasic/basic.kt     | 34 ++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/kotlin/com/hibob/kotlinBasic/basic.kt b/src/main/kotlin/com/hibob/kotlinBasic/basic.kt
+index c9a6161..43ddc70 100644
+--- a/src/main/kotlin/com/hibob/kotlinBasic/basic.kt
++++ b/src/main/kotlin/com/hibob/kotlinBasic/basic.kt
+@@ -1,4 +1,36 @@
+ package com.hibob.kotlinBasic
+ 
+-class basic {
++fun main() {
++    val x = 2
++    val y = 3
++
++    println("Hello world")
++
++    fun printsEvenOrOdd(x: Int) = println(if (x > 0) "even" else "odd")
++    printsEvenOrOdd(x = 2)
++    printsEvenOrOdd(x = 3)
++
++    fun checkEqual(x: Int, y: Int) = println(if (x == y) "equal" else "not equal")
++    checkEqual(x, y)
++
++    fun maxValue(x: Int, y: Int) = println(if(x > y) x else y)
++    maxValue(x, y)
++
++    fun multiplication(x: Int = 1, y: Int = 1): Int = x * y
++
++    val a1 = 1
++    val b1 = 5
++    println(multiplication(b1))
++    println(multiplication(a1,b1))
++
++    val a2 = 1
++    val b2 = 1
++    println(multiplication())
++    println(multiplication(a2))
++    println(multiplication(b2))
++    println(multiplication(a2, b2))
++
++    val a3 = 3
++    val b3 = 2
++    println(multiplication(a3, b3))
+ }
+\ No newline at end of file
+-- 
+2.39.3 (Apple Git-146)
+
