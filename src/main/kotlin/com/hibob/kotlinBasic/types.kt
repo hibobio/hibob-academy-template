@@ -1,6 +1,9 @@
+package com.hibob.academy.types
+
 import org.jooq.impl.QOM
 import java.io.ObjectInputFilter
 import java.time.LocalDate
+
 
 //1. create data class of Cart that include: client Id and list of Products
 //2. product object contain id, name, price and custom - custom can be either int, string or any other type
@@ -48,18 +51,25 @@ sealed class Payment {
     data object Cash: Payment()
 }
 
+fun isValidProduct(custom: Any?): Boolean {
+    return when (custom) {
+        is Boolean -> custom
+        else -> false
+    }
+}
+
 enum class CreditCardType{
     VISA,
     MASTERCARD,
     DISCOVER,
     AMERICAN_EXPRESS
 }
-/*
+
 fun fail(message: String): Nothing {
     throw IllegalStateException(message)
 
 }
-*/
+
 data class Check(
     val clientId: String,
     val status: Statuses,
@@ -70,7 +80,7 @@ enum class Statuses {
     SUCCESS,
     FAILURE,
 }
-/*
+
 private fun processCreditCard(creditCard: Payment.CreditCard, total: Double): Boolean {
     if (creditCard.cradNumber.length < 10) return false
 
@@ -104,7 +114,7 @@ fun checkout(cart: Cart, payment: Payment): Check {
 
     val finalTotal = if (status) total else 0.0
 
-    cart.clientId to Check(cart.clientId, checkStatuses, finalTotal)
+    return Check(cart.clientId, checkStatuses, finalTotal)
 }
 
 
