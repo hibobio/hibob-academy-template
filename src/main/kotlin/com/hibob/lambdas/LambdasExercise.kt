@@ -21,7 +21,7 @@ fun main() {
 
 fun printSuccessMessage(success: Boolean) {
     if (success) {
-        println("The movie was successful")
+        println("The movie created successfully")
     } else {
         println("The movie failed")
     }
@@ -44,33 +44,32 @@ interface SpidermanMovieProduceActions {
 
 class SpidermanNoWayHome() : SpidermanMovieProduceActions {
 
-    override val title: String = "Spiderman - No Way Home"
+    override val title: String = "Spider man - No Way Home"
     override val airDate: LocalDate = LocalDate.of(2021, 12, 16)
     override val imdbRank: Double = 9.6
 
     fun prettyPrint(): String {
-        val bs = buildString {
-            append("$title\n")
-            append("$airDate\n")
-            append("$imdbRank\n")
+        return buildString {
+            appendLine("Title: $title")
+            appendLine("Air date: $airDate")
+            appendLine("IMDB rank: $imdbRank")
         }
-        return bs
     }
 
     override fun signTobeyMaguire() {
-        //  Tobey signed!
+        println("Toby signed")
     }
 
     override fun signAndrew() {
-        //    Andrew signed
+        println("Andrew Signed")
     }
 
     override fun signTom() {
-        //    Tom signed
+        println("Tom Signed")
     }
 
     override fun getVillains() {
-        //   Got villains
+        println("Getting Villains")
     }
 
     override fun isThereLockdown(): Boolean = false
@@ -105,15 +104,14 @@ fun buildString(actions: StringBuilder.() -> Unit): String {
 
 class Runner(private val movieProducer: SpidermanMovieProduceActions?) {
     fun init(): Boolean {
-        return movieProducer?.run {
+        return movieProducer?.apply {
             if (!isThereLockdown()) {
                 signTobeyMaguire()
                 signAndrew()
                 signTom()
                 getVillains()
                 publish()
-                true
-            } else false
-        } ?: false
+            }
+        } ?.let { true } ?: false
     }
 }
