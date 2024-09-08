@@ -8,6 +8,7 @@ create table owner
     date_of_arrival date
 );
 
+
 CREATE INDEX idx_company_owner_id on owner(company_id);
 
 /*

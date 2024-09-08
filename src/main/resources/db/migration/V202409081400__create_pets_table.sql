@@ -7,6 +7,7 @@ create table pets
     date_of_arrival date
 );
 
+
 CREATE INDEX idx_company_pets_id on pets(company_id);
 
 /*
