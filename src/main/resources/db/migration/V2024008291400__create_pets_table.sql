@@ -3,7 +3,7 @@ create table Pets
     id SERIAL primary key,
     name varchar(255) not null,
     type varchar(255),
-    company_id int not null ,
+    company_id int not null,
     date_of_arrival date not null
 );
 
@@ -23,7 +23,7 @@ CREATE INDEX idx_pets_company_id on Pets(company_id);
 
 --select *
 --from Pets
--- date_of_arrival <= '2023-09-09';
+--date_of_arrival <= '2023-09-09';
 
 
 

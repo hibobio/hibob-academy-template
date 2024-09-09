@@ -2,7 +2,7 @@ create table Owner
 (
     id SERIAL primary key,
     name varchar(255) not null,
-    company_id int not null ,
+    company_id int not null,
     employee_id varchar(255) not null
 );
 
