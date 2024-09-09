@@ -104,14 +104,15 @@ fun buildString(actions: StringBuilder.() -> Unit): String {
 
 class Runner(private val movieProducer: SpidermanMovieProduceActions?) {
     fun init(): Boolean {
-        return movieProducer?.apply {
-            if (!isThereLockdown()) {
+        movieProducer?.run {
+            return if (!isThereLockdown()) {
                 signTobeyMaguire()
                 signAndrew()
                 signTom()
                 getVillains()
                 publish()
-            }
-        } ?.let { true } ?: false
+            } else false
+        }
+        return false
     }
 }
