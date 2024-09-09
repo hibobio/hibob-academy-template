@@ -1,4 +1,5 @@
 package com.hibob.academy.resource
+
 import com.hibob.kotlinEx.Owner
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
@@ -12,23 +13,48 @@ import org.springframework.stereotype.Controller
 @Consumes(MediaType.APPLICATION_JSON)
 class OwnerResource() {
 
+    //    temporary database simulation
+    private val allOwners: MutableList<Owner> = mutableListOf()
+
+    //
     @GET
-    fun get(): Response {
-        return Response.ok(listOf(Owner(1, "Gilad", 1, 1), Owner(2, "Gali", 1, 2))).build()
+    @Path("/{ownerId}")
+    fun getOwner(@PathParam("ownerId") ownerId: Int): Response {
+        val owner = allOwners.find { owner: Owner -> owner.id == ownerId }
+        owner?.let {
+            return Response.ok(owner).build()
+        } ?: return Response.status(Response.Status.NOT_FOUND).entity("owner not found").build()
     }
 
+
     @POST
-    fun post(owner: Owner): Response {
-        return Response.ok("Posted").build()
+    fun postOwner(owner: Owner): Response {
+        allOwners.add(owner.copy(id = owner.id, name = owner.name, companyId = owner.companyId, employeeId = owner.employeeId))
+        return Response.status(Response.Status.CREATED).entity(Response.Status.CREATED).build()
     }
 
     @PUT
-    fun put(owner: Owner): Response {
-        return Response.ok("Put").build()
+    @Path("/{ownerId}")
+    fun putPet(@PathParam("ownerId") ownerId: Int, owner: Owner): Response {
+        val index = allOwners.indexOfFirst { owner -> owner.id == ownerId }
+        if (index >= 0) {
+            val ownerToUpdate = allOwners.removeAt(index).copy(name = owner.name, companyId = owner.companyId, employeeId = owner.employeeId)
+            allOwners.add(ownerToUpdate)
+            return Response.ok(ownerToUpdate).build()
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("owner not found").build()
+        }
     }
 
     @DELETE
-    fun delete(owner: Owner): Response {
-        return Response.ok("Deleted").build()
+    @Path("/{ownerId}")
+    fun deleteOwner(@PathParam("ownerId") ownerId: Int, owner: Owner): Response {
+        val index = allOwners.indexOfFirst { owner -> owner.id == ownerId }
+        if (index >= 0) {
+            allOwners.removeAt(index)
+            return Response.ok(owner).build()
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("owner not found").build()
+        }
     }
 }
