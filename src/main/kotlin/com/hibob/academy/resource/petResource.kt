@@ -30,7 +30,9 @@ class PetResource() {
 
     @POST
     fun postPet(pet: Pet): Response {
-        allPets.add(pet.copy(id = pet.id, name = pet.name, type = pet.type, companyId = pet.companyId, dateOfArrival = pet.dateOfArrival))
+        val firstname : String = pet.name.split(" ").first()
+        val lastname = pet.name.split(" ").last()
+        allPets.add(pet.copy(id = pet.id, name = pet.name, firstname = firstname, lastname = lastname ,type = pet.type, companyId = pet.companyId, dateOfArrival = pet.dateOfArrival))
         return Response.status(Response.Status.CREATED).entity(Response.Status.CREATED).build()
     }
 

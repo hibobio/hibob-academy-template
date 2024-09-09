@@ -29,7 +29,9 @@ class OwnerResource() {
 
     @POST
     fun postOwner(owner: Owner): Response {
-        allOwners.add(owner.copy(id = owner.id, name = owner.name, companyId = owner.companyId, employeeId = owner.employeeId))
+        val firstname : String = owner.name.split(" ").first()
+        val lastname = owner.name.split(" ").last()
+        allOwners.add(owner.copy(id = owner.id, name = owner.name, firstname = firstname, lastname = lastname ,companyId = owner.companyId, employeeId = owner.employeeId))
         return Response.status(Response.Status.CREATED).entity(Response.Status.CREATED).build()
     }
 
