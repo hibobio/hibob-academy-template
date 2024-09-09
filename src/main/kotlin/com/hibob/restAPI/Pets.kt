@@ -3,8 +3,7 @@ package com.hibob.restAPI
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class Pet
-    (
+data class Pet(
     val id: Int,
     val name: String,
     val type: String,
@@ -12,8 +11,7 @@ data class Pet
     val arrivalDate: LocalDate
 )
 
-data class Owner
-    (
+data class Owner(
     val id: Int,
     val name: String?,
     val firstName: String?,

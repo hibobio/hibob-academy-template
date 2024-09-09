@@ -23,10 +23,10 @@ class PetsResource {
         if (petId.toInt() == 123)
             throw NotFoundException("Pet with id $petId not found")
 
-        return if (pet != null)
+        return pet?.let {
             Response.ok(pet).build()
-        else
-            Response.status(Response.Status.NOT_FOUND)
+        }
+            ?: Response.status(Response.Status.NOT_FOUND)
                 .entity("Pet not found")
                 .build()
     }
@@ -69,13 +69,11 @@ class PetsResource {
     @Path("/{petId}")
     fun deletePet(@PathParam("petId") petId: Int): Response {
         val removedPet = allPets.removeIf { it.id == petId }
-        return if (removedPet) {
+        return removedPet.let {
             Response.status(Response.Status.NO_CONTENT).build()
-        } else {
-            Response.status(Response.Status.NOT_FOUND)
+        }
+            ?: Response.status(Response.Status.NOT_FOUND)
                 .entity("Pet not found")
                 .build()
-        }
     }
-
 }

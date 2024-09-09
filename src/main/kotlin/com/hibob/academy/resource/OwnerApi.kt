@@ -19,12 +19,11 @@ class OwnerResource {
     @Path("/{ownerId}")
     fun getOwnerById(@PathParam("ownerId") ownerId: Long): Response {
         val owner = allOwners.find { it.id == ownerId.toInt() }
-        return if (owner != null)
+        return owner?.let {
             Response.ok(owner).build()
-        else
-            Response.status(Response.Status.NOT_FOUND)
-                .entity("Owner not found")
-                .build()
+        } ?: Response.status(Response.Status.NOT_FOUND)
+            .entity("Owner not found")
+            .build()
     }
 
     @GET
@@ -36,9 +35,12 @@ class OwnerResource {
     fun addOwner(owner: Owner): Response {
         val newOwnerId = (allOwners.maxOfOrNull { it.id } ?: 0) + 1
 
-        val badRequest = Response.status(Response.Status.BAD_REQUEST).build()
-        val firstName = owner.name?.split(" ")?.first() ?: owner.firstName ?: return badRequest
-        val lastName = owner.name?.split(" ")?.last() ?: owner.lastName ?: return badRequest
+        val badRequest = Response.status(Response.Status.BAD_REQUEST)
+
+        val firstName = owner.name?.split(" ")?.first()
+            ?: owner.firstName ?: return badRequest.entity("Missing first name").build()
+        val lastName = owner.name?.split(" ")?.drop(1)?.joinToString(" ")?.takeIf { it.isNotBlank() }
+            ?: owner.lastName ?: return badRequest.entity("Missing last name").build()
 
         val newOwner = owner.copy(id = newOwnerId, name = firstName + " " + lastName, firstName = firstName, lastName = lastName)
         allOwners.add(newOwner)
@@ -62,8 +64,7 @@ class OwnerResource {
             Response.status(Response.Status.ACCEPTED)
                 .entity(ownerToUpdate)
                 .build()
-        }
-        else {
+        } else {
             Response.status(Response.Status.NOT_FOUND)
                 .entity("Owner not found")
                 .build()
@@ -74,13 +75,12 @@ class OwnerResource {
     @Path("/{ownerId}")
     fun deleteOwner(@PathParam("ownerId") ownerId: Int): Response {
         val removedOwner = allOwners.removeIf { it.id == ownerId }
-        return if (removedOwner) {
+        return removedOwner.let {
             Response.status(Response.Status.NO_CONTENT).build()
-        } else {
-            Response.status(Response.Status.NOT_FOUND)
+        }
+            ?: Response.status(Response.Status.NOT_FOUND)
                 .entity("Owner not found")
                 .build()
-        }
     }
 
 }
