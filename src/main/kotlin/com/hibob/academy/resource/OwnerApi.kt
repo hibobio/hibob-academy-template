@@ -42,7 +42,7 @@ class OwnerResource {
         val lastName = owner.name?.split(" ")?.drop(1)?.joinToString(" ")?.takeIf { it.isNotBlank() }
             ?: owner.lastName ?: return badRequest.entity("Missing last name").build()
 
-        val newOwner = owner.copy(id = newOwnerId, name = firstName + " " + lastName, firstName = firstName, lastName = lastName)
+        val newOwner = owner.copy(id = newOwnerId, name = "$firstName $lastName", firstName = firstName, lastName = lastName)
         allOwners.add(newOwner)
 
         return Response.status(Response.Status.CREATED)
@@ -59,7 +59,7 @@ class OwnerResource {
             val firstName = updatedOwner.name?.split(" ")?.first() ?: updatedOwner.firstName ?: return badRequest
             val lastName = updatedOwner.name?.split(" ")?.last() ?: updatedOwner.lastName ?: return badRequest
 
-            val ownerToUpdate = updatedOwner.copy(id = ownerId, name = firstName + " " + lastName, lastName = lastName)
+            val ownerToUpdate = updatedOwner.copy(id = ownerId, name = "$firstName $lastName", lastName = lastName)
             allOwners[index] = ownerToUpdate
             Response.status(Response.Status.ACCEPTED)
                 .entity(ownerToUpdate)
