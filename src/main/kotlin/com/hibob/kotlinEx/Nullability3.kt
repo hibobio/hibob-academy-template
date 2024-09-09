@@ -1,5 +1,7 @@
 package com.hibob.bootcamp
 
+import jakarta.validation.constraints.Null
+
 
 /**
  * Write an extension function nullSafeToUpper() for String? that converts the string
@@ -7,9 +9,17 @@ package com.hibob.bootcamp
  * Apply this function in the main function to handle the variable text.
  *
  **/
+
+fun String?.nullSafeToUpper() : String? {
+    this?.let {
+        return it.toUpperCase()
+    } ?: return "NO TEXT PROVIDED"
+}
+
 fun main() {
     val text: String? = "Learn Kotlin"
-    text?.let { println(it.toUpperCase()) }?: println("NO TEXT PROVIDED")
-    // Task: Create and use an extension function to print text in uppercase if it's not null, or "NO TEXT PROVIDED" if it is null.
+    val nullText: String? = null
+    println(text.nullSafeToUpper())
+    println(nullText.nullSafeToUpper())
 }
 
