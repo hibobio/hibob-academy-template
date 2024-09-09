@@ -1,6 +1,6 @@
 package com.hibob.academy.resource
 
-import com.hibob.academy.types.Pets
+import com.hibob.academy.types.Owner
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Controller
@@ -13,32 +13,35 @@ import org.springframework.web.bind.annotation.RequestBody
 class OwnerResource {
 
     @POST
-    @Path("/{Id}/type")
+    @Path("/type")
     @Consumes(MediaType.APPLICATION_JSON)
-    fun createPet(@RequestBody pets: Pets): Response {
-        Response.status(Response.Status.OK).build()
+    fun createOwner(@RequestBody owner: Owner): Response {
         return Response.ok("POST OK").build()
     }
 
     @GET
     @Path("/{Id}/type")
-    fun getPetType(@PathParam("Id") id: String): Response {
-        Response.status(Response.Status.OK).build()
+    fun getOwnersPetType(@PathParam("Id") id: String): Response {
         return Response.ok("GET OK").build()
+    }
+
+    fun fetchOwner(id: String): Owner? {
+        return null     //Just for Practice
     }
 
     @PUT
     @Path("/{Id}/type")
     @Consumes(MediaType.APPLICATION_JSON)
-    fun updatePetType(@PathParam("Id") id: String, petType: String): Response {
-        Response.status(Response.Status.OK).build()
+    fun updateOwnersPetType(@PathParam("Id") id: String, ownersPetType: String): Response {
+        if(fetchOwner(id) == null){
+            return Response.status(404).build()
+        }
         return Response.ok("PUT OK").build()
     }
 
     @DELETE
     @Path("/{Id}/type")
-    fun deletePetType(@PathParam("Id") id: String): Response {
-        Response.status(Response.Status.OK).build()
+    fun deleteOwner(@PathParam("Id") id: String): Response {
         return Response.ok("DELETE OK").build()
     }
 }
