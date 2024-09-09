@@ -1,9 +1,9 @@
 package com.hibob.kotlinEx
 
-open class Meeting (val name: String, val location: Location, val participants: List<Participant>){
+open class Meeting (val name: String, val location: Location, val participants: MutableList<Participant>){
 
     open fun addParticipant(participant: Participant){
-        val participants = participants.plus(participant)
+        participants.add(participant)
     }
 
 }
@@ -11,8 +11,8 @@ open class Meeting (val name: String, val location: Location, val participants: 
 class PersonalMeeting(
     name: String,
     location: Location,
-    participant: Participant, val reviewers: List<Participant>
-) : Meeting(name, location, listOf(participant)) {
+    participant: Participant, val reviewers: MutableList<Participant>
+) : Meeting(name, location, mutableListOf(participant)) {
 
     init {
         println("Personal Review created successfully.")
@@ -24,6 +24,6 @@ class PersonalMeeting(
     }
 
     fun addReviewer(reviewer: Participant){
-        val reviewers = reviewers.plus(reviewer)
+        reviewers.add(reviewer)
     }
 }
