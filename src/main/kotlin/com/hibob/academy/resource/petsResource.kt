@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Controller
 import jakarta.ws.rs.core.MediaType
 import org.springframework.web.bind.annotation.RequestBody
+import java.util.*
 
 @Controller
 @Path("api/pets")
@@ -17,22 +18,26 @@ class PetsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     fun createPet(@RequestBody pets: Pets): Response {
         Response.status(Response.Status.OK).build()
-        return Response.ok("POST OK").build()
+        return Response.ok(pets).build()
     }
 
     @GET
     @Path("/{petId}/type")
     fun getPetType(@PathParam("petId") id: String): Response {
         Response.status(Response.Status.OK).build()
-        return Response.ok("GET OK").build()
+        return Response.ok(listOf(Pets(name = "dog", type = "lab"
+            , company_id = UUID.randomUUID(), date_of_arrival = Date() ))).build()
     }
 
     @PUT
-    @Path("/{petId}/type")
+    @Path("/{petId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    fun updatePetType(@PathParam("petId") id: String, petType: String): Response {
+    fun updatePetType(@PathParam("petId") id: String, @QueryParam("newType") newType: String?): Response {
+        val pet = Pets(name = "dog", type = "lab"
+            , company_id = UUID.randomUUID(), date_of_arrival = Date() )
+        pet.type = newType ?: pet.type
         Response.status(Response.Status.OK).build()
-        return Response.ok("PUT OK").build()
+        return Response.ok(pet).build()
     }
 
     @DELETE
