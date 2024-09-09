@@ -1,9 +1,11 @@
 package com.hibob.academy.resource
+import com.hibob.kotlinEx.Owner
 import com.hibob.kotlinEx.Pet
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Controller
+import java.sql.Date
 
 
 @Controller
@@ -12,24 +14,49 @@ import org.springframework.stereotype.Controller
 @Consumes(MediaType.APPLICATION_JSON)
 class PetResource() {
 
+    //    temporary database simulation
+    private val allPets: MutableList<Pet> = mutableListOf()
+
+    //
     @GET
-    fun get(): Response {
-        return Response.ok(listOf(Pet(1, "Murphy", "dog", 1, 20240908), Pet(2, "Pepe", "dog", 1, 20240909))).build()
+    @Path("/{petId}")
+    fun getPet(@PathParam("petId") petId: Int): Response {
+        val pet = allPets.find { pet: Pet -> pet.id == petId }
+        pet?.let {
+            return Response.ok(pet).build()
+        } ?: return Response.status(Response.Status.NOT_FOUND).entity("pet not found").build()
     }
 
+
     @POST
-    fun post(pet: Pet): Response {
-        return Response.ok("Posted").build()
+    fun postPet(pet: Pet): Response {
+        allPets.add(pet.copy(id = pet.id, name = pet.name, type = pet.type, companyId = pet.companyId, dateOfArrival = pet.dateOfArrival))
+        return Response.status(Response.Status.CREATED).entity(Response.Status.CREATED).build()
     }
 
     @PUT
-    fun put(pet: Pet): Response {
-        return Response.ok("Put").build()
+    @Path("/{petId}")
+    fun putPet(@PathParam("petId") petId: Int, pet: Pet): Response {
+        val index = allPets.indexOfFirst { pet -> pet.id == petId }
+        if (index >= 0) {
+            val petToUpdate = allPets.removeAt(index).copy(id = pet.id, name = pet.name, type = pet.type, companyId = pet.companyId, dateOfArrival = pet.dateOfArrival)
+            allPets.add(petToUpdate)
+            return Response.ok(petToUpdate).build()
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("pet not found").build()
+        }
     }
 
     @DELETE
-    fun delete(pet: Pet): Response {
-        return Response.ok("Deleted").build()
+    @Path("/{petId}")
+    fun deletePet(@PathParam("petId") petId: Int, pet: Pet): Response {
+        val index = allPets.indexOfFirst { pet -> pet.id == petId }
+        if (index >= 0) {
+            allPets.removeAt(index)
+            return Response.ok(pet).build()
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("pet not found").build()
+        }
     }
 }
 
