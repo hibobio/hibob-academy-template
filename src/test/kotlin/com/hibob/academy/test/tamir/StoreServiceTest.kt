@@ -1,5 +1,6 @@
-package com.hibob.kotlinBasic
+package com.hibob.academy.test.tamir
 
+import com.hibob.kotlinBasic.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Assertions.*
