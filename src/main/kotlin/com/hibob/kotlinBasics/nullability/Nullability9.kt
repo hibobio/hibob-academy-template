@@ -34,7 +34,7 @@ fun main() {
     }
 
     fun uniqueEmails(): List<String> {
-        val emails: List<String> = departments.filter { (it.manager?.contactInfo?.email != "") }
+        val emails: List<String> = departments.filterNotNull()
             .map { it.manager?.contactInfo?.email ?: "" }.filter { it != "" }
 
         return emails.toSet().toList()
