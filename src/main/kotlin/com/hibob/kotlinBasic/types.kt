@@ -117,6 +117,7 @@ fun checkout(cart: Cart, payment: Payment): Check {
     val finalTotal = if (status) total else 0.0
 
     return Check(cart.clientId, checkStatuses, finalTotal)
+
 }
 
 
