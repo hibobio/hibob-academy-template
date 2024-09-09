@@ -19,14 +19,26 @@ fun initializeCompany(): Company {
     return Company(
         "Tech Innovations Inc.",
         listOf(
-            DepartmentDetails("Engineering", listOf(
-                Team("Development", Leader("Alice Johnson", "Senior Engineer"), listOf(Member("Bob Smith", "Developer"), null)),
-                Team("QA", Leader(null, "Head of QA"), listOf(Member(null, "QA Analyst"), Member("Eve Davis", null))),
-                null
-            )),
-            DepartmentDetails(null, listOf(
-                Team("Operations", null, listOf(Member("John Doe", "Operator"), Member("Jane Roe", "Supervisor")))
-            )),
+            DepartmentDetails(
+                "Engineering", listOf(
+                    Team(
+                        "Development",
+                        Leader("Alice Johnson", "Senior Engineer"),
+                        listOf(Member("Bob Smith", "Developer"), null)
+                    ),
+                    Team(
+                        "QA",
+                        Leader(null, "Head of QA"),
+                        listOf(Member(null, "QA Analyst"), Member("Eve Davis", null))
+                    ),
+                    null
+                )
+            ),
+            DepartmentDetails(
+                null, listOf(
+                    Team("Operations", null, listOf(Member("John Doe", "Operator"), Member("Jane Roe", "Supervisor")))
+                )
+            ),
             null
         )
     )
@@ -35,5 +47,39 @@ fun initializeCompany(): Company {
 fun main() {
     val company = initializeCompany()
 
-    // Task: Print detailed information about each department, team, and team members, handling all null values appropriately.
+    fun membersAsString(members: List<Member?>?): String {
+        return buildString { members?.forEach { appendLine("The member name is ${it?.name ?: "Unknown"}, and his/her role is ${it?.role ?: "Unknown"} ") } }.takeIf { it.isNotEmpty() }
+            ?: "Unknown"
+    }
+
+    fun leaderAsString(leader: Leader?): String? {
+        return buildString { append("the leader name is ${leader?.name ?: "Unkown"} and his title is ${leader?.title ?: "Unknown"} ") }.takeIf { it.isNotEmpty() }
+    }
+
+
+    fun teamsAsString(teams: List<Team?>?): String {
+        return buildString {
+            teams?.forEach({
+                appendLine(
+                    "The team name is ${it?.name ?: "Unkown"} and  ${leaderAsString(it?.leader) ?: "the team leadr is Unkown"}"
+                )
+                append("And the team members are: ${membersAsString(it?.members) }")
+            })
+        }
+    }
+
+
+// Task: Print detailed information about each department, team, and team members, handling all null values appropriately.
+    println("the company is ${company.name ?: "Unknown"} and the departments are:")
+    company.departments?.forEach({
+        it?.let {
+            println(
+                "The department name is: ${it.name ?: "Unkown"} and her teams are: \n${
+                    teamsAsString(
+                        it.teams
+                    )
+                }"
+            )
+        }
+    })
 }
