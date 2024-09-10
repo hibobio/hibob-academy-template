@@ -1,4 +1,4 @@
-CREATE TABLE pets
+CREATE TABLE pet
 (
     id SERIAL PRIMARY KEY,
     name varchar(64) NOT NULL,
