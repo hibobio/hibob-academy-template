@@ -106,4 +106,37 @@ class ListManagerTest {
         manager.addPerson(Person("bob", 27))
         assertEquals(false, manager.removePerson(Person("bobi", 27)))
     }
+
+    @Test
+    fun `return null on empty list`() {
+        val manager = ListManager()
+        assertNull(manager.calculateStatistics())
+    }
+
+    @Test
+    fun `check statics with 1 person`() {
+        val manager = ListManager()
+        val bob = Person("bob", 27)
+        manager.addPerson(bob)
+        assertEquals(ListManager.PeopleStatistics(27.0, bob, bob, mapOf(Pair(27, 1))), manager.calculateStatistics())
+    }
+
+    @Test
+    fun `check statics with few persons`() {
+        val manager = ListManager()
+        val youngest = Person("bob", 27)
+        val oldest = Person("bob", 33)
+        val average = Person("bob", 30)
+        manager.addPerson(youngest)
+        manager.addPerson(oldest)
+        manager.addPerson(average)
+
+        assertEquals(
+            ListManager.PeopleStatistics(30.0, youngest,
+            oldest,
+            mapOf(Pair(27, 1), Pair(33, 1), Pair(30, 1))),
+            manager.calculateStatistics()
+        )
+
+    }
 }
