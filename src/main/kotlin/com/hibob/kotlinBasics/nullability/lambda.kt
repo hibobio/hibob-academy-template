@@ -56,7 +56,7 @@ class SpidermanNoWayHome() : SpidermanMovieProduceActions {
     }
 
     override fun signTobeyMaguire() {
-        println("Tobey maguire signed!")
+        println("Tobey maguire signed !")
     }
 
     override fun signAndrew() {
@@ -103,7 +103,7 @@ fun buildString(actions: StringBuilder.() -> Unit): String {
 
 class Runner(private val movieProducer: SpidermanMovieProduceActions?) {
     fun init(): Boolean {
-        movieProducer?.run() {
+        movieProducer?.run{
             if (!isThereLockdown()) {
                 signTobeyMaguire()
                 signAndrew()
