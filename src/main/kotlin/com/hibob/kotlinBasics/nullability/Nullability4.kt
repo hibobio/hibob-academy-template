@@ -20,5 +20,6 @@ fun main() {
 
     employees.forEach({employee -> println(employee.address?.city ?: "City Unknown")})
 
-    // Task: Print user email or "Email not provided" if null
+
+    // Task: Print each employee's city safely. If the city is not available, print "City Unknown".
 }

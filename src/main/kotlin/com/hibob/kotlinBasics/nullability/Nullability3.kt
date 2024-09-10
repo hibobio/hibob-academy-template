@@ -14,3 +14,4 @@ fun main() {
     println(text.nullSafeToUpper())
     println(text2.nullSafeToUpper())
 }
+
