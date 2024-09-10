@@ -2,7 +2,7 @@ CREATE TABLE owner
 (
     id SERIAL PRIMARY KEY,
     name varchar(64) NOT NULL,
-    company_id INT NOT NULL,
+    company_id BIGINT NOT NULL,
     employee_id varchar(64) NOT NULL
 );
 

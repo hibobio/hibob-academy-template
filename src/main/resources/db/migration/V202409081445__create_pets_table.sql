@@ -3,7 +3,7 @@ CREATE TABLE pets
     id SERIAL PRIMARY KEY,
     name varchar(64) NOT NULL,
     type varchar(64) NOT NULL,
-    company_id INT NOT NULL,
+    company_id BIGINT NOT NULL,
     date_of_arrival DATE DEFAULT CURRENT_DATE
 );
 
