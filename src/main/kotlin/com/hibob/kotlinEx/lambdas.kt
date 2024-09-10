@@ -19,7 +19,7 @@ fun main() {
 //    println("Json: ${movie.toJson()}")
 }
 
-fun createGoodMovie() : SpidermanNoWayHome{
+fun createGoodMovie(): SpidermanNoWayHome {
     return SpidermanNoWayHome()
 }
 
@@ -51,27 +51,28 @@ class SpidermanNoWayHome() : SpidermanMovieProduceActions {
     override val imdbRank: Double = 9.6
 
     fun prettyPrint(): String {
-        val s = buildString { appendLine(title)
-                    appendLine(airDate)
-                    appendLine(imdbRank)
-                }
+        val s = buildString {
+            appendLine(title)
+            appendLine(airDate)
+            appendLine(imdbRank)
+        }
         return s
     }
 
     override fun signTobeyMaguire() {
-        //  Tobey signed!
+        println("Tobey signed!")
     }
 
     override fun signAndrew() {
-        //    Andrew signed
+        println("Andrew signed")
     }
 
     override fun signTom() {
-        //    Tom signed
+        println("Tom signed")
     }
 
     override fun getVillains() {
-        //   Got villains
+        println("Got villains")
     }
 
     override fun isThereLockdown(): Boolean = false
@@ -106,13 +107,13 @@ fun buildString(actions: StringBuilder.() -> Unit): String {
 
 class Runner(private val movieProducer: SpidermanMovieProduceActions?) {
     fun init(): Boolean = movieProducer?.run {
-            if (!isThereLockdown()) {
-                isThereLockdown()
-                signAndrew()
-                signTom()
-                getVillains()
-                publish()
-            } else
-                false
-        } ?: false
+        if (!isThereLockdown()) {
+            isThereLockdown()
+            signAndrew()
+            signTom()
+            getVillains()
+            publish()
+        } else
+            false
+    } ?: false
 }
