@@ -47,12 +47,11 @@ class SpidermanNoWayHome() : SpidermanMovieProduceActions {
     override val imdbRank: Double = 9.6
 
     fun prettyPrint(): String {
-        val prettyString: String = buildString {
+        return buildString {
             appendLine("Title: $title")
             appendLine("Air Date: $airDate")
             appendLine("IMDB Rank: $imdbRank")
         }
-        return prettyString
     }
 
     override fun signTobeyMaguire() {
