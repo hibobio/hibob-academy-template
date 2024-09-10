@@ -1,7 +1,7 @@
 package com.hibob.kotlinEx
 
 fun isValidIdentifier(s: String): Boolean {
-    if (s === "" || isDigit(s[0]) || !(isLetter(s[0]) || s[0] == '_')) {
+    if (s.isEmpty() || isDigit(s[0]) || !(isLetter(s[0]) || s[0] == '_')) {
         return false
     }
     for (i in 1 until s.length) {
