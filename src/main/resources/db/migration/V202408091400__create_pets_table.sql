@@ -17,4 +17,4 @@ CREATE INDEX idx_company_id ON pets (company_id);
 -- delete from pets where id=1
 -- SELECT *
 -- FROM pets
--- WHERE date_of_arrival < CURDATE() - INTERVAL 1 YEAR;
+-- WHERE date_of_arrival < CURRENT_DATE - INTERVAL '1 YEAR';
