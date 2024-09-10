@@ -4,7 +4,7 @@ CREATE TABLE pets
     name varchar(64) NOT NULL,
     type varchar(64) NOT NULL,
     company_id INT NOT NULL,
-    date_of_arrival DATE
+    date_of_arrival DATE DEFAULT CURRENT_DATE
 );
 
 CREATE INDEX idx_pets_company_id ON pets(company_id);
