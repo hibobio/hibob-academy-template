@@ -8,13 +8,9 @@ class PetsTable(tableName : String = "pets") : JooqTable(tableName) {
     val id = createIntField("id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
+    val companyId = createBigIntField("company_Id")
+    val date_of_arrival = createDateField("date_of_arrival")
 
-
-//    id SERIAL primary key ,
-//    name varchar(255),
-//    type varchar(255),
-//    company_id integer,
-//    date_of_arrival date default current_date
 
     companion object{
         val instance = PetsTable()
@@ -22,6 +18,12 @@ class PetsTable(tableName : String = "pets") : JooqTable(tableName) {
 }
 
 class OwnersTable(tableName : String = "owners") : JooqTable(tableName) {
+
+    val id = createIntField("id")
+    val name = createVarcharField("name")
+    val companyId = createBigIntField("company_id")
+    val employeeId = createIntField("employee_id")
+
     companion object{
         val instance = OwnersTable()
     }
