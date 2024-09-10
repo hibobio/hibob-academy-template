@@ -109,4 +109,25 @@ class ListManagerTest {
         listManager.addPerson(third)
         assertEquals(mutableListOf(first, second, third), listManager.getPeopleSortedByAgeAndName())
     }
+
+    @Test
+    fun `checking null return in calculateStatistics() when empty list`() {
+        val listManager = ListManager()
+        assertEquals(null, listManager.calculateStatistics())
+    }
+
+    @Test
+    fun `checking calculateStatistics() mapping`() {
+        val listManager = ListManager()
+        val first = Person("a", 27)
+        val second = Person("b", 28)
+        val third = Person("c", 29)
+        listManager.addPerson(first)
+        listManager.addPerson(second)
+        listManager.addPerson(third)
+        val statistics = listManager.calculateStatistics()
+        val map = mapOf(27 to 1, 28 to 1, 29 to 1)
+        val expected = PeopleStatistics(28.0, first, third, map)
+        assertEquals(expected, statistics)
+    }
 }
