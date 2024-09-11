@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import kotlin.random.Random
+
 
 
 @BobDbTest
@@ -15,7 +15,7 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
     private val ownerDao = OwnerDao(sql)
     val tableOwner = Owner.instance
-    val companyId = Random.nextLong()
+    val companyId = 1L
 
     @BeforeEach
     @AfterEach
@@ -26,18 +26,26 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
     @BeforeEach
     @Test
     fun `create a new owner that doesn't exist in the database`() {
-        val newOwner = OwnerData("chezi", companyId, "1")
+        val newOwner = OwnerData(name = "chezi", companyId = companyId, employeeId = "1")
 
+        ownerDao.createOwnerIfNotExists(newOwner)
+
+        val allOwnersInData = ownerDao.getAllOwners()
+
+        assertEquals(newOwner.name, allOwnersInData[0].name)
+        assertEquals(newOwner.companyId, allOwnersInData[0].companyId)
+        assertEquals(newOwner.employeeId, allOwnersInData[0].employeeId)
+    }
+
+    @Test
+    fun `create a new owner that exist in the database`() {
+        val newOwner = OwnerData(name = "chezi", companyId = companyId, employeeId = "1")
+
+        ownerDao.createOwnerIfNotExists(newOwner)
         ownerDao.createOwnerIfNotExists(newOwner)
 
         val allOwnersInData = ownerDao.getAllOwners()
 
         assertEquals(1, allOwnersInData.size)
     }
-
-    //creat new owner that exist
-
-
-    //clean app
-
 }

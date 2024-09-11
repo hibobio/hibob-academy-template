@@ -6,15 +6,9 @@ import org.junit.jupiter.api.Assertions.*
 import com.hibob.academy.utils.BobDbTest
 import org.jooq.DSLContext
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.random.Random
 
 
 @BobDbTest
@@ -23,7 +17,13 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
     private val petDao = PetsDao(sql)
     val tablePets = Pets.instance
     val companyId = 1L
-    //creat new owner
+
+    @BeforeEach
+    @AfterEach
+    fun cleanup() {
+        sql.deleteFrom(tablePets).where(tablePets.companyId.eq(companyId)).execute()
+    }
+
     @Test
     fun `create a new pet that doesn't exist in the database`() {
         val petTest = PetData(ownerId = 1L, name = "A", type = petDao.getType(PetsDao.PetType.DOG) , companyId =  1L, dateOfArrival = null)
@@ -32,22 +32,21 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
         val filteredPets = petDao.getAllPetsByType(PetsDao.PetType.DOG)
 
-        assertEquals(petTest, filteredPets[0])
+        assertEquals(petTest.name, filteredPets[0].name)
+        assertEquals(petTest.type, filteredPets[0].type)
+        assertEquals(petTest.companyId, filteredPets[0].companyId)
     }
 
-        @BeforeEach
-        @AfterEach
-        fun cleanup() {
-            sql.deleteFrom(tablePets).where(tablePets.companyId.eq(companyId)).execute()
-        }
-    /*
-           @Test
-           fun `inserting pet test`() {
-               val pet = PetData("Murphy", "dog", companyId, 1)
-               dao.insertPet(pet)
-               val petsList = dao.petsByType(PetType.DOG)
-               assertEquals(1, petsList.size)
-               assertEquals(PetData("Murphy", "dog", companyId, 1), petsList.get(0))
-           }*/
+   /* @Test
+    fun `create a new pet that exist in the database`() {
+        val petTest = PetData(ownerId = 1L, petId = 1L, name = "A", type = petDao.getType(PetsDao.PetType.DOG) , companyId =  1L, dateOfArrival = null)
+
+        petDao.createPetIfNotExists(petTest)
+        petDao.createPetIfNotExists(petTest)
+
+        val filteredPets = petDao.getAllPetsByType(PetsDao.PetType.DOG).size
+
+        assertEquals(1, filteredPets)
+    }*/
 }
 

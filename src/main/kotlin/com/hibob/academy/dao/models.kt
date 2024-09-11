@@ -1,7 +1,6 @@
 package com.hibob.academy.dao
 
 import java.time.LocalDate
-import java.util.*
 
 data class Example(val id: Long, val companyId: Long, val data: String)
 
