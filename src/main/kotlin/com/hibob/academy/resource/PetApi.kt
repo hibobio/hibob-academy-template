@@ -20,9 +20,6 @@ class PetsResource {
     @Path("/{petId}")
     fun getPetById(@PathParam("petId") petId: Long): Response {
         val pet = allPets.find { it.id == petId.toInt() }
-        if (petId.toInt() == 123)
-            throw NotFoundException("Pet with id $petId not found")
-
         return pet?.let {
             Response.ok(pet).build()
         }
