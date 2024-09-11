@@ -42,14 +42,25 @@ class PetDao(private val sql: DSLContext) {
             .fetch(petsMapper)
     }
 
-    fun createPet(name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?) {
-        sql.insertInto(petsTable)
+    fun createPet(name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?): UUID {
+        return sql.insertInto(petsTable)
             .set(petsTable.name, name)
             .set(petsTable.type, type)
             .set(petsTable.companyId, companyId)
             .set(petsTable.dateOfArrivel, dateOfArrival)
             .set(petsTable.ownersId, ownerId)
-            .execute()
+            .returning(petsTable.id)
+            .fetchOne()!!
+            .getValue(petsTable.id)
+
+        /*sql.select(petsTable.id)
+            .from(petsTable)
+            .where(petsTable.companyId.eq(companyId))
+            .and(petsTable.name.eq(name))
+            .and(petsTable.type.eq(type))
+            .fetch()[0][petsTable.id]/
+
+         */
     }
 
     fun assignOwnerIdToPet(petId: UUID, ownerId: UUID) {
