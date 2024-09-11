@@ -8,8 +8,8 @@ class PetsTable(tableName : String = "pets") : JooqTable(tableName) {
     val id = createIntField("id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
-    val companyId = createBigIntField("company_Id")
-    val date_of_arrival = createDateField("date_of_arrival")
+    val companyId = createVarcharField("company_Id")
+    val dateOfArrival = createDateField("date_of_arrival")
 
 
     companion object{
@@ -22,7 +22,7 @@ class OwnersTable(tableName : String = "owners") : JooqTable(tableName) {
     val id = createIntField("id")
     val name = createVarcharField("name")
     val companyId = createBigIntField("company_id")
-    val employeeId = createIntField("employee_id")
+    val employeeId = createVarcharField("employee_id")
 
     companion object{
         val instance = OwnersTable()
