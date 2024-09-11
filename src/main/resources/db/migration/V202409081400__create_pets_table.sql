@@ -8,7 +8,7 @@ create table pets
 );
 
 
-CREATE INDEX idx_pets_company_id on pets(company_id);
+CREATE UNIQUE INDEX idx_pets_company_id on pets(company_id);
 
 /*
  INSERT INTO pets (name, type, company_id, date_of_arrival)
