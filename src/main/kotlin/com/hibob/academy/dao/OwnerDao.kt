@@ -6,7 +6,6 @@ import org.jooq.Record
 
 
 class OwnerDao(private val sql: DSLContext) {
-    data class Owner(val company_id: Long, val employee_id: String, val name: String)
 
     private val ownerTable = OwnersTable.instance
 
@@ -28,4 +27,5 @@ class OwnerDao(private val sql: DSLContext) {
             .doNothing()
             .execute()
     }
+
 }

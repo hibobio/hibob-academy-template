@@ -1,23 +1,31 @@
 package com.hibob.academy.dao
 
-import jakarta.inject.Inject
-import org.hibernate.validator.constraints.UUID
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.RecordMapper
+import java.sql.Date
 import java.util.*
 
 class PetDao(private val sql: DSLContext) {
 
-    data class Pet(val name: String, val type: String, val companyId: Long, val dateOfArrival: Date)
-    data class PetWithoutType(val name: String, val companyId: Long, val dateOfArrival: Date)
-
     private val petsTable = PetsTable.instance
 
-    val petsMapper = RecordMapper<Record, PetWithoutType> { record ->
+    val petsMapper = RecordMapper<Record, Pet> { record ->
+        Pet(
+            record[petsTable.name],
+            record[petsTable.type],
+            record[petsTable.companyId],
+            record[petsTable.dateOfArrivel],
+            record[petsTable.ownersId]
+        )
+    }
+
+    val petsWithoutTypeMapper = RecordMapper<Record, PetWithoutType> { record ->
         PetWithoutType(
             record[petsTable.name],
-            record[petsTable.companyId], record[petsTable.dateOfArrivel]
+            record[petsTable.companyId],
+            record[petsTable.dateOfArrivel],
+            record[petsTable.ownersId]
         )
     }
 
@@ -25,5 +33,29 @@ class PetDao(private val sql: DSLContext) {
         sql.select(petsTable.name, petsTable.companyId, petsTable.dateOfArrivel)
             .from(petsTable)
             .where(petsTable.type.eq(type))
+            .fetch(petsWithoutTypeMapper)
+
+    fun getPetsByOwnerId(ownerId: UUID): List<Pet> {
+        return sql.select()
+            .from(petsTable)
+            .where(petsTable.ownersId.eq(ownerId))
             .fetch(petsMapper)
+    }
+
+    fun createPet(name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?) {
+        sql.insertInto(petsTable)
+            .set(petsTable.name, name)
+            .set(petsTable.type, type)
+            .set(petsTable.companyId, companyId)
+            .set(petsTable.dateOfArrivel, dateOfArrival)
+            .set(petsTable.ownersId, ownerId)
+            .execute()
+    }
+
+    fun assignOwnerIdToPet(petId: UUID, ownerId: UUID) {
+        sql.update(petsTable)
+            .set(petsTable.ownersId, ownerId)
+            .where(petsTable.id.eq(petId))
+            .execute()
+    }
 }
