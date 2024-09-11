@@ -27,9 +27,9 @@ class PetsDao(private val sql: DSLContext) {
     }
 
     fun getAllPetsByType(type: PetType) : List<PetData> {
-        sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
+        return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
             .from(pet)
-            .where(pet.type.eq(type.toString()))
+            .where(pet.type.eq(getType(type)))
             .fetch(petMapper)
     }
 
@@ -45,8 +45,9 @@ class PetsDao(private val sql: DSLContext) {
             "DOG" -> PetType.DOG
             else -> PetType.CAT
     }*/
-    fun createPetIfNotExists(newPetData: PetData) {
+    fun createPetIfNotExists(newPetData: PetData){
         sql.insertInto(pet)
+            .set(pet.ownerId, newPetData.ownerId)
             .set(pet.name, newPetData.name)
             .set(pet.type, newPetData.type)
             .set(pet.companyId, newPetData.companyId)
