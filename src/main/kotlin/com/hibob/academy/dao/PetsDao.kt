@@ -3,6 +3,7 @@ package com.hibob.academy.dao
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
+import org.jooq.impl.DSL
 
 class PetsDao(private val sql: DSLContext) {
 
@@ -19,7 +20,7 @@ class PetsDao(private val sql: DSLContext) {
             record[pet.dateOfArrival]
         )
     }
-
+    
     fun getAllPetsByType(type: PetType, companyId: Long) : List<PetData> {
         return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
             .from(pet)
@@ -51,5 +52,23 @@ class PetsDao(private val sql: DSLContext) {
             .and(pet.ownerId.isNull))
             .and(pet.companyId.eq(companyId))
             .execute()
+    }
+
+    fun getPetsByOwnerId(ownerId: Long, companyId: Long): List<PetData> {
+        return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
+            .from(pet)
+            .where(pet.companyId.eq(companyId), pet.ownerId.eq(ownerId))
+            .fetch(petMapper)
+    }
+
+    fun countPetsByType(): Map<String, Int> {
+        val count = DSL.count(pet.type)
+
+        return sql.select(pet.type, count)
+            .from(pet)
+            .where(pet.type.isNotNull)
+            .groupBy(pet.type)
+            .fetch()
+            .associate { it[pet.type] to it[count] as Int }
     }
 }

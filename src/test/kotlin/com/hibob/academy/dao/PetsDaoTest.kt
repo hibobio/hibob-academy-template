@@ -19,9 +19,12 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
     val data: LocalDate = LocalDate.now()
     val ownerId = 1L
 
+    val tableOwner = OwnerTable.instance
+
     @AfterEach
     fun cleanup() {
         sql.deleteFrom(tablePets).where(tablePets.companyId.eq(companyId)).execute()
+        sql.deleteFrom(tableOwner).where(tableOwner.companyId.eq(companyId)).execute()
     }
 
     @Test
@@ -103,4 +106,56 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
         assertEquals(newOwnerId, petDao.getPet(newPetId, companyId)?.ownerId)
     }
+
+    @Test
+    fun `should return pets for valid owner and companyId`() {
+        val ownerDao = OwnerDao(sql)
+        val ownerTest = OwnerDataInsert("chezi" ,companyId,"1")
+        val newOwnerId = ownerDao.createOwnerIfNotExists(ownerTest)
+
+        val petTest = PetDataInsert(newOwnerId, name = "A", type = getType(PetType.DOG), companyId)
+        val newPetId = petDao.createPet(petTest)
+
+        val returnPet = newOwnerId?.let { petDao.getPetsByOwnerId(it, companyId)[0] }
+
+        assertEquals(newOwnerId, returnPet?.ownerId)
+        assertEquals(newPetId, returnPet?.petId)
+        assertEquals(petTest.name, returnPet?.name)
+        assertEquals(petTest.type, returnPet?.type)
+        assertEquals(petTest.companyId, returnPet?.companyId)
+    }
+
+    @Test
+    fun `should return empty list when no pets found`() {
+        val ownerDao = OwnerDao(sql)
+        val ownerTest = OwnerDataInsert("chezi" ,companyId,"1")
+        val newOwnerId = ownerDao.createOwnerIfNotExists(ownerTest)
+
+        val result = newOwnerId?.let { petDao.getPetsByOwnerId(it, companyId) }
+
+        assertEquals(0,result?.size)
+    }
+
+    @Test
+    fun `count pets by type wen we have pets in the data base`() {
+        val newPet1 = PetDataInsert(ownerId, name = "A", type = getType(PetType.DOG) , companyId)
+        val newPet2 = PetDataInsert(ownerId, name = "B", type = getType(PetType.DOG) , companyId)
+        val newPet3 = PetDataInsert(ownerId, name = "C", type = getType(PetType.CAT) , companyId)
+
+        petDao.createPet(newPet1)
+        petDao.createPet(newPet2)
+        petDao.createPet(newPet3)
+
+        val petMap = petDao.countPetsByType()
+
+        assertEquals(2, petMap.get("DOG"))
+        assertEquals(1, petMap.get("CAT"))
+    }
+    @Test
+    fun `count pets by type wen we have no pets in the data base`() {
+        val petMap = petDao.countPetsByType()
+
+        assertEquals(0, petMap.size)
+    }
 }
+
