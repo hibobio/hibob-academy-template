@@ -19,13 +19,14 @@ class ExampleDao(private val sql: DSLContext) {
     fun readExample(companyId: Long): Example? =
         sql.selectFrom(table)
             .where(table.companyId.eq(companyId))
-            .fetch(exampleMapper()).first()
+//            .fetch(exampleMapper()).first()
+            .fetchOneInto(Example::class.java)
 
-    fun exampleMapper() = ::Example.from(
-        table.id.asIs(),
-        table.companyId.asIs(),
-        table.data.asIs(),
-    )
+//    fun exampleMapper() = ::Example.from(
+//        table.id.asIs(),
+//        table.companyId.asIs(),
+//        table.data.asIs(),
+//    )
 }
 
 class ExampleTable(tableName: String) : JooqTable(tableName) {

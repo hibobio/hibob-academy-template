@@ -39,7 +39,7 @@ class PetDao(private val sql: DSLContext) {
             .set(petTable.companyId ,pet.companyId)
             .set(petTable.ownerId ,pet.ownerId)
             .set(petTable.type ,PetType.Dog.name.lowercase())
-            .onConflict(petTable.companyId,petTable.ownerId)
+            .onConflict(petTable.companyId)
             .doNothing()
             .execute()
     }
