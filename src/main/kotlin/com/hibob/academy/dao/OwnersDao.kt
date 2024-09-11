@@ -28,4 +28,15 @@ class OwnersDao(private val sql: DSLContext) {
             .from(table)
             .fetch(ownerMapper)
     }
+
+    fun insertOwner(owner: Owner) {
+        sql.insertInto(table)
+        .set(table.id, owner.id)
+        .set(table.name, owner.name)
+        .set(table.companyId, owner.companyId)
+        .set(table.employeeId, owner.employeeId)
+        .onConflict(table.companyId, table.employeeId)
+        .doNothing()
+        .execute()
+    }
 }
