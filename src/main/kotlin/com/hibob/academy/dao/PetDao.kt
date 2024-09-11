@@ -30,7 +30,7 @@ class PetDao(private val sql: DSLContext) {
     }
 
     fun petsByType(type: String): List<PetWithoutType> =
-        sql.select(petsTable.name, petsTable.companyId, petsTable.dateOfArrivel)
+        sql.select(petsTable.name, petsTable.companyId, petsTable.dateOfArrivel, petsTable.ownersId)
             .from(petsTable)
             .where(petsTable.type.eq(type))
             .fetch(petsWithoutTypeMapper)
