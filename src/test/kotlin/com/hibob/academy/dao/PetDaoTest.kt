@@ -33,7 +33,7 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext){
             dateOfArrival = Date.valueOf(LocalDate.now()),
             ownerId = null
         )
-        assertEquals("Jerry", petDao.petsByType("Dog").get(0).name)
+        assertEquals("Jerry", petDao.petsByType("Dog").get(0).name ?:"fail")
     }
 
     @Test
