@@ -1,11 +1,8 @@
 package com.hibob.academy.dao
-
 import com.hibob.academy.utils.JooqTable
-import javassist.CtMethod.ConstParameter.integer
-import java.io.Serial
 
 class PetsTable(tableName : String = "pets") : JooqTable(tableName) {
-    val id = createIntField("id")
+    val id = createBigIntField("id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
     val companyId = createVarcharField("company_Id")
