@@ -13,6 +13,7 @@ class OwnerDao @Inject constructor(private val sql: DSLContext) {
     { record ->
         OwnerData (
             record[owner.name],
+            record[owner.companyId].toLong(),
             record[owner.employeeId]
         )
     }
@@ -21,4 +22,14 @@ class OwnerDao @Inject constructor(private val sql: DSLContext) {
         sql.select(owner.name, owner.employeeId, owner.companyId)
             .from(owner)
             .fetch(ownerMapper)
+
+    fun createNewOwner(ownerData: OwnerData) {
+        sql.insertInto(owner)
+            .set(owner.name, ownerData.name)
+            .set(owner.companyId, ownerData.companyId)
+            .set(owner.employeeId, ownerData.employeeId)
+            .onConflict(owner.companyId, owner.employeeId)
+            .doNothing()
+            .execute()
+    }
 }

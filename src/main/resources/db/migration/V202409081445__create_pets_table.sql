@@ -7,7 +7,7 @@ CREATE TABLE pet
     date_of_arrival DATE DEFAULT CURRENT_DATE
 );
 
-CREATE INDEX idx_pets_company_id ON pets(company_id);
+CREATE UNIQUE INDEX idx_pets_company_id ON pet(company_id);
 
 -- INSERT INTO pets(name, type, company_id, date_of_arrival)
 -- VALUES ('Tom', 'Cat', 1, '2024-09-08');
