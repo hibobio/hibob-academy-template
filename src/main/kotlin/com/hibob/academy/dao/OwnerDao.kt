@@ -9,7 +9,7 @@ class OwnerDao(private val sql: DSLContext) {
 
     private val ownerTable = OwnersTable.instance
 
-    val ownerMapper = RecordMapper<Record, Owner> { record ->
+    private val ownerMapper = RecordMapper<Record, Owner> { record ->
         Owner(record[ownerTable.companyId], record[ownerTable.employeeId], record[ownerTable.name])
     }
 
@@ -18,10 +18,10 @@ class OwnerDao(private val sql: DSLContext) {
             .from(ownerTable)
             .fetch(ownerMapper)
 
-    fun createOwner(company_id: Long, employee_id: String, name: String) {
+    fun createOwner(companyId: Long, employeeId: String, name: String) {
         sql.insertInto(ownerTable)
-            .set(ownerTable.companyId, company_id)
-            .set(ownerTable.employeeId, employee_id)
+            .set(ownerTable.companyId, companyId)
+            .set(ownerTable.employeeId, employeeId)
             .set(ownerTable.name, name)
             .onConflict(ownerTable.companyId, ownerTable.employeeId)
             .doNothing()

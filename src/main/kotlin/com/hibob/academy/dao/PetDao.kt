@@ -10,7 +10,7 @@ class PetDao(private val sql: DSLContext) {
 
     private val petsTable = PetsTable.instance
 
-    val petsMapper = RecordMapper<Record, Pet> { record ->
+    private val petsMapper = RecordMapper<Record, Pet> { record ->
         Pet(
             record[petsTable.name],
             record[petsTable.type],
@@ -20,7 +20,7 @@ class PetDao(private val sql: DSLContext) {
         )
     }
 
-    val petsWithoutTypeMapper = RecordMapper<Record, PetWithoutType> { record ->
+    private val petsWithoutTypeMapper = RecordMapper<Record, PetWithoutType> { record ->
         PetWithoutType(
             record[petsTable.name],
             record[petsTable.companyId],

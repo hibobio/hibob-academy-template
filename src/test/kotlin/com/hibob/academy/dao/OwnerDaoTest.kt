@@ -20,7 +20,7 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
     fun `create and read`(){
         dao.createOwner(companyId, "abc", "bob")
         val owners = dao.getOwners()
-        //assertEquals(listOf(OwnerDao.Owner(companyId,"abc", "bob" )), owners)
+        assertEquals(listOf(Owner(companyId, "aa", "bob")), owners)
     }
 
 

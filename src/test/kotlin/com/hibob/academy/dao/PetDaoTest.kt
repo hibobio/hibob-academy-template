@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.sql.Date
 import java.time.LocalDate
-import java.time.LocalDateTime
 import kotlin.random.Random
 
 @BobDbTest
@@ -33,12 +32,44 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext){
             dateOfArrival = Date.valueOf(LocalDate.now()),
             ownerId = null
         )
-        assertEquals("Jerry", petDao.petsByType("Dog").get(0).name ?:"fail")
+        assertEquals(
+            "Jerry",
+            petDao.petsByType(type = "Dog")[0].name
+        )
     }
 
     @Test
-    fun `get pets by type when pets with diffrent type`(){
-
+    fun `dont get pet with different type`(){
+        petDao.createPet(name = "Jerry",
+            type = "Dog",
+            companyId = companyId,
+            dateOfArrival = Date.valueOf(LocalDate.now()),
+            ownerId = null)
+        assertEquals(0, petDao.petsByType(type = "Cat").size)
     }
+
+
+    @Test
+    fun `get pets by type with multiple pets with different type`(){
+        petDao.createPet(name = "Jerry",
+            type = "Dog",
+            companyId = companyId,
+            dateOfArrival = Date.valueOf(LocalDate.now()),
+            ownerId = null)
+        petDao.createPet(name = "Johans",
+            type = "Dog",
+            companyId = companyId,
+            dateOfArrival = Date.valueOf(LocalDate.now()),
+            ownerId = null)
+        petDao.createPet(name = "mitzi",
+            type = "Cat",
+            companyId = companyId,
+            dateOfArrival = Date.valueOf(LocalDate.now()),
+            ownerId = null)
+
+        assertEquals(2, petDao.petsByType(type = "Dog").size)
+    }
+
+
 
 }
