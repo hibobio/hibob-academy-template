@@ -14,24 +14,22 @@ class OwnersDao(private val sql: DSLContext) {
 
     private val table = OwnersTable.instance
 
-    private val ownerMapper = RecordMapper<Record, Owner> {
+    private val ownerMapper = RecordMapper<Record, OwnerData> {
         record ->
-        Owner(record[table.id],
-            record[table.name],
+        OwnerData(record[table.name],
             record[table.companyId],
             record[table.employeeId]
         )
     }
 
-    fun getAllOwners(): List<Owner> {
+    fun getAllOwners(): List<OwnerData> {
         return sql.select(table.name, table.employeeId, table.companyId)
             .from(table)
             .fetch(ownerMapper)
     }
 
-    fun insertOwner(owner: Owner) {
+    fun insertOwner(owner: OwnerData) {
         sql.insertInto(table)
-        .set(table.id, owner.id)
         .set(table.name, owner.name)
         .set(table.companyId, owner.companyId)
         .set(table.employeeId, owner.employeeId)
