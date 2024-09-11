@@ -1,10 +1,8 @@
 create table owners
 (
-    id serial primary key,
-    name varchar,
-    company_id int,
-    employee_id varchar
+    id serial primary key NOT NULL,
+    name varchar NOT NULL,
+    company_id int NOT NULL,
+    employee_id varchar NOT NULL
 )
-
--- CREATE INDEX idx_company_id ON owners (company_id);
--- CREATE INDEX idx_employee_id ON pets (employee_id);
+CREATE INDEX idx_owners_company_id_employee_id ON owners (company_id, employee_id);
