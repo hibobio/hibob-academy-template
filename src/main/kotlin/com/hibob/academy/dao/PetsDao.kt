@@ -21,16 +21,15 @@ class PetsDao(private val sql: DSLContext) {
 
     private val table = PetsTable.instance
 
-    private val ownerMapper = RecordMapper<Record, Pet> {
+    private val ownerMapper = RecordMapper<Record, PetData> {
             record ->
-        Pet(record[table.id],
-            record[table.name],
+        PetData(record[table.name],
             record[table.type],
             record[table.companyId],
-            record[table.dateOfArrival]?.time ?: 0L )
+            record[table.ownerId])
     }
 
-    fun petsByType(type: PetType) : List<Pet> {
+    fun petsByType(type: PetType) : List<PetData> {
         return sql.select(table.name, table.dateOfArrival, table.companyId)
             .from(table)
             .where(table.type.eq(type.type))

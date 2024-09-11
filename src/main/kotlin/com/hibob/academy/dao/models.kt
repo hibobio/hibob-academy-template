@@ -8,6 +8,7 @@ data class PetData(
     val name: String,
     val type: String,
     val companyId: String,
+    val ownerId: Long
 )
 
 data class OwnerData(
