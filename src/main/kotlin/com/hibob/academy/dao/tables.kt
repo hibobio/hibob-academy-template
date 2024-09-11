@@ -5,7 +5,7 @@ class PetsTable(tableName : String = "pets") : JooqTable(tableName) {
     val id = createBigIntField("id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
-    val companyId = createVarcharField("company_Id")
+    val companyId = createBigIntField("company_id")
     val dateOfArrival = createDateField("date_of_arrival")
     val ownerId = createBigIntField("owner_id")
 

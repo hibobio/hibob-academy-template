@@ -7,7 +7,7 @@ data class Example(val id: Long, val companyId: Long, val data: String)
 data class PetData(
     val name: String,
     val type: String,
-    val companyId: String,
+    val companyId: Long,
     val ownerId: Long
 )
 

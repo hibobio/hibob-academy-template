@@ -1,8 +1,6 @@
 package com.hibob.academy.dao
 
 import com.hibob.academy.utils.BobDbTest
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers
 import org.jooq.DSLContext
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -26,10 +24,10 @@ class OwnersDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
     @Test
     fun `inserting owner test`() {
-        val owner = OwnerData("Gilad", 1, "1")
+        val owner = OwnerData("Gilad", companyId, "1")
         dao.insertOwner(owner)
         val ownersList = dao.getAllOwners()
         assertEquals(1, ownersList.size)
-        assertEquals(OwnerData("Gilad", 1, "1"), ownersList.get(0))
+        assertEquals(OwnerData("Gilad", companyId, "1"), ownersList.get(0))
     }
 }
