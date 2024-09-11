@@ -43,4 +43,13 @@ class PetDao(private val sql: DSLContext) {
             .doNothing()
             .execute()
     }
+
+    fun getPetsByOwnerId(ownerID:Long): List<PetData> {
+        return sql.select(petTable.name, petTable.dateOfArrival, petTable.companyId, petTable.type, petTable.ownerId)
+            .from(petTable)
+            .where(petTable.ownerId.eq(ownerID))
+            .fetch(patMapper)
+
+    }
+
 }

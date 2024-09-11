@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDate
 
 @BobDbTest
 class OwnerDaoTest @Autowired constructor(private val sql: DSLContext){
@@ -27,6 +28,24 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext){
     @Test
     fun `make a new owner`() {
         val ownerTest = OwnerData("matan",222,companyId)
+        val pet1 = PetDataType(
+            name = "Rex",
+            type = PetType.Dog,
+            dateOfArrival = LocalDate.of(2024, 9, 11),
+            companyId = 1,
+            ownerId = 101
+        )
+
+        val pet2 = PetDataType(
+            name = "Whiskers",
+            type = PetType.Cat,
+            dateOfArrival = LocalDate.of(2024, 9, 12),
+            companyId = 2,
+            ownerId = 102
+        )
+        val pet3 =
+
+
         dao.createNewOwner(ownerTest)
         assertEquals(1, dao.getAllOwner().size)
     }
