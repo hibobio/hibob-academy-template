@@ -1,0 +1,2 @@
+ALTER TABLE pets
+ADD COLUMN owner_id BIGINT;
