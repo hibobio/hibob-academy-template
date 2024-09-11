@@ -36,4 +36,6 @@ class PetsDao(private val sql: DSLContext) {
             .where(table.type.eq(type.type))
             .fetch(ownerMapper)
     }
+
+//    fun
 }
