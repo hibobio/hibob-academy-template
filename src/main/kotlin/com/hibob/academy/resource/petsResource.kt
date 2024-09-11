@@ -22,26 +22,27 @@ class PetsResource {
     }
 
     @GET
-    @Path("/{petId}/type")
+    @Path("/getPetType/{petId}")
     fun getPetType(@PathParam("petId") id: String): Response {
         Response.status(Response.Status.OK).build()
-        return Response.ok(listOf(Pets(name = "dog", type = "lab"
-            , company_id = UUID.randomUUID(), date_of_arrival = Date() ))).build()
+        return Response.ok("lab").build()
     }
 
     @PUT
-    @Path("/{petId}")
+    @Path("/updateType/{petId}")
     @Consumes(MediaType.APPLICATION_JSON)
     fun updatePetType(@PathParam("petId") id: String, @QueryParam("newType") newType: String?): Response {
-        val pet = Pets(name = "dog", type = "lab"
-            , company_id = UUID.randomUUID(), date_of_arrival = Date() )
+        val pet = Pets(
+            name = "dog", type = "lab",
+            company_id = UUID.randomUUID(), date_of_arrival = Date()
+        )
         pet.type = newType ?: pet.type
         Response.status(Response.Status.OK).build()
         return Response.ok(pet).build()
     }
 
     @DELETE
-    @Path("/{petId}/type")
+    @Path("/deletePetType/{petId}/type")
     fun deletePetType(@PathParam("petId") id: String): Response {
         Response.status(Response.Status.OK).build()
         return Response.ok("DELETE OK").build()
