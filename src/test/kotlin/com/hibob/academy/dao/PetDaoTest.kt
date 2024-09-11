@@ -12,7 +12,7 @@ import java.time.LocalDate
 @BobDbTest
 class PetDaoTest @Autowired constructor(private val sql: DSLContext)  {
     private val companyId:Long=8
-    private val ownerId:Long=8
+    private val ownerId:Long=25
     private val table=PetTable.instance
     private val dao = PetDao(sql)
 
@@ -36,13 +36,39 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext)  {
                     pet.dateOfArrival == petTest.dateOfArrival
         }
 
-// Assert that the filtered list is not empty, meaning the pet exists
         assertTrue(filteredPets.isNotEmpty(), "Pet Waffle should have been added to the database")
     }
 
     @Test
     fun `get all pets in the same owner`() {
-        dao.createNewPet(PetDataType())
+        val pet1 = PetDataType(
+            "Rex",
+            PetType.Dog,
+            LocalDate.of(2024, 9, 11),
+            companyId,
+            ownerId
+        )
+
+        val pet2 = PetDataType(
+            "Whiskers",
+            PetType.Cat,
+            LocalDate.of(2024, 9, 12),
+            companyId,
+            ownerId
+        )
+
+        val pet3 = PetDataType(
+            "Buddy",
+            PetType.Dog,
+            LocalDate.of(2024, 9, 13),
+            companyId,
+            7)
+        dao.createNewPet(pet1)
+        dao.createNewPet(pet2)
+        dao.createNewPet(pet3)
+        val allPetById=dao.getPetsByOwnerId(ownerId)
+        assertEquals(2, allPetById.size)
+
     }
 
 
