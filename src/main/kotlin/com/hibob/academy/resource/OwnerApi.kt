@@ -1,6 +1,6 @@
 package com.hibob.academy.resource
 
-import com.hibob.restAPI.Owner
+import com.hibob.academy.dao.Owner
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response

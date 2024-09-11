@@ -1,10 +1,11 @@
 package com.hibob.academy.resource
 
-import com.hibob.restAPI.Pet
+import com.hibob.academy.dao.Pet
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Controller
+import java.sql.Date
 import java.time.LocalDate
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -36,7 +37,7 @@ class PetsResource {
     @POST
     fun addPet(pet: Pet): Response {
         val newPetId = (allPets.maxOfOrNull { it.id } ?: 0) + 1
-        val newPet = pet.copy(id = newPetId, arrivalDate = LocalDate.now())
+        val newPet = pet.copy(id = newPetId, arrivalDate = Date.valueOf(LocalDate.now()))
         allPets.add(newPet)
 
         return Response.status(Response.Status.CREATED)
