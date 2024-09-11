@@ -9,21 +9,24 @@ class OwnerDao @Inject constructor(private val sql: DSLContext) {
 
     private val owner = OwnerTable.instance
 
-    private val ownerMapper = RecordMapper<Record, OwnerData>
+    private val ownerMapper = RecordMapper<Record, Owner>
     { record ->
-        OwnerData (
-            record[owner.name],
-            record[owner.companyId].toLong(),
-            record[owner.employeeId]
+        Owner (
+            id = record[owner.id],
+            name = record[owner.name],
+            firstName = null,
+            lastName = null,
+            companyId = record[owner.companyId].toLong(),
+            employeeId = record[owner.employeeId]
         )
     }
 
-    fun getOwner(): List<OwnerData> =
-        sql.select(owner.name, owner.employeeId, owner.companyId)
+    fun getAllOwners(): List<Owner> =
+        sql.select(owner.id, owner.name, owner.employeeId, owner.companyId)
             .from(owner)
             .fetch(ownerMapper)
 
-    fun createNewOwner(ownerData: OwnerData) {
+    fun createNewOwner(ownerData: Owner) {
         sql.insertInto(owner)
             .set(owner.name, ownerData.name)
             .set(owner.companyId, ownerData.companyId)

@@ -15,16 +15,12 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
     private val ownerDao = OwnerDao(sql)
     val table = OwnerTable.instance
     private val companyId = 1L
-    val owner = OwnerData("Adi", companyId, "1")
+    val owner = Owner(1,"Adi", null, null, companyId, "2")
 
     @Test
     fun `create owner test`() {
-        assertEquals("Adi, 1, 1" ,ownerDao.createNewOwner(owner))
-    }
-
-    @Test
-    fun `get owner test`() {
-        assertEquals("Adi, 1, 1" ,ownerDao.getOwner())
+        ownerDao.createNewOwner(owner)
+        assertEquals(1 ,ownerDao.getAllOwners().size)
     }
 
     @BeforeEach
