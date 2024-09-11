@@ -1,16 +1,35 @@
 package com.hibob.academy.dao
 
+import com.hibob.academy.utils.BobDbTest
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
+import org.jooq.DSLContext
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import kotlin.random.Random
 
-import org.junit.jupiter.api.Assertions.*
+@BobDbTest
+class OwnersDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
-class OwnersDaoTest {
+    private val dao = OwnersDao(sql)
+    val companyId = Random.nextLong()
+    val table = OwnersTable.instance
 
-    @Test
-    fun getAllOwners() {
+    @BeforeEach
+    @AfterEach
+    fun cleanup() {
+        sql.deleteFrom(table).where(table.companyId.eq(companyId)).execute()
     }
 
     @Test
-    fun insertOwner() {
+    fun `inserting owner test`() {
+        val owner = OwnerData("Gilad", 1, "1")
+        dao.insertOwner(owner)
+        val ownersList = dao.getAllOwners()
+        assertEquals(1, ownersList.size)
+        assertEquals(OwnerData("Gilad", 1, "1"), ownersList.get(0))
     }
 }
