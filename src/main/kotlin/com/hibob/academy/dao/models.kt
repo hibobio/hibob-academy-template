@@ -14,5 +14,8 @@ data class OwnerData(val name: String, val employeeId:Long, val companyId: Long)
 
 enum class PetType{
     Dog,
-    Cat
+    Cat;
+    fun toDatabaseValue(): String {
+        return this.name.lowercase()  // Converts enum name to lowercase
+    }
 }
