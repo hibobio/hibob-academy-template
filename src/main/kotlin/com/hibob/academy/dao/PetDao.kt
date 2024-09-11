@@ -1,5 +1,7 @@
 package com.hibob.academy.dao
 
+import io.micrometer.core.annotation.Counted
+import org.apache.commons.lang3.CharSetUtils.count
 import org.hibernate.validator.constraints.EAN.Type
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
@@ -7,6 +9,7 @@ import org.jooq.Record
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import org.jooq.impl.DefaultConfiguration
+import org.jooq.impl.QOM.Count
 import java.sql.Date // If you still need it
 import java.time.LocalDate
 class PetDao(private val sql: DSLContext) {
@@ -39,8 +42,6 @@ class PetDao(private val sql: DSLContext) {
             .set(petTable.companyId ,pet.companyId)
             .set(petTable.ownerId ,pet.ownerId)
             .set(petTable.type ,pet.type.toDatabaseValue())
-//            .onConflict(petTable.companyId)
-//            .doNothing()
             .execute()
     }
 
@@ -50,6 +51,13 @@ class PetDao(private val sql: DSLContext) {
             .where(petTable.ownerId.eq(ownerID))
             .fetch(patMapper)
 
+    }
+
+    fun countPetsByType(): Map<String, Int>{
+        val result = sql.select(petTable.type,)
+            .from(petTable)
+            .groupBy(petTable.type)
+            .fetch()
     }
 
 }
