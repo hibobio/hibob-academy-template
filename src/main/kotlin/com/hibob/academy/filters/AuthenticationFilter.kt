@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component
 @Component
 @Provider
 class AuthenticationFilter : ContainerRequestFilter {
-
     override fun filter(requestContext: ContainerRequestContext){
 
         if(requestContext.uriInfo.path == "Jwt/Login") return

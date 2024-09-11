@@ -14,8 +14,7 @@ class SessionService {
         const val SECRET_KEY = "ndjiaqsfghouhm24vvycgjhfuytuytgiyusasfdghjkhgfdfgyuiuytrfftyuiuytrtyuihttixicuvb785v68568ig5buitui8onkgy7498cqdehqiwfhbui5p3hqugo5hr"
     }
 
-    //The SessionApi.kt did not recognize this func when she was out of this block. why?
-    fun createJwtToken(user: User): String {
+ com    fun createJwtToken(user: User): String {
         return Jwts.builder()
             .setHeaderParam("typ", "JWT")
             .claim("email", user.email)

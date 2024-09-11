@@ -23,7 +23,8 @@ class SessionApi(private val sessionService: SessionService) {
 
     @GET
     @Path("/GetUserName")
-    fun getUserName() {
+    fun getUserName(): Response {
+        return Response.ok().build()
         //Just so i can call it from postman before and after the login (to test the filter)
     }
 
