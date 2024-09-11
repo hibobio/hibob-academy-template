@@ -31,7 +31,7 @@ class PetResource() {
     @POST
     fun postPet(pet: Pet): Response {
         val firstname : String = pet.name.split(" ").first()
-        val lastname = pet.name.split(" ").last()
+        val lastname = pet.name.split(" ").drop(1).joinToString(" ")
         allPets.add(pet.copy(id = pet.id, name = pet.name, firstname = firstname, lastname = lastname ,type = pet.type, companyId = pet.companyId, dateOfArrival = pet.dateOfArrival))
         return Response.status(Response.Status.CREATED).entity(Response.Status.CREATED).build()
     }
@@ -57,7 +57,7 @@ class PetResource() {
             allPets.removeAt(index)
             return Response.ok(pet).build()
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("pet not found").build()
+            return Response.status(Response.Status.NOT_FOUND).entity("pet with id ${petId} not found").build()
         }
     }
 }
