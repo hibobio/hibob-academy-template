@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.sql.Date
 import java.time.LocalDate
+import java.util.*
 import kotlin.random.Random
 
 @BobDbTest
@@ -80,48 +81,44 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext) {
 
     @Test
     fun `get pets by ownerId with few pets`() {
-        val ownerDao = OwnerDao(sql)
-        val ownerId = ownerDao.createOwner(companyId, "aa", "bob")?.value1()
-        if (ownerId != null) {
-            petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
-            petDao.createPet("Johans", "Cat", companyId, Date.valueOf(LocalDate.now()), ownerId)
-            petDao.createPet("mitzi", "Cow", companyId, Date.valueOf(LocalDate.now()), ownerId)
-            assertEquals(3, petDao.getPetsByOwnerId(ownerId).size)
-        }
+        val ownerId = UUID.randomUUID()
+        petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
+        petDao.createPet("Johans", "Cat", companyId, Date.valueOf(LocalDate.now()), ownerId)
+        petDao.createPet("mitzi", "Cow", companyId, Date.valueOf(LocalDate.now()), ownerId)
+        assertEquals(3, petDao.getPetsByOwnerId(ownerId).size)
     }
 
     @Test
     fun `get pets by ownerId with few owners`() {
-        val ownerDao = OwnerDao(sql)
-        val ownerId = ownerDao.createOwner(companyId, "aa", "bob")?.value1()
-        if (ownerId != null) {
-            petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
-            petDao.createPet(
-                "Johans",
-                "Cat",
-                companyId,
-                Date.valueOf(LocalDate.now()),
-                ownerDao.createOwner(companyId, "bbb", "bob")?.value1()
-            )
-            petDao.createPet(
-                "mitzi",
-                "Cow",
-                companyId,
-                Date.valueOf(LocalDate.now()),
-                ownerDao.createOwner(companyId, "ccc", "bob")?.value1()
-            )
-            assertEquals(1, petDao.getPetsByOwnerId(ownerId).size)
-        }
+        val ownerId = UUID.randomUUID()
+        petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
+        petDao.createPet(
+            "Johans",
+            "Cat",
+            companyId,
+            Date.valueOf(LocalDate.now()),
+            UUID.randomUUID()
+        )
+        petDao.createPet(
+            "mitzi",
+            "Cow",
+            companyId,
+            Date.valueOf(LocalDate.now()),
+            UUID.randomUUID()
+        )
+        assertEquals(1, petDao.getPetsByOwnerId(ownerId).size)
     }
 
     @Test
-    fun `updating ptes owner id`(){
-        val ownerDao = OwnerDao(sql)
-        val ownerId = ownerDao.createOwner(companyId, "aa", "bob")?.value1()
+    fun `updating ptes owner id`() {
+        val ownerId = UUID.randomUUID()
         val petId = petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), null)
         if (ownerId != null) {
             petDao.assignOwnerIdToPet(petId, ownerId)
-            assertEquals(listOf(Pet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)), petDao.getPetsByOwnerId(ownerId))
+            assertEquals(
+                listOf(Pet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)),
+                petDao.getPetsByOwnerId(ownerId)
+            )
         }
     }
 

@@ -20,15 +20,13 @@ class OwnerDao(private val sql: DSLContext) {
             .from(ownerTable)
             .fetch(ownerMapper)
 
-    fun createOwner(companyId: Long, employeeId: String, name: String): Record1<UUID>? {
+    fun createOwner(companyId: Long, employeeId: String, name: String): Owner {
         return sql.insertInto(ownerTable)
             .set(ownerTable.companyId, companyId)
             .set(ownerTable.employeeId, employeeId)
             .set(ownerTable.name, name)
             .onConflict(ownerTable.companyId, ownerTable.employeeId)
             .doNothing()
-            .returningResult(ownerTable.id)
-            .fetchOne()
-    }
+            .fetch(ownerMapper)}
 
 }
