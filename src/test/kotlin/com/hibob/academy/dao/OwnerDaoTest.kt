@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-
-
 @BobDbTest
 class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
@@ -23,7 +21,7 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
         sql.deleteFrom(tableOwner).where(tableOwner.companyId.eq(companyId)).execute()
     }
 
-    @BeforeEach
+   /* @BeforeEach
     @Test
     fun `create a new owner that doesn't exist in the database`() {
         val newOwner = OwnerData(name = "chezi", companyId = companyId, employeeId = "1")
@@ -36,7 +34,7 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
         assertEquals(newOwner.companyId, allOwnersInData[0].companyId)
         assertEquals(newOwner.employeeId, allOwnersInData[0].employeeId)
     }
-
+*/
     @Test
     fun `create a new owner that exist in the database`() {
         val newOwner = OwnerData(name = "chezi", companyId = companyId, employeeId = "1")

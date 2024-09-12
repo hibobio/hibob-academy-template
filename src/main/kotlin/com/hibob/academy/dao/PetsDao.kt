@@ -4,7 +4,6 @@ import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
 
-
 class PetsDao(private val sql: DSLContext) {
 
     private val pet = Pets.instance
@@ -40,16 +39,18 @@ class PetsDao(private val sql: DSLContext) {
         }
     }
 
-    fun createPetIfNotExists(newPetData: PetData) {
-        sql.insertInto(pet)
+    fun createPetIfNotExists(newPetData: PetData) : Long? {
+        return sql.insertInto(pet)
             .set(pet.ownerId, newPetData.ownerId)
             .set(pet.name, newPetData.name)
             .set(pet.type, newPetData.type)
             .set(pet.companyId, newPetData.companyId)
-            .execute()
+            .set(pet.dateOfArrival, newPetData.dateOfArrival)
+            .returning(pet.petId)
+            .fetchOne()?.let { it[pet.petId] }
     }
 
-    fun getOwnerIdFromPetId(petId: Long): PetData? {
+    fun getPet(petId: Long?): PetData? {
         return sql.select(pet.ownerId)
             .from(pet)
             .where(pet.petId.eq(petId))

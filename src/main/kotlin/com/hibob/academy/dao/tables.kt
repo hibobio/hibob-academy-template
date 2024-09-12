@@ -25,4 +25,3 @@ class Owner(tableName: String = "owner") : JooqTable(tableName) {
         val instance = Owner()
     }
 }
-
