@@ -3,7 +3,6 @@ package com.hibob.academy.dao
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
-import org.jooq.Record1
 import java.util.*
 
 
@@ -20,13 +19,14 @@ class OwnerDao(private val sql: DSLContext) {
             .from(ownerTable)
             .fetch(ownerMapper)
 
-    fun createOwner(companyId: Long, employeeId: String, name: String): Owner {
+    fun createOwner(companyId: Long, employeeId: String, name: String): UUID? {
         return sql.insertInto(ownerTable)
             .set(ownerTable.companyId, companyId)
             .set(ownerTable.employeeId, employeeId)
             .set(ownerTable.name, name)
             .onConflict(ownerTable.companyId, ownerTable.employeeId)
             .doNothing()
-            .fetch(ownerMapper)}
-
+            .returning(ownerTable.id)
+            .fetchOne()?.let { it[ownerTable.id] }
+    }
 }

@@ -113,7 +113,7 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext) {
     fun `updating ptes owner id`() {
         val ownerId = UUID.randomUUID()
         val petId = petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), null)
-        if (ownerId != null) {
+        if (ownerId != null && petId != null) {
             petDao.assignOwnerIdToPet(petId, ownerId)
             assertEquals(
                 listOf(Pet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)),
