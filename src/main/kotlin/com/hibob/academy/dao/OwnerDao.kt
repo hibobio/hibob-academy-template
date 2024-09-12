@@ -33,17 +33,14 @@ class OwnerDao(private val sql: DSLContext) {
             .execute()
     }
 
-    /*fun getOwnerById(id: Long): OwnerData {
+    fun getOwnerById(id: Long): OwnerData? {
         return sql.select(owner.name, owner.companyId, owner.employeeId)
             .from(owner)
             .where(owner.ownerId.equal(id))
-
+            .fetchOneInto(OwnerData::class.java)
     }
-     */
 
-    fun getOwnerIdFromPetId(id: Long): Long {
-        return sql.select(ownerMapper)
-            .from
-    }
+
+
 
 }

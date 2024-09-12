@@ -21,7 +21,7 @@ class PetsDao(private val sql: DSLContext) {
         )
     }
 
-    enum class PetType{
+    enum class PetType {
         DOG,
         CAT;
     }
@@ -40,17 +40,26 @@ class PetsDao(private val sql: DSLContext) {
         }
     }
 
-   /* fun covertStringTypeToEnum(pet: Pets): Enum<PetType> {
-        return when (pet.type) {
-            "DOG" -> PetType.DOG
-            else -> PetType.CAT
-    }*/
-    fun createPetIfNotExists(newPetData: PetData){
+    fun createPetIfNotExists(newPetData: PetData) {
         sql.insertInto(pet)
             .set(pet.ownerId, newPetData.ownerId)
             .set(pet.name, newPetData.name)
             .set(pet.type, newPetData.type)
             .set(pet.companyId, newPetData.companyId)
+            .execute()
+    }
+
+    fun getOwnerIdFromPetId(petId: Long): PetData? {
+        return sql.select(pet.ownerId)
+            .from(pet)
+            .where(pet.petId.eq(petId))
+            .fetchOneInto(PetData::class.java)
+    }
+
+    fun  UpdateThePetWithTheOwnerID(petId: Long, ownerId: Long) {
+        sql.update(pet)
+            .set(pet.ownerId, ownerId)
+            .where(pet.petId.eq(petId).and(pet.ownerId.isNull))
             .execute()
     }
 }
