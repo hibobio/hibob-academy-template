@@ -6,3 +6,5 @@ create table owner
     name varchar(255) NOT NULL
 );
 
+CREATE INDEX idx_owner_company_id_employee_id on owner(company_id, employee_id);
+
