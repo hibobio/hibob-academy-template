@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
  */
 /*
 class BankAccountTest {
-  /*  @Test
+   @Test
     fun `deposit valid amount increases balance`() {
         val bankAccount = BankAccount(0.0)
         assertEquals(bankAccount.getBalance() + 50.0, bankAccount.deposit(50.0))
