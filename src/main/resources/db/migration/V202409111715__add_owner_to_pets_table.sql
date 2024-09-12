@@ -1,13 +1,5 @@
-create table Pets
-(
-    id BIGSERIAL primary key,
-    name varchar(255) not null,
-    type varchar(255) not null,
-    company_id int not null,
-    date_of_arrival date default CURRENT_DATE
-);
-
-CREATE INDEX idx_pets_company_id on Pets(company_id);
+ALTER TABLE Pets
+ADD COLUMN if not exists owner_id BIGINT;
 --
 
 --INSERT INTO Pets( name, type, company_id, date_of_arrival ) VALUES ('mon', 'dog', 1, '2024-09-08' );
