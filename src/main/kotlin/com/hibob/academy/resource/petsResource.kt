@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody
 class PetsResource {
 
     @POST
-    @Path("/type")
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     fun createPet(@RequestBody pets: Pets): Response {
         return Response.ok("POST OK").build()
     }
 
     @GET
-    @Path("/{petId}/type")
+    @Path("/{petId}/petType")
     fun getPetType(@PathParam("petId") id: String): Response {
         return Response.ok("GET OK").build()
     }
@@ -31,7 +31,7 @@ class PetsResource {
     }
 
     @PUT
-    @Path("/{petId}/type")
+    @Path("/{petId}/updateType")
     @Consumes(MediaType.APPLICATION_JSON)
     fun updatePetType(@PathParam("petId") id: String, petType: String): Response {
         if(fetchPet(id) == null) {
@@ -41,7 +41,7 @@ class PetsResource {
     }
 
     @DELETE
-    @Path("/{petId}/type")
+    @Path("/{petId}/remove")
     fun deletePet(@PathParam("petId") id: String): Response {
         return Response.ok("DELETE OK").build()
     }

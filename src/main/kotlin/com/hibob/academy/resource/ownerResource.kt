@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody
 class OwnerResource {
 
     @POST
-    @Path("/type")
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     fun createOwner(@RequestBody owner: Owner): Response {
         return Response.ok("POST OK").build()
     }
 
     @GET
-    @Path("/{Id}/type")
-    fun getOwnersPetType(@PathParam("Id") id: String): Response {
+    @Path("/{ownerId}/petType")
+    fun getOwnersPetType(@PathParam("ownerId") id: String): Response {
         return Response.ok("GET OK").build()
     }
 
@@ -30,9 +30,9 @@ class OwnerResource {
     }
 
     @PUT
-    @Path("/{Id}/type")
+    @Path("/{ownerId}/updateType")
     @Consumes(MediaType.APPLICATION_JSON)
-    fun updateOwnersPetType(@PathParam("Id") id: String, ownersPetType: String): Response {
+    fun updateOwnersPetType(@PathParam("ownerId") id: String, ownersPetType: String): Response {
         if(fetchOwner(id) == null){
             return Response.status(404).build()
         }
@@ -40,8 +40,8 @@ class OwnerResource {
     }
 
     @DELETE
-    @Path("/{Id}/type")
-    fun deleteOwner(@PathParam("Id") id: String): Response {
+    @Path("/{ownerId}/remove")
+    fun deleteOwner(@PathParam("ownerId") id: String): Response {
         return Response.ok("DELETE OK").build()
     }
 }
