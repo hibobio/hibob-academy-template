@@ -23,7 +23,8 @@ class PetsDao(private val sql: DSLContext) {
 
     private val petMapper = RecordMapper<Record, PetData> {
             record ->
-        PetData(record[table.name],
+        PetData(record[table.id],
+            record[table.name],
             record[table.type],
             record[table.companyId],
             record[table.ownerId])
@@ -38,6 +39,7 @@ class PetsDao(private val sql: DSLContext) {
 
     fun insertPet(pet: PetData) {
         sql.insertInto(table)
+            .set(table.id, pet.id)
             .set(table.name, pet.name)
             .set(table.type, pet.type)
             .set(table.companyId, pet.companyId)
