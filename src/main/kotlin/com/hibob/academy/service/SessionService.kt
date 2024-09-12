@@ -10,11 +10,12 @@ import java.util.*
 
 @Component
 class SessionService {
-    companion object{
-        const val SECRET_KEY = "ndjiaqsfghouhm24vvycgjhfuytuytgiyusasfdghjkhgfdfgyuiuytrfftyuiuytrtyuihttixicuvb785v68568ig5buitui8onkgy7498cqdehqiwfhbui5p3hqugo5hr"
+    companion object {
+        const val SECRET_KEY =
+            "ndjiaqsfghouhm24vvycgjhfuytuytgiyusasfdghjkhgfdfgyuiuytrfftyuiuytrtyuihttixicuvb785v68568ig5buitui8onkgy7498cqdehqiwfhbui5p3hqugo5hr"
     }
 
- com    fun createJwtToken(user: User): String {
+    fun createJwtToken(user: User): String {
         return Jwts.builder()
             .setHeaderParam("typ", "JWT")
             .claim("email", user.email)
