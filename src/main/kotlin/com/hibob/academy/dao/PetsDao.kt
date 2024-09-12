@@ -20,10 +20,6 @@ class PetsDao(private val sql: DSLContext) {
         )
     }
 
-    enum class PetType {
-        DOG,
-        CAT;
-    }
 
     fun getAllPetsByType(type: PetType) : List<PetData> {
         return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
@@ -39,7 +35,7 @@ class PetsDao(private val sql: DSLContext) {
         }
     }
 
-    fun createPetIfNotExists(newPetData: PetData) : Long? {
+    fun createPet(newPetData: PetData) : Long? {
         return sql.insertInto(pet)
             .set(pet.ownerId, newPetData.ownerId)
             .set(pet.name, newPetData.name)
@@ -51,16 +47,17 @@ class PetsDao(private val sql: DSLContext) {
     }
 
     fun getPet(petId: Long?): PetData? {
-        return sql.select(pet.ownerId)
+        return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
             .from(pet)
             .where(pet.petId.eq(petId))
             .fetchOneInto(PetData::class.java)
     }
 
-    fun  UpdateThePetWithTheOwnerID(petId: Long, ownerId: Long) {
+    fun  updateThePetOwnerWithTheOwnerId(petId: Long?, ownerId: Long) {
         sql.update(pet)
             .set(pet.ownerId, ownerId)
-            .where(pet.petId.eq(petId).and(pet.ownerId.isNull))
+            .where(pet.petId.eq(petId)
+            .and(pet.ownerId.isNull))
             .execute()
     }
 }

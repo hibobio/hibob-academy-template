@@ -25,3 +25,8 @@ class Owner(tableName: String = "owner") : JooqTable(tableName) {
         val instance = Owner()
     }
 }
+
+enum class PetType {
+    DOG,
+    CAT;
+}

@@ -23,17 +23,18 @@ class OwnerDao(private val sql: DSLContext) {
             .fetch(ownerMapper)
     }
 
-    fun createOwnerIfNotExists(newOwnerData: OwnerData) {
-        sql.insertInto(owner)
+    fun createOwnerIfNotExists(newOwnerData: OwnerData): Long? {
+        return  sql.insertInto(owner)
             .set(owner.name, newOwnerData.name)
             .set(owner.companyId, newOwnerData.companyId)
             .set(owner.employeeId, newOwnerData.employeeId)
             .onConflict(owner.companyId, owner.employeeId)
             .doNothing()
-            .execute()
+            .returning(owner.ownerId)
+            .fetchOne()?.let { it[owner.ownerId] }
     }
 
-    fun getOwnerById(id: Long): OwnerData? {
+    fun getOwnerById(id: Long?): OwnerData? {
         return sql.select(owner.name, owner.companyId, owner.employeeId)
             .from(owner)
             .where(owner.ownerId.equal(id))
