@@ -9,7 +9,7 @@ data class PetData(
     val companyId: Long,
     val name: String,
     val type: String,
-    val ownerId: Long
+    val ownerId: Long?
 )
 
 data class OwnerData(

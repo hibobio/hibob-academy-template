@@ -8,6 +8,8 @@ import com.hibob.academy.utils.from
 import org.jooq.Record
 import org.jooq.RecordMapper
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 
 enum class PetType(val type: String) {
     DOG("dog"),
@@ -38,13 +40,11 @@ class PetDao(private val sql: DSLContext) {
             .fetch(petMapper)
     }
 
-    fun insertPet(pet: PetData) {
+    fun insertPet(companyId: Long, name: String, type: String) {
         sql.insertInto(table)
-            .set(table.id, pet.id)
-            .set(table.companyId, pet.companyId)
-            .set(table.name, pet.name)
-            .set(table.type, pet.type)
-            .set(table.ownerId, pet.ownerId)
+            .set(table.companyId, companyId)
+            .set(table.name, name)
+            .set(table.type, type)
             .execute()
     }
 

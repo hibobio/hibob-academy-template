@@ -24,10 +24,11 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
     @Test
     fun `inserting owner test`() {
-        val owner = OwnerData(1,"Gilad", companyId, "1")
-        dao.insertOwner(owner)
+        dao.insertOwner("Gilad", companyId, "1")
         val ownersList = dao.getAllOwners(companyId)
         assertEquals(1, ownersList.size)
-        assertEquals(OwnerData(1,"Gilad", companyId, "1"), ownersList.get(0))
+        assertEquals("Gilad", ownersList.get(0).name)
+        assertEquals(companyId, ownersList.get(0).companyId)
+        assertEquals("1", ownersList.get(0).employeeId)
     }
 }

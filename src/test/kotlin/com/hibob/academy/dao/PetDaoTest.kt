@@ -24,10 +24,11 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
     @Test
     fun `inserting pet test`() {
-        val pet = PetData(1,companyId, "Murphy", "dog", 1)
-        dao.insertPet(pet)
+        dao.insertPet(companyId, "Murphy", "dog")
         val petsList = dao.petsByType(companyId, PetType.DOG)
         assertEquals(1, petsList.size)
-        assertEquals(PetData(1,companyId, "Murphy", "dog", 1), petsList.get(0))
+        assertEquals(companyId, petsList[0].companyId)
+        assertEquals("Murphy", petsList[0].name)
+        assertEquals("dog", petsList[0].type)
     }
 }

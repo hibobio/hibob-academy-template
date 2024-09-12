@@ -30,12 +30,11 @@ class OwnerDao(private val sql: DSLContext) {
             .fetch(ownerMapper)
     }
 
-    fun insertOwner(owner: OwnerData) {
+    fun insertOwner(name: String, companyId: Long, employeeId: String) {
         sql.insertInto(table)
-        .set(table.id, owner.id)
-        .set(table.name, owner.name)
-        .set(table.companyId, owner.companyId)
-        .set(table.employeeId, owner.employeeId)
+        .set(table.name, name)
+        .set(table.companyId, companyId)
+        .set(table.employeeId, employeeId)
         .onConflict(table.companyId, table.employeeId)
         .doNothing()
         .execute()
