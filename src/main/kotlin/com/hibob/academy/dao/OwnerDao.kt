@@ -1,20 +1,16 @@
 package com.hibob.academy.dao
 
-import com.hibob.academy.utils.JooqTable
-import com.hibob.academy.utils.asIs
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
-import com.hibob.academy.utils.from
 import org.jooq.Record
 import org.jooq.RecordMapper
-import org.jooq.impl.DSL
 
 @Component
 class OwnerDao(private val sql: DSLContext) {
 
     private val table = OwnerTable.instance
 
-    private val ownerMapper = RecordMapper<Record, OwnerData> {
+    companion object val ownerMapper = RecordMapper<Record, OwnerData> {
         record ->
         OwnerData(record[table.id],
             record[table.name],

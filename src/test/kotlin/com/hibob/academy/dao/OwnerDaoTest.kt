@@ -31,4 +31,14 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
         assertEquals(companyId, ownersList.get(0).companyId)
         assertEquals("1", ownersList.get(0).employeeId)
     }
+
+    @Test
+    fun `insert an owner with the same companyId and employeeId`() {
+        dao.insertOwner("Gilad", companyId, "1")
+        dao.insertOwner("Bob", companyId, "1")
+        val ownersList = dao.getAllOwners(companyId)
+        assertEquals(1, ownersList.size)
+        assertEquals("Gilad", ownersList.get(0).name)
+        assertEquals("1", ownersList.get(0).employeeId)
+    }
 }
