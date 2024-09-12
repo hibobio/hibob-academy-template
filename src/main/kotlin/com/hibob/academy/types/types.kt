@@ -6,9 +6,10 @@ import java.util.UUID
 
 data class Pets(
     val id: UUID = UUID.randomUUID(),
-    var name: String, var type: String,
-    var company_id: UUID,
-    var date_of_arrival: Date
+    var name: String,
+    var type: String,
+    var companyId: UUID,
+    var dateofArrival: Date
 )
 
 data class Owner(
