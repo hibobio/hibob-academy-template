@@ -50,17 +50,7 @@ class PetDao(private val sql: DSLContext) {
             .set(petsTable.dateOfArrivel, dateOfArrival)
             .set(petsTable.ownersId, ownerId)
             .returning(petsTable.id)
-            .fetchOne()!!
-            .getValue(petsTable.id)
-
-        /*sql.select(petsTable.id)
-            .from(petsTable)
-            .where(petsTable.companyId.eq(companyId))
-            .and(petsTable.name.eq(name))
-            .and(petsTable.type.eq(type))
-            .fetch()[0][petsTable.id]/
-
-         */
+            .fetchOne()!![petsTable.id]
     }
 
     fun assignOwnerIdToPet(petId: UUID, ownerId: UUID) {

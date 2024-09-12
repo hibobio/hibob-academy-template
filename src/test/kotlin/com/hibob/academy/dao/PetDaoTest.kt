@@ -12,7 +12,7 @@ import java.time.LocalDate
 import kotlin.random.Random
 
 @BobDbTest
-class PetDaoTest @Autowired constructor(private val sql: DSLContext){
+class PetDaoTest @Autowired constructor(private val sql: DSLContext) {
     private val petDao = PetDao(sql)
     val companyId = Random.nextLong()
     val table = PetsTable.instance
@@ -24,7 +24,7 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext){
     }
 
     @Test
-    fun `get pets by type`(){
+    fun `get pets by type`() {
         petDao.createPet(
             name = "Jerry",
             type = "Dog",
@@ -39,37 +39,80 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext){
     }
 
     @Test
-    fun `dont get pet with different type`(){
-        petDao.createPet(name = "Jerry",
+    fun `dont get pet with different type`() {
+        petDao.createPet(
+            name = "Jerry",
             type = "Dog",
             companyId = companyId,
             dateOfArrival = Date.valueOf(LocalDate.now()),
-            ownerId = null)
+            ownerId = null
+        )
         assertEquals(0, petDao.petsByType(type = "Cat").size)
     }
 
 
     @Test
-    fun `get pets by type with multiple pets with different type`(){
-        petDao.createPet(name = "Jerry",
+    fun `get pets by type with multiple pets with different type`() {
+        petDao.createPet(
+            name = "Jerry",
             type = "Dog",
             companyId = companyId,
             dateOfArrival = Date.valueOf(LocalDate.now()),
-            ownerId = null)
-        petDao.createPet(name = "Johans",
+            ownerId = null
+        )
+        petDao.createPet(
+            name = "Johans",
             type = "Dog",
             companyId = companyId,
             dateOfArrival = Date.valueOf(LocalDate.now()),
-            ownerId = null)
-        petDao.createPet(name = "mitzi",
+            ownerId = null
+        )
+        petDao.createPet(
+            name = "mitzi",
             type = "Cat",
             companyId = companyId,
             dateOfArrival = Date.valueOf(LocalDate.now()),
-            ownerId = null)
+            ownerId = null
+        )
 
         assertEquals(2, petDao.petsByType(type = "Dog").size)
     }
 
+    @Test
+    fun `get pets by ownerId with few pets`() {
+        val ownerDao = OwnerDao(sql)
+        val ownerId = ownerDao.createOwner(companyId, "aa", "bob")?.value1()
+        if (ownerId != null) {
+            petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
+            petDao.createPet("Johans", "Cat", companyId, Date.valueOf(LocalDate.now()), ownerId)
+            petDao.createPet("mitzi", "Cow", companyId, Date.valueOf(LocalDate.now()), ownerId)
+            assertEquals(3, petDao.getPetsByOwnerId(ownerId).size)
+        }
+    }
+
+    @Test
+    fun `get pets by ownerId with few owners`() {
+        val ownerDao = OwnerDao(sql)
+        val ownerId = ownerDao.createOwner(companyId, "aa", "bob")?.value1()
+        if (ownerId != null) {
+            petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
+            petDao.createPet(
+                "Johans",
+                "Cat",
+                companyId,
+                Date.valueOf(LocalDate.now()),
+                ownerDao.createOwner(companyId, "bbb", "bob")?.value1()
+            )
+            petDao.createPet(
+                "mitzi",
+                "Cow",
+                companyId,
+                Date.valueOf(LocalDate.now()),
+                ownerDao.createOwner(companyId, "ccc", "bob")?.value1()
+            )
+            assertEquals(1, petDao.getPetsByOwnerId(ownerId).size)
+        }
+    }
 
 
 }
