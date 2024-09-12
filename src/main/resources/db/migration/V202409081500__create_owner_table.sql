@@ -7,4 +7,3 @@ create table owner
 );
 
 CREATE INDEX idx_owner_company_id_employee_id on owner(company_id, employee_id);
-
