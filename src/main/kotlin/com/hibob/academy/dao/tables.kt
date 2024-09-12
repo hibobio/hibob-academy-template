@@ -1,28 +1,28 @@
 package com.hibob.academy.dao
 import com.hibob.academy.utils.JooqTable
 
-class PetsTable(tableName : String = "pets") : JooqTable(tableName) {
-    val id = createBigIntField("id")
+class PetTable(tableName : String = "pet") : JooqTable(tableName) {
+    val id = createIntField("id")
+    val companyId = createBigIntField("company_id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
-    val companyId = createBigIntField("company_id")
     val dateOfArrival = createDateField("date_of_arrival")
     val ownerId = createBigIntField("owner_id")
 
 
     companion object{
-        val instance = PetsTable()
+        val instance = PetTable()
     }
 }
 
-class OwnersTable(tableName : String = "owners") : JooqTable(tableName) {
+class OwnerTable(tableName : String = "owner") : JooqTable(tableName) {
 
-    val id = createIntField("id")
+    val id = createBigIntField("id")
     val name = createVarcharField("name")
     val companyId = createBigIntField("company_id")
     val employeeId = createVarcharField("employee_id")
 
     companion object{
-        val instance = OwnersTable()
+        val instance = OwnerTable()
     }
 }

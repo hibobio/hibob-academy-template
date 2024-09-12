@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import kotlin.random.Random
 
 @BobDbTest
-class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
+class OwnerDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
-    private val dao = PetsDao(sql)
+    private val dao = OwnerDao(sql)
     val companyId = Random.nextLong()
-    val table = PetsTable.instance
+    val table = OwnerTable.instance
 
     @BeforeEach
     @AfterEach
@@ -23,11 +23,11 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
     }
 
     @Test
-    fun `inserting pet test`() {
-        val pet = PetData(1,"Murphy", "dog", companyId, 1)
-        dao.insertPet(pet)
-        val petsList = dao.petsByType(PetType.DOG)
-        assertEquals(1, petsList.size)
-        assertEquals(PetData(1,"Murphy", "dog", companyId, 1), petsList.get(0))
+    fun `inserting owner test`() {
+        val owner = OwnerData(1,"Gilad", companyId, "1")
+        dao.insertOwner(owner)
+        val ownersList = dao.getAllOwners()
+        assertEquals(1, ownersList.size)
+        assertEquals(OwnerData(1,"Gilad", companyId, "1"), ownersList.get(0))
     }
 }

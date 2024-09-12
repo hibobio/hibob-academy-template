@@ -17,21 +17,21 @@ enum class PetType(val type: String) {
 }
 
 @Component
-class PetsDao(private val sql: DSLContext) {
+class PetDao(private val sql: DSLContext) {
 
-    private val table = PetsTable.instance
+    private val table = PetTable.instance
 
     private val petMapper = RecordMapper<Record, PetData> {
             record ->
         PetData(record[table.id],
+            record[table.companyId],
             record[table.name],
             record[table.type],
-            record[table.companyId],
             record[table.ownerId])
     }
 
     fun petsByType(type: PetType) : List<PetData> {
-        return sql.select(table.name, table.type, table.dateOfArrival, table.companyId, table.ownerId)
+        return sql.select(table.id, table.companyId, table.name, table.type, table.ownerId)
             .from(table)
             .where(table.type.eq(type.type))
             .fetch(petMapper)
@@ -40,9 +40,9 @@ class PetsDao(private val sql: DSLContext) {
     fun insertPet(pet: PetData) {
         sql.insertInto(table)
             .set(table.id, pet.id)
+            .set(table.companyId, pet.companyId)
             .set(table.name, pet.name)
             .set(table.type, pet.type)
-            .set(table.companyId, pet.companyId)
             .set(table.ownerId, pet.ownerId)
             .execute()
     }
