@@ -23,9 +23,10 @@ class OwnerDao(private val sql: DSLContext) {
         )
     }
 
-    fun getAllOwners(): List<OwnerData> {
+    fun getAllOwners(companyId: Long): List<OwnerData> {
         return sql.select(table.id, table.name, table.companyId, table.employeeId)
             .from(table)
+            .where(table.companyId.eq(companyId))
             .fetch(ownerMapper)
     }
 

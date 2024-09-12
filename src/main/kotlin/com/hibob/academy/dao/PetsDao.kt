@@ -30,10 +30,11 @@ class PetDao(private val sql: DSLContext) {
             record[table.ownerId])
     }
 
-    fun petsByType(type: PetType) : List<PetData> {
+    fun petsByType(companyId: Long, type: PetType) : List<PetData> {
         return sql.select(table.id, table.companyId, table.name, table.type, table.ownerId)
             .from(table)
-            .where(table.type.eq(type.type))
+            .where(table.companyId.eq(companyId))
+            .and(table.type.eq(type.type))
             .fetch(petMapper)
     }
 
@@ -45,5 +46,9 @@ class PetDao(private val sql: DSLContext) {
             .set(table.type, pet.type)
             .set(table.ownerId, pet.ownerId)
             .execute()
+    }
+
+    fun updatePet(petId: Int, ownerId: Long) {
+
     }
 }
