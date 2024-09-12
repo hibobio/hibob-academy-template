@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.sql.Date
+import java.time.LocalDate
 import kotlin.random.Random
 
 @BobDbTest
@@ -14,13 +16,16 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
 
     private val dao = OwnerDao(sql)
     private val ownerTable = OwnersTable.instance
-    val companyId = Random.nextLong()
+    private val petTable = PetsTable.instance
+    private val petDao = PetDao(sql)
+    private val companyId = Random.nextLong()
 
 
     @BeforeEach
     @AfterEach
     fun cleanup() {
         sql.deleteFrom(ownerTable).where(ownerTable.companyId.eq(companyId)).execute()
+        sql.deleteFrom(petTable).where(petTable.companyId.eq(companyId)).execute()
     }
 
 
@@ -45,6 +50,16 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
         dao.createOwner(companyId, "bbb", "jerry")
         dao.createOwner(companyId, "ccc", "johans")
         assertEquals(3, dao.getOwners().size)
+    }
+
+
+    @Test
+    fun `get owner by pet id`() {
+        val ownerId = dao.createOwner(companyId, "aa", "bob")
+        val petId = petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
+        if (petId != null) {
+            assertEquals(Owner(companyId, "aa", "bob"), dao.getOwnerByPetId(petId))
+        }
     }
 
 

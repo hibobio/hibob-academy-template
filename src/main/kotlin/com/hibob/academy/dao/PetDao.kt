@@ -59,4 +59,11 @@ class PetDao(private val sql: DSLContext) {
             .where(petsTable.id.eq(petId))
             .execute()
     }
+
+    fun getOwnerIdFromPetId(petId: UUID): UUID? {
+        return sql.select(petsTable.ownersId)
+            .from(petsTable)
+            .where(petsTable.id.eq(petId))
+            .fetchOne()?.let { it[petsTable.ownersId] }
+    }
 }

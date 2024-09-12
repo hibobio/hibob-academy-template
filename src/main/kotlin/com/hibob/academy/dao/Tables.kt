@@ -1,9 +1,8 @@
 package com.hibob.academy.dao
 
 import com.hibob.academy.utils.JooqTable
-import javassist.CtMethod.ConstParameter.integer
 
-class PetsTable(tablename: String): JooqTable(tablename) {
+class PetsTable(tablename: String) : JooqTable(tablename) {
     val id = createUUIDField("id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
@@ -11,20 +10,20 @@ class PetsTable(tablename: String): JooqTable(tablename) {
     val dateOfArrivel = createDateField("date_of_arrival")
     val ownersId = createUUIDField("owner_id")
 
-    companion object{
+    companion object {
         val instance = PetsTable("pets")
     }
 }
 
 
-class OwnersTable(tablename: String): JooqTable(tablename) {
+class OwnersTable(tablename: String) : JooqTable(tablename) {
     val id = createUUIDField("id")
     val companyId = createBigIntField("company_id")
     val employeeId = createVarcharField("employee_id")
     val name = createVarcharField("name")
-    val ownersId = createUUIDField("owner_id")
+    val ownersId = createUUIDField("id")
 
-    companion object{
+    companion object {
         val instance = OwnersTable("owner")
     }
 }

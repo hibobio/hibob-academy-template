@@ -29,4 +29,13 @@ class OwnerDao(private val sql: DSLContext) {
             .returning(ownerTable.id)
             .fetchOne()?.let { it[ownerTable.id] }
     }
+
+    fun getOwnerByPetId(petId: UUID): Owner? {
+        return PetDao(sql).getOwnerIdFromPetId(petId)?.let { ownerId ->
+            sql.select()
+                .from(ownerTable)
+                .where(ownerTable.id.eq(ownerId))
+                .fetchOne(ownerMapper)
+        }
+    }
 }
