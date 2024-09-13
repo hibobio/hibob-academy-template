@@ -12,28 +12,20 @@ class PetDao(private val sql: DSLContext) {
 
     private val petsMapper = RecordMapper<Record, Pet> { record ->
         Pet(
+            record[petsTable.id],
             record[petsTable.name],
             record[petsTable.type],
             record[petsTable.companyId],
-            record[petsTable.dateOfArrivel],
+            record[petsTable.dateOfArrival],
             record[petsTable.ownersId]
         )
     }
 
-    private val petsWithoutTypeMapper = RecordMapper<Record, PetWithoutType> { record ->
-        PetWithoutType(
-            record[petsTable.name],
-            record[petsTable.companyId],
-            record[petsTable.dateOfArrivel],
-            record[petsTable.ownersId]
-        )
-    }
-
-    fun petsByType(type: String): List<PetWithoutType> =
-        sql.select(petsTable.name, petsTable.companyId, petsTable.dateOfArrivel, petsTable.ownersId)
+    fun petsByType(type: String): List<Pet> =
+        sql.select(petsTable.name, petsTable.companyId, petsTable.dateOfArrival, petsTable.ownersId)
             .from(petsTable)
             .where(petsTable.type.eq(type))
-            .fetch(petsWithoutTypeMapper)
+            .fetch(petsMapper)
 
     fun getPetsByOwnerId(ownerId: UUID): List<Pet> {
         return sql.select()
@@ -42,12 +34,13 @@ class PetDao(private val sql: DSLContext) {
             .fetch(petsMapper)
     }
 
-    fun createPet(name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?): UUID? {
+    fun createPet(id: UUID?, name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?): UUID? {
         return sql.insertInto(petsTable)
+            .set(petsTable.id, id ?: UUID.randomUUID())
             .set(petsTable.name, name)
             .set(petsTable.type, type)
             .set(petsTable.companyId, companyId)
-            .set(petsTable.dateOfArrivel, dateOfArrival)
+            .set(petsTable.dateOfArrival, dateOfArrival)
             .set(petsTable.ownersId, ownerId)
             .returning(petsTable.id)
             .fetchOne()?.let { it[petsTable.id] }

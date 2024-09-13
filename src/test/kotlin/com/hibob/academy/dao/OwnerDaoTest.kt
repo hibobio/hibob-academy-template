@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.sql.Date
 import java.time.LocalDate
+import java.util.*
 import kotlin.random.Random
 
 @BobDbTest
@@ -31,34 +32,37 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
 
     @Test
     fun `create and read`() {
-        dao.createOwner(companyId, "aa", "bob")
-        val owners = dao.getOwners()
-        assertEquals(listOf(Owner(companyId, "aa", "bob")), owners)
+        val ownerId = UUID.randomUUID()
+        dao.createOwner(ownerId, companyId, "aa", "bob")
+        val owners = dao.getOwners(companyId)
+        assertEquals(listOf(Owner(ownerId, companyId, "aa", "bob")), owners)
     }
 
     @Test
     fun `not adding employee with same company and employee id`() {
-        dao.createOwner(companyId, "aa", "bob")
-        dao.createOwner(companyId, "aa", "John")
-        assertEquals(listOf(Owner(companyId, "aa", "bob")), dao.getOwners())
+        val ownerId = UUID.randomUUID()
+        dao.createOwner(ownerId, companyId, "aa", "bob")
+        dao.createOwner(null, companyId, "aa", "John")
+        assertEquals(listOf(Owner(ownerId, companyId, "aa", "bob")), dao.getOwners(companyId))
 
     }
 
     @Test
     fun `create and read multiple owners`() {
-        dao.createOwner(companyId, "aa", "bob")
-        dao.createOwner(companyId, "bbb", "jerry")
-        dao.createOwner(companyId, "ccc", "johans")
-        assertEquals(3, dao.getOwners().size)
+        dao.createOwner(null, companyId, "aa", "bob")
+        dao.createOwner(null, companyId, "bbb", "jerry")
+        dao.createOwner(null, companyId, "ccc", "johans")
+        assertEquals(3, dao.getOwners(companyId).size)
     }
 
 
     @Test
     fun `get owner by pet id`() {
-        val ownerId = dao.createOwner(companyId, "aa", "bob")
-        val petId = petDao.createPet("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
+        val ownerId = UUID.randomUUID()
+        dao.createOwner(ownerId, companyId, "aa", "bob")
+        val petId = petDao.createPet(null, "Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), ownerId)
         if (petId != null) {
-            assertEquals(Owner(companyId, "aa", "bob"), dao.getOwnerByPetId(petId))
+            assertEquals(Owner(ownerId, companyId, "aa", "bob"), dao.getOwnerByPetIdUsingJoin(petId, companyId)[0])
         }
     }
 
