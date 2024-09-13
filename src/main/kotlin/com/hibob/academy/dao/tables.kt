@@ -3,8 +3,8 @@ package com.hibob.academy.dao
 import com.hibob.academy.utils.JooqTable
 
 class Pets(tableName: String = "pets") : JooqTable(tableName) {
-    val ownerId = createBigIntField("owner_id")
     val petId = createBigIntField("id")
+    val ownerId = createBigIntField("owner_id")
     val name = createVarcharField("name")
     val type = createVarcharField("type")
     val companyId = createBigIntField("company_id")
@@ -29,4 +29,11 @@ class Owner(tableName: String = "owner") : JooqTable(tableName) {
 enum class PetType {
     DOG,
     CAT;
+}
+
+fun getType(type: PetType): String {
+    return when (type) {
+        PetType.DOG -> "DOG"
+        PetType.CAT -> "CAT"
+    }
 }

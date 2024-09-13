@@ -11,8 +11,8 @@ class PetsDao(private val sql: DSLContext) {
     private val petMapper = RecordMapper<Record, PetData>
     { record ->
         PetData(
-            record[pet.ownerId],
             record[pet.petId],
+            record[pet.ownerId],
             record[pet.name],
             record[pet.type],
             record[pet.companyId],
@@ -20,44 +20,35 @@ class PetsDao(private val sql: DSLContext) {
         )
     }
 
-
-    fun getAllPetsByType(type: PetType) : List<PetData> {
+    fun getAllPetsByType(type: PetType, companyId: Long) : List<PetData> {
         return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
             .from(pet)
-            .where(pet.type.eq(getType(type)))
+            .where(pet.type.eq(getType(type)), pet.companyId.eq(companyId))
             .fetch(petMapper)
     }
 
-    fun getType(type: PetType): String {
-        return when (type) {
-            PetType.DOG -> "DOG"
-            PetType.CAT -> "CAT"
-        }
-    }
-
-    fun createPet(newPetData: PetData) : Long? {
+    fun createPet(newPetData: PetDataInsert) : Long {
         return sql.insertInto(pet)
             .set(pet.ownerId, newPetData.ownerId)
             .set(pet.name, newPetData.name)
             .set(pet.type, newPetData.type)
             .set(pet.companyId, newPetData.companyId)
-            .set(pet.dateOfArrival, newPetData.dateOfArrival)
             .returning(pet.petId)
-            .fetchOne()?.let { it[pet.petId] }
+            .fetchOne()!![pet.petId]
     }
 
-    fun getPet(petId: Long?): PetData? {
+    fun getPet(petId: Long, companyId: Long): PetData? {
         return sql.select(pet.ownerId, pet.petId, pet.name, pet.type, pet.companyId, pet.dateOfArrival)
             .from(pet)
-            .where(pet.petId.eq(petId))
+            .where(pet.petId.eq(petId), pet.companyId.eq(companyId))
             .fetchOneInto(PetData::class.java)
     }
 
-    fun  updateThePetOwnerWithTheOwnerId(petId: Long?, ownerId: Long) {
+    fun  updatePetOwnerId(petId: Long, ownerId: Long, companyId: Long) {
         sql.update(pet)
             .set(pet.ownerId, ownerId)
             .where(pet.petId.eq(petId)
-            .and(pet.ownerId.isNull))
+            .and(pet.ownerId.isNull), pet.companyId.eq(companyId))
             .execute()
     }
 }
