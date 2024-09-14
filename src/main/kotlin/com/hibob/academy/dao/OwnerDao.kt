@@ -21,14 +21,14 @@ class OwnerDao(private val sql: DSLContext) {
     }
 
     fun getOwners(companyId: Long): List<Owner> =
-        sql.select(ownerTable.companyId, ownerTable.employeeId, ownerTable.name)
+        sql.select(ownerTable.id, ownerTable.companyId, ownerTable.employeeId, ownerTable.name)
             .from(ownerTable)
             .where(ownerTable.companyId.eq(companyId))
             .fetch(ownerMapper)
 
-    fun createOwner(ownerId: UUID?, companyId: Long, employeeId: String, name: String): UUID? {
+    fun createOwner(companyId: Long, employeeId: String, name: String): UUID? {
         return sql.insertInto(ownerTable)
-            .set(ownerTable.id, ownerId ?: UUID.randomUUID())
+            .set(ownerTable.id, UUID.randomUUID())
             .set(ownerTable.companyId, companyId)
             .set(ownerTable.employeeId, employeeId)
             .set(ownerTable.name, name)
@@ -38,20 +38,10 @@ class OwnerDao(private val sql: DSLContext) {
             .fetchOne()?.let { it[ownerTable.id] }
     }
 
-    fun getOwnerByPetId(petId: UUID, companyId: Long): Owner? {
-        return PetDao(sql).getOwnerIdFromPetId(petId)?.let { ownerId ->
-            sql.select()
-                .from(ownerTable)
-                .where(ownerTable.id.eq(ownerId))
-                .and(ownerTable.companyId.eq(companyId))
-                .fetchOne(ownerMapper)
-        }
-    }
-
-    fun getOwnerByPetIdUsingJoin(petId: UUID, companyId: Long): MutableList<Owner> {
+    fun getOwnerByPetId(petId: UUID, companyId: Long): MutableList<Owner> {
         return sql.select(ownerTable.id, ownerTable.companyId, ownerTable.name, ownerTable.employeeId)
             .from(ownerTable)
-            .leftJoin(petTable)
+            .join(petTable)
             .on(ownerTable.id.eq(petTable.ownersId))
             .where(petTable.id.eq(petId))
             .and(ownerTable.companyId.eq(companyId))

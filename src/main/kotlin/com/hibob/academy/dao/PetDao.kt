@@ -21,22 +21,31 @@ class PetDao(private val sql: DSLContext) {
         )
     }
 
-    fun petsByType(type: String): List<Pet> =
-        sql.select(petsTable.name, petsTable.companyId, petsTable.dateOfArrival, petsTable.ownersId)
+    fun petsByType(type: String, companyId: Long): List<Pet> =
+        sql.select(
+            petsTable.id,
+            petsTable.name,
+            petsTable.type,
+            petsTable.companyId,
+            petsTable.dateOfArrival,
+            petsTable.ownersId
+        )
             .from(petsTable)
             .where(petsTable.type.eq(type))
+            .and(petsTable.companyId.eq(companyId))
             .fetch(petsMapper)
 
-    fun getPetsByOwnerId(ownerId: UUID): List<Pet> {
+    fun getPetsByOwnerId(ownerId: UUID, companyId: Long): List<Pet> {
         return sql.select()
             .from(petsTable)
             .where(petsTable.ownersId.eq(ownerId))
+            .and(petsTable.companyId.eq(companyId))
             .fetch(petsMapper)
     }
 
-    fun createPet(id: UUID?, name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?): UUID? {
+    fun createPet(name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?): UUID? {
         return sql.insertInto(petsTable)
-            .set(petsTable.id, id ?: UUID.randomUUID())
+            .set(petsTable.id, UUID.randomUUID())
             .set(petsTable.name, name)
             .set(petsTable.type, type)
             .set(petsTable.companyId, companyId)
@@ -53,10 +62,4 @@ class PetDao(private val sql: DSLContext) {
             .execute()
     }
 
-    fun getOwnerIdFromPetId(petId: UUID): UUID? {
-        return sql.select(petsTable.ownersId)
-            .from(petsTable)
-            .where(petsTable.id.eq(petId))
-            .fetchOne()?.let { it[petsTable.ownersId] }
-    }
 }
