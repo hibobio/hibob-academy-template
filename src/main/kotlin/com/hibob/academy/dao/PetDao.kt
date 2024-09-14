@@ -61,5 +61,4 @@ class PetDao(private val sql: DSLContext) {
             .where(petsTable.id.eq(petId))
             .execute()
     }
-
 }
