@@ -6,7 +6,7 @@ import org.jooq.Record
 
 class PetsDao(private val sql: DSLContext) {
 
-    private val pet = Pets.instance
+    private val pet = PetsTable.instance
 
     private val petMapper = RecordMapper<Record, PetData>
     { record ->
@@ -44,11 +44,12 @@ class PetsDao(private val sql: DSLContext) {
             .fetchOneInto(PetData::class.java)
     }
 
-    fun  updatePetOwnerId(petId: Long, ownerId: Long, companyId: Long) {
+    fun updatePetOwnerId(petId: Long, ownerId: Long, companyId: Long) {
         sql.update(pet)
             .set(pet.ownerId, ownerId)
             .where(pet.petId.eq(petId)
-            .and(pet.ownerId.isNull), pet.companyId.eq(companyId))
+            .and(pet.ownerId.isNull))
+            .and(pet.companyId.eq(companyId))
             .execute()
     }
 }

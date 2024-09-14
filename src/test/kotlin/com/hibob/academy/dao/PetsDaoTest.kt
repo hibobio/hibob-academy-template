@@ -13,7 +13,7 @@ import java.time.LocalDate
 class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
     private val petDao = PetsDao(sql)
-    val tablePets = Pets.instance
+    val tablePets = PetsTable.instance
     val companyId = 1L
     val petId1 = 0L
     val data: LocalDate = LocalDate.now()
