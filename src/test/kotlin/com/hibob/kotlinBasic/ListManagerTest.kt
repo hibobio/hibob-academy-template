@@ -29,10 +29,13 @@ import org.junit.jupiter.api.assertThrows
  *
  */
 class ListManagerTest {
+    val listManager = ListManager()
 
     @Test
     fun `Test adding a unique person`() {
-        assertEquals(Person("chezi nikop", 27), Person("chezi nikop", 27))
+        val newPerson = Person("chezi nikop", 27)
+        listManager.addPerson(newPerson)
+        assertEquals(1,listManager.sumOfPeople())
     }
 
     @Test
@@ -59,8 +62,11 @@ class ListManagerTest {
         val listManager = ListManager()
         listManager.addPerson(person = Person("chezi nikop", 27))
 
-        assertEquals(true, listManager.removePerson(person = Person("chezi nikop", 27)))
+        assertEquals(1, listManager.sumOfPeople())
 
+        listManager.removePerson(person = Person("chezi nikop", 27))
+
+        assertEquals(0,listManager.sumOfPeople())
     }
 
     @Test
@@ -76,7 +82,7 @@ class ListManagerTest {
         listManager.removePerson(person = Person("chezi nikop", 27))
 
         assertTrue(listManager.containsPeople(Person("eli cohen", 27)))
-        assertEquals(false, listManager.containsPeople(Person("chezi nikop", 27)))
+        assertFalse(listManager.containsPeople(Person("chezi nikop", 27)))
     }
 
     @Test
