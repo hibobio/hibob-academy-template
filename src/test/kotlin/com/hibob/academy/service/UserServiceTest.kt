@@ -19,7 +19,7 @@ class UserServiceTest {
     fun `try to insert user who already exsits`() {
         val user = User(1, "bob", "bob@hibob.com", "123456", true)
         whenever(userDao.findById(1)).thenReturn(user)
-        assertThrows<IllegalArgumentException> { userService.registerUser(user) }
+        assertEquals("User already exists", assertThrows<IllegalArgumentException> { userService.registerUser(user) }.message)
     }
 
     @Test
@@ -27,7 +27,7 @@ class UserServiceTest {
         val user = User(1, "bob", "bob@hibob.com", "123456", true)
         whenever(userDao.findById(1)).thenReturn(null)
         whenever(userDao.save(user.copy(isEmailVerified = false))).thenReturn(false)
-        assertThrows<IllegalStateException> { userService.registerUser(user) }
+        assertEquals("User registration failed", assertThrows<IllegalStateException> { userService.registerUser(user) }.message)
     }
 
     @Test
@@ -36,7 +36,7 @@ class UserServiceTest {
         whenever(userDao.findById(1)).thenReturn(null)
         whenever(userDao.save(user.copy(isEmailVerified = false))).thenReturn(true)
         whenever(emailVerificationService.sendVerificationEmail(user.email)).thenReturn(false)
-        assertThrows<IllegalStateException> { userService.registerUser(user) }
+        assertEquals("Failed to send verification email", assertThrows<IllegalStateException> { userService.registerUser(user) }.message)
     }
 
     @Test
@@ -52,7 +52,7 @@ class UserServiceTest {
     fun `failed to find user`() {
         val user = User(1, "bob", "bob@hibob.com", "123456", true)
         whenever(userDao.findById(1)).thenReturn(null)
-        assertThrows<IllegalArgumentException> { userService.verifyUserEmail(user.id, "token") }
+        assertEquals("User not found", assertThrows<IllegalArgumentException> { userService.verifyUserEmail(user.id, "token") }.message)
     }
 
     @Test
@@ -60,7 +60,7 @@ class UserServiceTest {
         val user = User(1, "bob", "bob@hibob.com", "123456", true)
         whenever(userDao.findById(1)).thenReturn(user)
         whenever(emailVerificationService.verifyEmail(user.email, "tpken")).thenReturn(false)
-        assertEquals( ,assertThrows<IllegalArgumentException> { userService.verifyUserEmail(1, "token") }
+        assertEquals( "Email verification failed",assertThrows<IllegalArgumentException> { userService.verifyUserEmail(1, "token") }.message)
     }
 
     @Test
