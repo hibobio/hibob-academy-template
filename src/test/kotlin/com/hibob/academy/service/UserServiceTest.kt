@@ -60,7 +60,7 @@ class UserServiceTest {
         val user = User(1, "bob", "bob@hibob.com", "123456", true)
         whenever(userDao.findById(1)).thenReturn(user)
         whenever(emailVerificationService.verifyEmail(user.email, "tpken")).thenReturn(false)
-        assertThrows<IllegalArgumentException> { userService.verifyUserEmail(1, "token") }
+        assertEquals( ,assertThrows<IllegalArgumentException> { userService.verifyUserEmail(1, "token") }
     }
 
     @Test
