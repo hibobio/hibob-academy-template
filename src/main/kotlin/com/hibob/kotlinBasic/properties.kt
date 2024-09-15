@@ -1,8 +1,10 @@
 package com.hibob.kotlinBasic
 
-class Store(private val day: String, private val products: List<Product>) {
+import java.time.DayOfWeek
+
+class Store(private val day: DayOfWeek, private val products: List<Product>) {
     val isOpen: Boolean
-        get() = day.lowercase() != "saturday"
+        get() = day != DayOfWeek.SATURDAY
 
     val numberOfProducts: Int
         get() = products.size
@@ -10,12 +12,13 @@ class Store(private val day: String, private val products: List<Product>) {
     var numberOfReceipts: Int = 0
         private set
 
-    val getReceipts: List<String> by lazy {
-        numberOfReceipts++
-        creatorReceip()
-    }
+    val getReceipts: List<String>
+        get() {
+            numberOfReceipts++
+            return creatorReceipt()
+        }
 
-    private  fun creatorReceip(): List<String> {
+    private fun creatorReceipt(): List<String> {
         return listOf()
     }
 }
