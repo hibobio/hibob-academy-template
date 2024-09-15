@@ -1,4 +1,4 @@
-ALTER TABLE Pets
+ALTER TABLE pets
 ADD COLUMN if not exists owner_id BIGINT;
 --
 
