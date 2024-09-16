@@ -18,6 +18,6 @@ data class Pet(
     val type: String,
     val companyId: Long,
     val dateOfArrival: Date,
-    val ownersId: UUID?
+    val ownerId: UUID?
 )
 
