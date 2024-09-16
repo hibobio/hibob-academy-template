@@ -9,3 +9,4 @@ class ExampleService(private val exampleDao: ExampleDao) {
 
     fun get(companyId: Long): Example? = exampleDao.readExample(companyId)
 }
+

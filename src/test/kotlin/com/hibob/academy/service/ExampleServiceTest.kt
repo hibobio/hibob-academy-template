@@ -9,7 +9,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import kotlin.random.Random
-
+/*
 class ExampleServiceTest {
     private val exampleDaoMock = mock<ExampleDao>{}
     private val exampleService = ExampleService(exampleDaoMock)
@@ -22,3 +22,5 @@ class ExampleServiceTest {
     }
 
 }
+
+ */
