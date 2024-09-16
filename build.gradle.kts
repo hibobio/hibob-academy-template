@@ -61,7 +61,7 @@ tasks {
 		if (dbUrl != null && dbUrl.isNotBlank()) {
 			systemProperty("DB_URL", dbUrl)
 		} else {
-			systemProperty("DB_URL", "jdbc:postgresql://localhost:5432/email_service?user=bob&password=dev")
+			systemProperty("DB_URL", "jdbc:postgresql://localhost:5432/academy?user=bob&password=dev")
 		}
 		systemProperty("spring.profiles.active", "development,test")
 	}
