@@ -11,7 +11,7 @@ class OwnerServiceTest{
     private val ownerService = OwnerService(ownerDaoMock)
 
     @Test
-    fun `getAllOwner should throw exception if companyId `() {
+    fun `getAllOwner should throw exception if companyId less than zero `() {
 
     }
 }
