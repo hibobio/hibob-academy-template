@@ -9,7 +9,7 @@ import java.time.LocalDate
 4. Make SpidermanMovieProduceActions nullable (if not so yet) and make the relevant adjustments
 */
 
-fun main() {
+fun main2() {
     val movie = createGoodMovie()
     val runner = Runner(movie)
     val success = runner.init()

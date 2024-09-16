@@ -2,7 +2,7 @@ data class Department(val name: String?, val manager: EmployeeDetails?)
 data class EmployeeDetails(val name: String?, val contactInfo: ContactInfo?)
 data class ContactInfo(val email: String?, val phone: String?)
 
-fun main() {
+fun main8() {
     val departments = listOf(
         Department("Engineering", EmployeeDetails("Alice", ContactInfo("alice@example.com", null))),
         Department("Human Resources", null),

@@ -1,6 +1,6 @@
 package com.hibob.kotlinexercise
 
-fun main() {
+fun main13() {
     println("ex1")
     ex1()
     println()
