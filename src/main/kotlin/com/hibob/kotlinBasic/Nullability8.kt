@@ -30,7 +30,7 @@ fun initializeCompany(): Company {
     )
 }
 
-fun main() {
+fun main10() {
     val company = initializeCompany()
 
     println("Company name: ${company.name ?: "Unknown company"}")

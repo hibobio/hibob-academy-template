@@ -22,7 +22,7 @@ fun initializeNullableCustomers(): List<Customer?> {
     )
 }
 
-fun main() {
+fun main9() {
     val customers = initializeNullableCustomers()
     for (customer in customers) {
         customer?.let {

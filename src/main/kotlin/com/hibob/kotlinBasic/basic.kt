@@ -1,6 +1,6 @@
 package com.hibob.kotlinBasic
 
-fun main() {
+fun main12() {
     val x = 2
     val y = 3
 

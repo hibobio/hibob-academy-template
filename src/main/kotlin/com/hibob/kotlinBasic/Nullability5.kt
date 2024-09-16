@@ -8,7 +8,7 @@
 
 data class Product(val name: String?, val price: Double?)
 
-fun main() {
+fun main7() {
     val products = listOf(
         Product("Laptop", 999.99),
         Product(null, 299.99),

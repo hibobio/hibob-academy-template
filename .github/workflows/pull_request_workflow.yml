@@ -48,6 +48,9 @@ jobs:
           java-version: 21
           distribution: 'corretto'
 
+      - name: run flyway
+        run: ./gradlew --no-daemon --console=plain flywayMigrate
+
       - name: gradle build
         env:
           DB_URL: ${{ secrets.DB_URL }}

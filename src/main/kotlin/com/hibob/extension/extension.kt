@@ -14,7 +14,7 @@ infix fun Number.toPowerOf(power: Double): Double {
     return this.toDouble().pow(power)
 }
 
-fun main(){
+fun main1(){
     val sum = listOf(1,2,3).sum()
     println(sum)
     val num = 3.0
