@@ -1,6 +1,6 @@
 package com.hibob.kotlinBasics
 
-fun main(args: Array<String>) {
+fun loMain(args: Array<String>) {
     ex1()
     ex2()
     ex3()

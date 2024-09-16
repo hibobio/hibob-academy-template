@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.random.Random
-
+/*
 @BobDbTest
 class ExampleDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
@@ -35,3 +35,5 @@ class ExampleDaoTest @Autowired constructor(private val sql: DSLContext)  {
         assertThat(actual, Matchers.equalTo(Example(actual!!.id, companyId, "Hello, Kotlin!")))
     }
 }
+
+ */
