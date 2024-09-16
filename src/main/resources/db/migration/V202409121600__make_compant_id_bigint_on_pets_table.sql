@@ -1,0 +1,2 @@
+ALTER TABLE pets
+ALTER COLUMN company_id TYPE BIGINT;
