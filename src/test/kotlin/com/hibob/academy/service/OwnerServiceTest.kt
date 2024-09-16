@@ -34,18 +34,17 @@ class OwnerServiceTest{
 
     @Test
     fun `getAllOwner should return all owner `() {
-        val companyId = 1L
         val expectedOwners = listOf(
             OwnerData(1,"Owner 1",20,8),
             OwnerData(2,  "Owner 2",21,8)
         )
 
-        whenever(ownerDaoMock.getAllOwner(companyId)).thenReturn(expectedOwners)
+        whenever(ownerDaoMock.getAllOwner(validCompanyId)).thenReturn(expectedOwners)
 
-        val actualOwners = ownerService.getAllOwner(companyId)
+        val actualOwners = ownerService.getAllOwner(validCompanyId)
 
         assertEquals(expectedOwners, actualOwners)
-        verify(ownerDaoMock).getAllOwner(companyId)
+        verify(ownerDaoMock).getAllOwner(validCompanyId)
     }
 
     @Test

@@ -6,21 +6,21 @@ import com.hibob.academy.dao.PetType
 
 class PetService(private val petDao : PetDao){
 
-    fun getPetsByType(companyId:Long,type: PetType): List<PetData> {
+    fun getPetsByType(companyId:Long, type: String?): List<PetData> {
         if(companyId < 0){
             throw IllegalArgumentException("Invalid companyId")
         }
-        if(type.equals(null)){
+        if(type == null){
             throw IllegalArgumentException("Invalid type")
         }
-        return petDao.getPetsByType(companyId,type)
+        return petDao.getPetsByType(companyId, PetType.fromDatabaseValue(type))
     }
 
-    fun insertPet(name: String, type: PetType,companyId: Long ,ownerId:Long?) {
-        if(name==""){
+    fun insertPet(name: String, type: String?,companyId: Long ,ownerId:Long?) {
+        if(name == ""){
             throw IllegalArgumentException("Name cannot be empty")
         }
-        if(type.equals(null)){
+        if(type == null){
             throw IllegalArgumentException("Type cannot be empty")
         }
         if(companyId < 0){
@@ -29,7 +29,7 @@ class PetService(private val petDao : PetDao){
         if(ownerId == null || ownerId < 0){
             throw IllegalArgumentException("Invalid ownerId")
         }
-        return petDao.insertPet(name, type,companyId,ownerId)
+        return petDao.insertPet(name, PetType.fromDatabaseValue(type),companyId,ownerId)
     }
 
     fun adoptPet(petId: Long, ownerId: Long,companyId :Long) {
