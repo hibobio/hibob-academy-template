@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Controller
 import jakarta.ws.rs.core.MediaType
 import org.springframework.web.bind.annotation.RequestBody
+import java.util.*
 
 @Controller
 @Path("api/pets")
@@ -14,16 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody
 class PetsResource {
 
     @POST
-    @Path("/create")
+    @Path("/{petId}")
     @Consumes(MediaType.APPLICATION_JSON)
     fun createPet(@RequestBody pets: Pets): Response {
-        return Response.ok("POST OK").build()
+        return Response.ok(pets).build()
     }
 
     @GET
-    @Path("/{petId}/petType")
+    @Path("/type/{petId}")
     fun getPetType(@PathParam("petId") id: String): Response {
-        return Response.ok("GET OK").build()
+        return Response.ok("lab").build()
     }
 
     fun fetchPet(id: String): Owner? {
@@ -31,17 +32,19 @@ class PetsResource {
     }
 
     @PUT
-    @Path("/{petId}/updateType")
+    @Path("/type/{petId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    fun updatePetType(@PathParam("petId") id: String, petType: String): Response {
-        if(fetchPet(id) == null) {
-            return Response.status(404).build()
-        }
-        return Response.ok("PUT OK").build()
+    fun updatePetType(@PathParam("petId") id: String, @QueryParam("newType") newType: String?): Response {
+        val pet = Pets(
+            name = "dog", type = "lab",
+            companyId = UUID.randomUUID(), dateofArrival = Date()
+        )
+        pet.type = newType ?: pet.type
+        return Response.ok(pet).build()
     }
 
     @DELETE
-    @Path("/{petId}/remove")
+    @Path("/{petId}")
     fun deletePet(@PathParam("petId") id: String): Response {
         return Response.ok("DELETE OK").build()
     }

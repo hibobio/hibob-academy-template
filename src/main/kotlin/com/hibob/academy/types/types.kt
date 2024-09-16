@@ -8,7 +8,7 @@ data class Pets(
     var name: String,
     var type: String,
     var companyId: UUID,
-    var dateOfArrival: LocalDateTime
+    var dateofArrival: Date
 )
 
 data class Owner(
