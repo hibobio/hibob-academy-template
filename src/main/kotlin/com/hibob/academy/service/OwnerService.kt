@@ -32,5 +32,6 @@ class OwnerService(private val ownerDao : OwnerDao){
         if(companyId < 0){
             throw IllegalArgumentException("Company id must be greater than 0")
         }
-        return ownerDao.getOwnerByPetId(petId, companyId)}
+        return ownerDao.getOwnerByPetId(petId, companyId)
+    }
 }
