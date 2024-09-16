@@ -1,7 +1,7 @@
 package com.hibob.academy.types
 
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class Pets(
     val id: UUID = UUID.randomUUID(),
