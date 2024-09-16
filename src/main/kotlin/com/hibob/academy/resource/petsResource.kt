@@ -1,5 +1,6 @@
 package com.hibob.academy.resource
 
+import com.hibob.academy.types.Owner
 import com.hibob.academy.types.Pets
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.Response
@@ -24,6 +25,10 @@ class PetsResource {
     @Path("/type/{petId}")
     fun getPetType(@PathParam("petId") id: String): Response {
         return Response.ok("lab").build()
+    }
+
+    fun fetchPet(id: String): Owner? {
+        return null     //Just for Practice
     }
 
     @PUT

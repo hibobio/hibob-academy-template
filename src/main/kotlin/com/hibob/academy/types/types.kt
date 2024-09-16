@@ -1,6 +1,5 @@
 package com.hibob.academy.types
 
-import java.util.*
 import java.time.LocalDateTime
 import java.util.UUID
 

@@ -27,3 +27,5 @@ class ExampleResource(private val service: ExampleService) {
 }
 
 data class ExampleResponse(val data: Example)
+
+

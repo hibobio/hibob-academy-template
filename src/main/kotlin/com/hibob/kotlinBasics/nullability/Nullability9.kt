@@ -17,7 +17,7 @@ data class DepartmentData(val name: String?, val manager: EmployeeData?)
 data class EmployeeData(val name: String?, val contactInfo: Contact?)
 data class Contact(val email: String?, val phone: String?)
 
-fun main() {
+fun main1() {
     val departments = listOf(
         DepartmentData("Engineering", EmployeeData("Alice", Contact("alice@example.com", "123-456-7890"))),
         DepartmentData("Human Resources", null),
@@ -34,7 +34,7 @@ fun main() {
     }
 
     fun uniqueEmails(): List<String> {
-        val emails: List<String> = departments.filter { (it.manager?.contactInfo?.email != "") }
+        val emails: List<String> = departments.filterNotNull()
             .map { it.manager?.contactInfo?.email ?: "" }.filter { it != "" }
 
         return emails.toSet().toList()

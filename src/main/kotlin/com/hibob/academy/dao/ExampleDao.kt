@@ -37,3 +37,4 @@ class ExampleTable(tableName: String) : JooqTable(tableName) {
         val instance = ExampleTable("example")
     }
 }
+
