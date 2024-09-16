@@ -1,5 +1,6 @@
 package com.hibob.academy.dao
 
+import jakarta.ws.rs.BadRequestException
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
@@ -26,7 +27,7 @@ class OwnerDao(private val sql: DSLContext) {
             .where(ownerTable.companyId.eq(companyId))
             .fetch(ownerMapper)
 
-    fun createOwner(companyId: Long, employeeId: String, name: String): UUID? {
+    fun createOwner(companyId: Long, employeeId: String, name: String): UUID {
         return sql.insertInto(ownerTable)
             .set(ownerTable.id, UUID.randomUUID())
             .set(ownerTable.companyId, companyId)
@@ -36,13 +37,14 @@ class OwnerDao(private val sql: DSLContext) {
             .doNothing()
             .returning(ownerTable.id)
             .fetchOne()?.let { it[ownerTable.id] }
+            ?: throw BadRequestException("Owner with the same company and employee id already exists")
     }
 
     fun getOwnerByPetId(petId: UUID, companyId: Long): MutableList<Owner> {
         return sql.select(ownerTable.id, ownerTable.companyId, ownerTable.name, ownerTable.employeeId)
             .from(ownerTable)
             .join(petTable)
-            .on(ownerTable.id.eq(petTable.ownersId))
+            .on(ownerTable.id.eq(petTable.ownerId))
             .where(petTable.id.eq(petId))
             .and(ownerTable.companyId.eq(companyId))
             .fetch(ownerMapper)

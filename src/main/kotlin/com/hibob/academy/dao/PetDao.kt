@@ -17,7 +17,7 @@ class PetDao(private val sql: DSLContext) {
             record[petsTable.type],
             record[petsTable.companyId],
             record[petsTable.dateOfArrival],
-            record[petsTable.ownersId]
+            record[petsTable.ownerId]
         )
     }
 
@@ -28,7 +28,7 @@ class PetDao(private val sql: DSLContext) {
             petsTable.type,
             petsTable.companyId,
             petsTable.dateOfArrival,
-            petsTable.ownersId
+            petsTable.ownerId
         )
             .from(petsTable)
             .where(petsTable.type.eq(type))
@@ -38,7 +38,7 @@ class PetDao(private val sql: DSLContext) {
     fun getPetsByOwnerId(ownerId: UUID, companyId: Long): List<Pet> {
         return sql.select()
             .from(petsTable)
-            .where(petsTable.ownersId.eq(ownerId))
+            .where(petsTable.ownerId.eq(ownerId))
             .and(petsTable.companyId.eq(companyId))
             .fetch(petsMapper)
     }
@@ -50,14 +50,14 @@ class PetDao(private val sql: DSLContext) {
             .set(petsTable.type, type)
             .set(petsTable.companyId, companyId)
             .set(petsTable.dateOfArrival, dateOfArrival)
-            .set(petsTable.ownersId, ownerId)
+            .set(petsTable.ownerId, ownerId)
             .returning(petsTable.id)
             .fetchOne()?.let { it[petsTable.id] }
     }
 
     fun assignOwnerIdToPet(petId: UUID, ownerId: UUID) {
         sql.update(petsTable)
-            .set(petsTable.ownersId, ownerId)
+            .set(petsTable.ownerId, ownerId)
             .where(petsTable.id.eq(petId))
             .execute()
     }
