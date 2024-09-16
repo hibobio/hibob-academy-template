@@ -4,6 +4,7 @@
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.hibob.AcademyApplication" />
     <method v="2">
       <option name="Make" enabled="true" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="start docker" run_configuration_type="ShConfigurationType" />
     </method>
   </configuration>
 </component>
