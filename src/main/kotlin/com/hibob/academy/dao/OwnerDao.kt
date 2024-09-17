@@ -4,9 +4,12 @@ import jakarta.ws.rs.BadRequestException
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
+import org.springframework.stereotype.Component
 import java.util.*
 
-
+@Component
 class OwnerDao(private val sql: DSLContext) {
 
     private val ownerTable = OwnersTable.instance
@@ -27,12 +30,12 @@ class OwnerDao(private val sql: DSLContext) {
             .where(ownerTable.companyId.eq(companyId))
             .fetch(ownerMapper)
 
-    fun createOwner(companyId: Long, employeeId: String, name: String): UUID {
+    fun createOwner(owner: OwnerNoId): UUID {
         return sql.insertInto(ownerTable)
             .set(ownerTable.id, UUID.randomUUID())
-            .set(ownerTable.companyId, companyId)
-            .set(ownerTable.employeeId, employeeId)
-            .set(ownerTable.name, name)
+            .set(ownerTable.companyId, owner.companyId)
+            .set(ownerTable.employeeId, owner.employeeId)
+            .set(ownerTable.name, owner.name)
             .onConflict(ownerTable.companyId, ownerTable.employeeId)
             .doNothing()
             .returning(ownerTable.id)

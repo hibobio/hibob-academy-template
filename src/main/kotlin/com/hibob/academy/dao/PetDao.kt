@@ -3,9 +3,11 @@ package com.hibob.academy.dao
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.RecordMapper
+import org.springframework.stereotype.Repository
 import java.sql.Date
 import java.util.*
 
+@Repository
 class PetDao(private val sql: DSLContext) {
 
     private val petsTable = PetsTable.instance
@@ -43,20 +45,20 @@ class PetDao(private val sql: DSLContext) {
             .fetch(petsMapper)
     }
 
-    fun createPet(name: String, type: String, companyId: Long, dateOfArrival: Date, ownerId: UUID?): UUID {
+    fun createPet(pet: PetNoId): UUID {
         return sql.insertInto(petsTable)
             .set(petsTable.id, UUID.randomUUID())
-            .set(petsTable.name, name)
-            .set(petsTable.type, type)
-            .set(petsTable.companyId, companyId)
-            .set(petsTable.dateOfArrival, dateOfArrival)
-            .set(petsTable.ownerId, ownerId)
+            .set(petsTable.name, pet.name)
+            .set(petsTable.type, pet.type)
+            .set(petsTable.companyId, pet.companyId)
+            .set(petsTable.dateOfArrival, pet.dateOfArrival)
+            .set(petsTable.ownerId, pet.ownerId)
             .returning(petsTable.id)
             .fetchOne()!![petsTable.id]
     }
 
-    fun assignOwnerIdToPet(petId: UUID, ownerId: UUID) {
-        sql.update(petsTable)
+    fun assignOwnerIdToPet(petId: UUID, ownerId: UUID): Int {
+        return sql.update(petsTable)
             .set(petsTable.ownerId, ownerId)
             .where(petsTable.id.eq(petId))
             .execute()

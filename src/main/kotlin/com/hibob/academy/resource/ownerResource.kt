@@ -1,43 +1,40 @@
 package com.hibob.academy.resource
 
-import com.hibob.academy.types.Owner
+import com.hibob.academy.dao.Owner
+import com.hibob.academy.dao.OwnerNoId
+import com.hibob.academy.service.OwnerService
 import jakarta.ws.rs.*
-import jakarta.ws.rs.core.Response
-import org.springframework.stereotype.Controller
 import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RequestBody
+import java.util.UUID
 
-@Controller
-@Path("api/owners")
+@Component
+@Path("/owner")
 @Produces(MediaType.APPLICATION_JSON)
-class OwnerResource {
-
-    @POST
-    @Path("/create")
-    @Consumes(MediaType.APPLICATION_JSON)
-    fun createOwner(@RequestBody owner: Owner): Response {
-        return Response.ok("POST OK").build()
+@Consumes(MediaType.APPLICATION_JSON)
+class OwnerResource(
+    private val ownerService: OwnerService
+) {
+    @GET
+    @Path("/{companyId}")
+    fun getOwners(@PathParam("companyId") companyId: Long): Response {
+        return Response.ok(ownerService.getOwners(companyId = companyId)).build()
     }
 
     @GET
-    @Path("/{ownerId}/petType")
-    fun getOwnersPetType(@PathParam("ownerId") id: String): Response {
-        return Response.ok("GET OK").build()
+    @Path("/{companyId}/{petId}")
+    fun getOwnerByPetId(@PathParam("companyId") companyId: Long, @PathParam("petId") petId: UUID): Response {
+        return Response.ok(ownerService.getOwnerByPetId(petId, companyId)).build()
     }
 
-    fun fetchOwner(id: String): Owner? {
-        return null     //Just for Practice
+    @POST
+    fun createOwner(@RequestBody owner: OwnerNoId): Response {
+        val ownerId = ownerService.createOwner(owner)
+        return Response.ok(ownerId).build()
     }
 
-    @PUT
-    @Path("/{ownerId}/updateType")
-    @Consumes(MediaType.APPLICATION_JSON)
-    fun updateOwnersPetType(@PathParam("ownerId") id: String, ownersPetType: String): Response {
-        if(fetchOwner(id) == null){
-            return Response.status(404).build()
-        }
-        return Response.ok("PUT OK").build()
-    }
 
     @DELETE
     @Path("/{ownerId}/remove")
