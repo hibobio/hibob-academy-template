@@ -1,6 +1,6 @@
 package com.hibob.kotlinBasic
 
-fun main() {
+fun main21() {
     println(isValidIdentifier("name"))
     println(isValidIdentifier("_name"))
     println(isValidIdentifier("_12"))

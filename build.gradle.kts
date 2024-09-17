@@ -44,7 +44,7 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jooq:jooq:3.16.9")
+	implementation("org.jooq:jooq:3.17.9")
 	implementation("org.slf4j:slf4j-api")
 
 	implementation("org.postgresql:postgresql")
