@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller
 class OwnerResource(private val ownerService: OwnerService) {
 
     @GET
-    @Path("companyId/{companyId}")
+    @Path("getAllOwner/{companyId}")
     fun getAllOwner(@PathParam("companyId") companyId: Long): Response {
         return Response.ok(ownerService.getAllOwner(companyId)).build()
     }
@@ -27,7 +27,7 @@ class OwnerResource(private val ownerService: OwnerService) {
     }
 
     @GET
-    @Path("getOwnerByPetId/{petId}/companyId/{companyId}")
+    @Path("getOwnerByPetId/{petId}/{companyId}")
     fun getOwnerByPetId(@PathParam("petId") petId: Long,@PathParam("companyId") companyId: Long): Response {
         return Response.ok(ownerService.getOwnerByPetId(petId,companyId)).build()
     }

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Controller
 class PetResource (private val petService: PetService) {
 
     @GET
-    @Path("getAllPetsByType/{petType}/companyId/{companyId}")
+    @Path("getAllPetsByType/{petType}/{companyId}")
     fun getPetsByType(@PathParam("petType") petType: String, @PathParam("companyId") companyId: Long): Response {
         return Response.ok(petService.getPetsByType(companyId,petType)).build()
     }
@@ -34,7 +34,7 @@ class PetResource (private val petService: PetService) {
     }
 
     @PUT
-    @Path("adoptPet/{petId}/ownerId/{newOwnerId}/companyId/{companyId}")
+    @Path("adoptPet/{petId}/{newOwnerId}/{companyId}")
     fun adoptPet(
         @PathParam("petId") petId: Long,
         @PathParam("newOwnerId") newOwnerId: Long,
