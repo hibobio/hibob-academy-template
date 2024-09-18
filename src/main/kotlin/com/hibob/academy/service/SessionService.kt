@@ -14,11 +14,11 @@ class SessionService {
     }
     val now = Date()
     fun createJwtToken(user: User): String {
-        return Jwts.builder().setHeaderParam("typ", "JWT")
+        return Jwts.builder().setHeaderParam("type", "JWT")
             .claim("email", user.email)
             .claim("username", user.userName)
             .claim("isAdmin", user.isAdmin)
-            .setExpiration(Date(now.time + 60 * 60 * 24))
+            .setExpiration(Date(now.time + (60 * 60 * 24)*1000))
             .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
             .compact()
     }
