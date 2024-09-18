@@ -16,7 +16,7 @@ data class User(val email: String, val userName: String, val isAdmin: Boolean)
 
 @Controller
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/jwt/users")
+@Path("/api/users")
 class JwtResource(private val sessionService: SessionService) {
 
     @POST
@@ -24,7 +24,7 @@ class JwtResource(private val sessionService: SessionService) {
     @Consumes(MediaType.APPLICATION_JSON)
     fun addUser(user: User): Response {
         val tokenJwt = sessionService.createJwtToken(user) // Assuming createJWTToken returns a JWT
-        val cookie = NewCookie.Builder(AuthenticationFilter.COOKIE_NAME).value(tokenJwt).build() //Creating new cookie
+        val cookie = NewCookie.Builder(AuthenticationFilter.COOKIE_NAME).value(tokenJwt).path("/api/").build() //Creating new cookie
         return Response.ok().cookie(cookie).build()
     }
 
