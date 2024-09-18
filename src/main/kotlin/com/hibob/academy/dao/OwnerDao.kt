@@ -3,7 +3,9 @@ package com.hibob.academy.dao
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.RecordMapper
+import org.springframework.stereotype.Component
 
+@Component
 class OwnerDao(private val sql: DSLContext) {
 
     private val ownerTable = OwnerTable.instance
@@ -26,7 +28,7 @@ class OwnerDao(private val sql: DSLContext) {
             .fetch(ownerMapper)
     }
 
-    fun createOwnerIfNotExists(newOwnerData: OwnerDataInsert) {
+    fun createOwnerIfNotExists(newOwnerData: OwnerDataInsert) =
         sql.insertInto(ownerTable)
             .set(ownerTable.name, newOwnerData.name)
             .set(ownerTable.companyId, newOwnerData.companyId)
@@ -34,8 +36,6 @@ class OwnerDao(private val sql: DSLContext) {
             .onConflict(ownerTable.companyId, ownerTable.employeeId)
             .doNothing()
             .execute()
-
-    }
 
     fun getOwnerByPetId(petId: Long, companyId: Long): OwnerData? {
         return sql.select(ownerTable.id, ownerTable.name, ownerTable.companyId, ownerTable.employeeId)

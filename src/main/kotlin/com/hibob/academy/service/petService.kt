@@ -4,7 +4,9 @@ import com.hibob.academy.dao.PetData
 import com.hibob.academy.dao.PetDataInsert
 import com.hibob.academy.dao.PetType
 import com.hibob.academy.dao.PetsDao
+import org.springframework.stereotype.Component
 
+@Component
 class PetsService(private val petDao: PetsDao) {
 
     fun getAllPetsByType(type: PetType, companyId: Long): List<PetData> {
@@ -16,6 +18,7 @@ class PetsService(private val petDao: PetsDao) {
     }
 
     fun updatePetOwnerId(petId: Long, ownerId: Long, companyId: Long) {
-        petDao.updatePetOwnerId(petId, ownerId, companyId)
+        val checkUpdate = petDao.updatePetOwnerId(petId, ownerId, companyId)
+        if (checkUpdate.equals(0)) throw IllegalArgumentException("the information you entered does not match the database")
     }
 }

@@ -24,12 +24,27 @@ class OwnerServerTest {
 
     @Test
     fun `createOwnerIfNotExists should call DAO to create owner`() {
-        val companyId = 1L
-        val owner1 = OwnerDataInsert(name = "chezi", companyId, employeeId = "1")
+        val owner1 = OwnerDataInsert(name = "chezi", companyId = 1L, employeeId = "1")
+
+        whenever(ownerDao.createOwnerIfNotExists(owner1)).thenReturn(1)
 
         ownerService.createOwnerIfNotExists(owner1)
 
-        verify(ownerDao).createOwnerIfNotExists(any())
+        verify(ownerDao).createOwnerIfNotExists(owner1)
+    }
+
+    @Test
+    fun `createOwnerIfNotExists should throw exception when we have the same owner`() {
+        val companyId = 1L
+        val owner1 = OwnerDataInsert(name = "chezi", companyId, employeeId = "1")
+
+        whenever(ownerDao.createOwnerIfNotExists(owner1)).thenReturn(0)
+
+        val exception = assertThrows<IllegalArgumentException> {
+            ownerService.createOwnerIfNotExists(owner1)
+        }
+
+        assertEquals("Owner already exists" ,exception.message)
     }
 
     @Test
@@ -54,7 +69,7 @@ class OwnerServerTest {
             ownerService.getOwnerByPetId(petId, companyId)
         }
 
-        assertEquals("the data you entered is incorrect in relation to the data that exists in the database", exception.message)
+        assertEquals("the information you entered does not match the database", exception.message)
     }
 
     @Test
@@ -68,6 +83,6 @@ class OwnerServerTest {
             ownerService.getOwnerByPetId(petId, companyId)
         }
 
-        assertEquals("the data you entered is incorrect in relation to the data that exists in the database", exception.message)
+        assertEquals("the information you entered does not match the database", exception.message)
     }
 }

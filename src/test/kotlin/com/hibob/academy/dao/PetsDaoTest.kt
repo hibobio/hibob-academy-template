@@ -1,7 +1,6 @@
 package com.hibob.academy.dao
 
 import org.junit.jupiter.api.Assertions.*
-
 import com.hibob.academy.utils.BobDbTest
 import org.jooq.DSLContext
 import org.junit.jupiter.api.AfterEach

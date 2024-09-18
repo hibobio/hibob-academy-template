@@ -3,6 +3,7 @@ package com.hibob.academy.service
 import com.hibob.academy.dao.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
 import java.time.LocalDate
 
@@ -23,7 +24,7 @@ class PetsServiceTest {
     }
 
     @Test
-    fun `createPet should call DAO to create owner`() {
+    fun `createPet should call DAO to create pet`() {
         val companyId = 1L
         val pet1 = PetDataInsert(ownerId = 1L, name = "chezi", type = PetType.DOG, companyId)
 
@@ -42,5 +43,20 @@ class PetsServiceTest {
         petDao.updatePetOwnerId(petId, ownerId = 1L, companyId)
 
         verify(petDao).updatePetOwnerId(pet.id, owner1.id, companyId)
+    }
+
+    @Test
+    fun `updatePetOwnerId should throw exception wen the pet is not found`() {
+        val companyId = 1L
+        val petId = 1L
+        val newOwnerId = 2L
+
+        whenever(petDao.updatePetOwnerId(petId, newOwnerId, companyId)).thenReturn(0)
+
+        val exception = assertThrows<IllegalArgumentException> {
+            petsService.updatePetOwnerId(petId, companyId, newOwnerId)
+        }
+
+        assertEquals("the information you entered does not match the database", exception.message )
     }
 }

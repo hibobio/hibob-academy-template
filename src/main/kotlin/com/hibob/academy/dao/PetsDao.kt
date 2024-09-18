@@ -3,7 +3,9 @@ package com.hibob.academy.dao
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
+import org.springframework.stereotype.Component
 
+@Component
 class PetsDao(private val sql: DSLContext) {
 
     private val petTable = PetsTable.instance
@@ -37,11 +39,10 @@ class PetsDao(private val sql: DSLContext) {
             .execute()
     }
 
-    fun updatePetOwnerId(petId: Long, ownerId: Long, companyId: Long) {
+    fun updatePetOwnerId(petId: Long, ownerId: Long, companyId: Long) =
         sql.update(petTable)
             .set(petTable.ownerId, ownerId)
             .where(petTable.id.eq(petId))
             .and(petTable.companyId.eq(companyId))
             .execute()
-    }
 }
