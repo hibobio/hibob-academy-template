@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
 
     private val petDao = PetsDao(sql)
-    val tablePets = PetsTable.instance
     private val companyId = 1L
+    private val otherCompanyId = 2L
 
     val petTest1 = PetDataInsert(ownerId = 1L, name = "bi", type = PetType.DOG, companyId)
     val petTest2 = PetDataInsert(null, name = "bi", type = PetType.DOG, companyId)
@@ -21,7 +21,8 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
     @BeforeEach
     @AfterEach
     fun cleanup() {
-        sql.deleteFrom(tablePets).where(tablePets.companyId.eq(companyId)).execute()
+        petDao.deleteTable(companyId)
+        petDao.deleteTable(otherCompanyId)
     }
 
     @Test
@@ -80,5 +81,74 @@ class PetsDaoTest @Autowired constructor(private val sql: DSLContext)  {
         val expectedResult = listOf(PetData(id, newOwnerId, petTest1.name, petTest1.type, petTest1.companyId, date))
 
         assertEquals(expectedResult, petDao.getAllPetsByType(PetType.DOG, companyId))
+    }
+
+    @Test
+    fun `get pets by ownerId when pets exist in the database`() {
+        val ownerId = 1L
+        val petTest3 = PetDataInsert(ownerId, name = "ci", type = PetType.CAT, companyId)
+
+        petDao.createPet(petTest1)
+        petDao.createPet(petTest3)
+
+        val returnPet1 = petDao.getAllPetsByType(PetType.DOG, ownerId)[0]
+        val returnPet3 = petDao.getAllPetsByType(PetType.CAT, ownerId)[0]
+
+        val expectedResult = listOf(
+            PetData(returnPet1.id, ownerId, petTest1.name, petTest1.type, petTest1.companyId, returnPet1.dateOfArrival),
+            PetData(returnPet3.id, ownerId, petTest3.name, petTest3.type, petTest3.companyId, returnPet3.dateOfArrival)
+        )
+
+        val allPets = petDao.getPetsByOwnerId(ownerId, companyId)
+
+        assertEquals(expectedResult, allPets)
+    }
+
+    @Test
+    fun `get pets by ownerId when no pets exist for the owner`() {
+        val ownerId = 1L
+
+        val petsByOwner = petDao.getPetsByOwnerId(ownerId, companyId)
+
+        assertTrue(petsByOwner.isEmpty())
+    }
+
+    @Test
+    fun `get pets by ownerId when owner has pets in different company`() {
+        val ownerId = 1L
+
+        val petTest3 = PetDataInsert(ownerId, name = "ci", type = PetType.CAT, otherCompanyId)
+
+        petDao.createPet(petTest1)
+        petDao.createPet(petTest3)
+
+        val returnPet1 = petDao.getAllPetsByType(PetType.DOG, ownerId)[0]
+
+        val expectedResult = listOf(PetData(returnPet1.id, ownerId, petTest1.name, petTest1.type, petTest1.companyId, returnPet1.dateOfArrival))
+
+        val actualResult = petDao.getPetsByOwnerId(ownerId, companyId)
+
+        assertEquals(expectedResult, actualResult)
+    }
+
+    @Test
+    fun `count pets by type when pets exist in the database`() {
+        val petTest3 = PetDataInsert(ownerId = 1L, name = "bi", type = PetType.CAT, companyId)
+
+        petDao.createPet(petTest1)
+        petDao.createPet(petTest2)
+        petDao.createPet(petTest3)
+
+        val countPetByType = petDao.countPetsByType(companyId)
+
+        assertEquals(2, countPetByType[PetType.DOG])
+        assertEquals(1, countPetByType[PetType.CAT])
+    }
+
+    @Test
+    fun `count pets by type when no pets exist in the database`() {
+        val countPetByType = petDao.countPetsByType(companyId)
+
+        assertTrue(countPetByType.isEmpty())
     }
 }

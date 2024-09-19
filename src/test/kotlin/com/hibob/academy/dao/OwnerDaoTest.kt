@@ -14,9 +14,6 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
     private val ownerDao = OwnerDao(sql)
     private val petDao = PetsDao(sql)
 
-    val tableOwner = OwnerTable.instance
-    val tablePets = PetsTable.instance
-
     private val companyId = 1L
     val owner1 = OwnerDataInsert(name ="checi nikop", companyId, employeeId = "1" )
     val owner2 = OwnerDataInsert(name ="checi nikop", companyId, employeeId = "2" )
@@ -24,8 +21,8 @@ class OwnerDaoTest @Autowired constructor(private val sql: DSLContext) {
     @BeforeEach
     @AfterEach
     fun cleanup() {
-        sql.deleteFrom(tableOwner).where(tableOwner.companyId.eq(companyId)).execute()
-        sql.deleteFrom(tablePets).where(tablePets.companyId.eq(companyId)).execute()
+        ownerDao.deleteTable(companyId)
+        petDao.deleteTable(companyId)
     }
 
     @Test

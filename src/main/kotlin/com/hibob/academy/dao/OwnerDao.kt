@@ -45,4 +45,10 @@ class OwnerDao(private val sql: DSLContext) {
             .and(petsTable.companyId.eq(companyId))
             .fetchOne(ownerMapper)
     }
+
+    fun deleteTable(companyId: Long) {
+        sql.deleteFrom(ownerTable)
+            .where(ownerTable.companyId.eq(companyId))
+            .execute()
+    }
 }

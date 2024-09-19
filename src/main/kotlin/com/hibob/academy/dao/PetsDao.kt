@@ -4,6 +4,7 @@ import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
 import org.springframework.stereotype.Component
+import org.jooq.impl.DSL
 
 @Component
 class PetsDao(private val sql: DSLContext) {
@@ -45,4 +46,20 @@ class PetsDao(private val sql: DSLContext) {
             .where(petTable.id.eq(petId))
             .and(petTable.companyId.eq(companyId))
             .execute()
+
+    fun getPetsByOwnerId(ownerId: Long, companyId: Long): List<PetData> =
+        sql.select(petTable.id, petTable.ownerId, petTable.name, petTable.type, petTable.companyId, petTable.dateOfArrival)
+            .from(petTable)
+            .where(petTable.companyId.eq(companyId))
+            .and(petTable.ownerId.eq(ownerId))
+            .fetch(petMapper)
+
+    fun countPetsByType(companyId: Long): Map<PetType, Int> {
+        return sql.select(petTable.type, DSL.count())
+            .from(petTable)
+            .where(petTable.companyId.eq(companyId))
+            .groupBy(petTable.type)
+            .fetch()
+            .associate { (type, count) -> enumValueOf<PetType>(type) to count }
+    }
 }
