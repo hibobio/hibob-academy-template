@@ -1,6 +1,5 @@
 package com.hibob.academy.resource
 
-import com.hibob.academy.dao.Owner
 import com.hibob.academy.dao.OwnerNoId
 import com.hibob.academy.service.OwnerService
 import jakarta.ws.rs.*
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import java.util.UUID
 
 @Component
-@Path("/owner")
+@Path("/owners")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 class OwnerResource(
@@ -24,7 +23,7 @@ class OwnerResource(
     }
 
     @GET
-    @Path("/{companyId}/{petId}")
+    @Path("/pet/{petId}/{companyId}")
     fun getOwnerByPetId(@PathParam("companyId") companyId: Long, @PathParam("petId") petId: UUID): Response {
         return Response.ok(ownerService.getOwnerByPetId(petId, companyId)).build()
     }
@@ -37,8 +36,8 @@ class OwnerResource(
 
 
     @DELETE
-    @Path("/{ownerId}/remove")
+    @Path("/{ownerId}")
     fun deleteOwner(@PathParam("ownerId") id: String): Response {
-        return Response.ok("DELETE OK").build()
+        return Response.ok().build()
     }
 }

@@ -1,7 +1,6 @@
 package com.hibob.academy.resource
 
-import com.hibob.academy.dao.Pet
-import com.hibob.academy.dao.PetDao
+
 import com.hibob.academy.dao.PetNoId
 import com.hibob.academy.service.PetService
 import jakarta.ws.rs.Consumes
@@ -15,7 +14,6 @@ import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RequestBody
-import java.awt.PageAttributes
 import java.util.*
 
 @Component
@@ -26,13 +24,13 @@ class PetResource(
     private val petService: PetService
 ) {
     @GET
-    @Path("/byType/{companyId}/{type}")
+    @Path("/by-type/{type}/{companyId}")
     fun petsByType(@PathParam("companyId") companyId: Long, @PathParam("type") type: String): Response {
         return Response.ok(petService.petsByType(type, companyId)).build()
     }
 
     @GET
-    @Path("/byOwner/{companyId}/{ownerId}")
+    @Path("/by-owner/{ownerId}/{companyId}")
     fun getPetsByOwnerId(@PathParam("companyId") ownerId: UUID, @PathParam("ownerId") companyId: Long): Response {
         return Response.ok(petService.getPetsByOwnerId(ownerId, companyId)).build()
     }
@@ -43,7 +41,7 @@ class PetResource(
     }
 
     @PUT
-    @Path("/{petId}/{ownerId}")
+    @Path("/{petId}/owner/{ownerId}/{companyId}")
     fun assignOwnerIdToPet(@PathParam("petId") petId: UUID, @PathParam("ownerId") ownerId: UUID): Response {
         return Response.ok(petService.assignOwnerIdToPet(petId, ownerId)).build()
     }
