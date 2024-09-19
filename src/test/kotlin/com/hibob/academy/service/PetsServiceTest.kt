@@ -1,6 +1,7 @@
 package com.hibob.academy.service
 
 import com.hibob.academy.dao.*
+import jakarta.ws.rs.BadRequestException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -53,10 +54,51 @@ class PetsServiceTest {
 
         whenever(petDao.updatePetOwnerId(petId, newOwnerId, companyId)).thenReturn(0)
 
-        val exception = assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<BadRequestException> {
             petsService.updatePetOwnerId(petId, companyId, newOwnerId)
         }
 
         assertEquals("the information you entered does not match the database", exception.message )
+    }
+
+    @Test
+    fun `getPetsByOwnerId should return empty list when owner has no pets or wen owner dose not exists`() {
+        val ownerId = 1L
+        val companyId = 1L
+        val expectedList = emptyList<PetData>()
+
+        whenever(petDao.getPetsByOwnerId(ownerId, companyId)).thenReturn(expectedList)
+
+        val actualList = petsService.getPetsByOwnerId(ownerId, companyId)
+
+        assertEquals(expectedList, actualList)
+    }
+
+    @Test
+    fun `countPetsByType should return correct count of pets by type`() {
+        val companyId = 1L
+
+        val expectedCount = mapOf(
+            PetType.DOG to 2,
+            PetType.CAT to 1
+        )
+
+        whenever(petDao.countPetsByType(companyId)).thenReturn(expectedCount)
+
+        val actualCount = petsService.countPetsByType(companyId)
+
+        assertEquals(expectedCount, actualCount)
+    }
+
+    @Test
+    fun `countPetsByType should return empty map when no pets exist`() {
+        val companyId = 1L
+        val expectedCount = emptyMap<PetType, Int>()
+
+        whenever(petDao.countPetsByType(companyId)).thenReturn(expectedCount)
+
+        val actualCount = petsService.countPetsByType(companyId)
+
+        assertEquals(expectedCount, actualCount)
     }
 }

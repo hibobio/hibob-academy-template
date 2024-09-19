@@ -1,6 +1,7 @@
 package com.hibob.academy.service
 
 import com.hibob.academy.dao.*
+import jakarta.ws.rs.BadRequestException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -40,7 +41,7 @@ class OwnerServerTest {
 
         whenever(ownerDao.createOwnerIfNotExists(owner1)).thenReturn(0)
 
-        val exception = assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<BadRequestException> {
             ownerService.createOwnerIfNotExists(owner1)
         }
 
@@ -65,7 +66,7 @@ class OwnerServerTest {
 
         whenever(ownerDao.getOwnerByPetId(petId, companyId)).thenReturn(null)
 
-        val exception = assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<BadRequestException> {
             ownerService.getOwnerByPetId(petId, companyId)
         }
 
@@ -79,7 +80,7 @@ class OwnerServerTest {
 
         whenever(ownerDao.getOwnerByPetId(petId, companyId)).thenReturn(null)
 
-        val exception = assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<BadRequestException> {
             ownerService.getOwnerByPetId(petId, companyId)
         }
 
