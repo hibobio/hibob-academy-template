@@ -62,4 +62,10 @@ class PetsDao(private val sql: DSLContext) {
             .fetch()
             .associate { (type, count) -> enumValueOf<PetType>(type) to count }
     }
+
+    fun deleteTable(companyId: Long) {
+        sql.deleteFrom(petTable)
+            .where(petTable.companyId.eq(companyId))
+            .execute()
+    }
 }
