@@ -65,4 +65,10 @@ class PetServiceTest {
             }.message
         )
     }
+
+    @Test
+    fun `count pets by type`() {
+        whenever(petDaoMock.countPetsByType(9)).thenReturn(mapOf("Dog" to 2, "Cat" to 3))
+        assertEquals(mapOf("Dog" to 2, "Cat" to 3), service.countPetsByType(9))
+    }
 }

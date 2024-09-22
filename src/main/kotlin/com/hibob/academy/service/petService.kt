@@ -25,4 +25,8 @@ class PetService(private val petDao: PetDao) {
             throw BadRequestException("No pet with that id")
         }
     }
+
+    fun countPetsByType(companyId: Long): Map<String, Int> {
+        return petDao.countPetsByType(companyId)
+    }
 }

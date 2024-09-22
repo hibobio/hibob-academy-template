@@ -249,5 +249,14 @@ class PetDaoTest @Autowired constructor(private val sql: DSLContext) {
 
     }
 
+    @Test
+    fun `count by type`() {
+        petDao.createPet(PetNoId("Jerry", "Dog", companyId, Date.valueOf(LocalDate.now()), null))
+        petDao.createPet(PetNoId("Johans", "Dog", companyId, Date.valueOf(LocalDate.now()), null))
+        petDao.createPet(PetNoId("jj", "Cat", companyId, Date.valueOf(LocalDate.now()), null))
+        petDao.createPet(PetNoId("hh", "Cat", companyId, Date.valueOf(LocalDate.now()), null))
+        assertEquals(mapOf("Dog" to 2, "Cat" to 2), petDao.countPetsByType(companyId))
+    }
+
 
 }

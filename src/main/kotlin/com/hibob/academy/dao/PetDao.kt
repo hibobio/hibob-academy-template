@@ -3,8 +3,8 @@ package com.hibob.academy.dao
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.RecordMapper
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
-import java.sql.Date
 import java.util.*
 
 @Repository
@@ -37,6 +37,7 @@ class PetDao(private val sql: DSLContext) {
             .and(petsTable.companyId.eq(companyId))
             .fetch(petsMapper)
 
+
     fun getPetsByOwnerId(ownerId: UUID, companyId: Long): List<Pet> {
         return sql.select()
             .from(petsTable)
@@ -62,5 +63,17 @@ class PetDao(private val sql: DSLContext) {
             .set(petsTable.ownerId, ownerId)
             .where(petsTable.id.eq(petId))
             .execute()
+    }
+
+    fun countPetsByType(companyId: Long): Map<String, Int> {
+        val count = DSL.count(petsTable.type)
+        return sql.select(petsTable.type, count)
+            .from(petsTable)
+            .where(petsTable.companyId.eq(companyId))
+            .groupBy(petsTable.type)
+            .fetch()
+            .intoMap(
+                { record -> record[petsTable.type].toString() },
+                { record -> record[count].toInt() })
     }
 }
