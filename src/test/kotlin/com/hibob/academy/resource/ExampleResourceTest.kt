@@ -6,7 +6,6 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -32,5 +31,6 @@ internal class ExampleResourceTest {
         val response = restTemplate.getForEntity("/example/1", ExampleResponse::class.java)
         assertThat(response.statusCode, Matchers.`is`(HttpStatus.OK))
         assertThat(response.body, `is`(ExampleResponse(example)))
+
     }
 }
