@@ -18,9 +18,9 @@ class SessionService {
     fun createJwtToken(user: User): String {
         return Jwts.builder()
             .setHeaderParam("typ", "JWT")
-            .claim("email", user.email)
-            .claim("user name", user.userName)
-            .claim("isAdmin", user.isAdmin)
+            .claim("employeeId", user.employeeId)
+            .claim("companyId", user.companyId)
+            //TO DO: verify that the employee exists in this company (check in DB) and get his role from DB and add claim
             .setExpiration(Date.from(LocalDateTime.now().plusDays(1).toInstant(ZoneOffset.UTC)))
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
             .compact()

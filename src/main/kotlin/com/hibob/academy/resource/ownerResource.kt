@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import java.util.UUID
 
 @Component
-@Path("/owners")
+@Path("/api/owners")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 class OwnerResource(

@@ -8,9 +8,10 @@ import jakarta.ws.rs.core.NewCookie
 import jakarta.ws.rs.core.Response
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestBody
+import java.util.UUID
 
 @Controller
-@Path("/jwt")
+@Path("/api")
 class SessionApi(private val sessionService: SessionService) {
 
     @POST
@@ -19,21 +20,13 @@ class SessionApi(private val sessionService: SessionService) {
     @Consumes(MediaType.APPLICATION_JSON)
     fun login(@RequestBody user: User): Response? {
         val cookie =
-            NewCookie.Builder(AuthenticationFilter.cookieName).value(sessionService.createJwtToken(user)).build()
+            NewCookie.Builder(AuthenticationFilter.cookieName).value(sessionService.createJwtToken(user)).path("/api/").build()
         return Response.ok().cookie(cookie).build()
     }
 
-    @GET
-    @Path("/userName")
-    fun getUserName(): Response {
-        return Response.ok().build()
-        //Just so i can call it from postman before and after the login (to test the filter)
-    }
-
     data class User(
-        val userName: String,
-        val email: String,
-        val isAdmin: Boolean
+        val employeeId: UUID,
+        val companyId: UUID
     )
 
 }
