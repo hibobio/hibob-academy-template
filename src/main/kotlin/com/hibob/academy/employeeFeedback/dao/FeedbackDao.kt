@@ -25,7 +25,7 @@ class FeedbackDao(private val sql: DSLContext) {
         val id = sql.insertInto(feedbackTable)
             .set(feedbackTable.employeeId, feedback.employeeId)
             .set(feedbackTable.content, feedback.content)
-            .set(feedbackTable.status, enumToString(feedback.status))
+            .set(feedbackTable.status, feedback.status.name)
             .set(feedbackTable.companyId, feedback.companyId)
             .returning(feedbackTable.id)
             .fetchOne()
