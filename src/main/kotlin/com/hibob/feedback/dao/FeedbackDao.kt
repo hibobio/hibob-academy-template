@@ -36,7 +36,8 @@ class FeedbackDao(private val sql: DSLContext) {
             record[feedbackTables.feedbackId],
             record[feedbackTables.creationDate],
             record[feedbackTables.companyId],
-            record[feedbackTables.feedbackMessage]
+            record[feedbackTables.feedbackMessage],
+            record[feedbackTables.employeeId] ?: null
         )
     }
 

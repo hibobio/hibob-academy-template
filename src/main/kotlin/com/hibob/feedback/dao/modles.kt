@@ -7,7 +7,8 @@ data class Feedback(
     val id: UUID,
     val creationDate: Date,
     val companyId: UUID,
-    val feedbackMessage: String
+    val feedbackMessage: String,
+    val employeeId: UUID?
 )
 
 data class FeedbackInput(

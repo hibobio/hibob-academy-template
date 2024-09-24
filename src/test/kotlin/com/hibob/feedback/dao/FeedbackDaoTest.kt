@@ -49,7 +49,7 @@ class FeedbackDaoTest @Autowired constructor(private val sql: DSLContext) {
     @Test
     fun `create and the get should return feedback`() {
         val feedbackId = feedbackDao.createFeedback(feedback, activeUser)
-        assertEquals(Feedback(id = feedbackId, Date.valueOf(LocalDate.now()), companyId, feedback.feedbackMessage), feedbackDao.getFeedback(feedbackId, activeUser))
+        assertEquals(Feedback(id = feedbackId, Date.valueOf(LocalDate.now()), companyId, feedback.feedbackMessage, activeUser.employeeId), feedbackDao.getFeedback(feedbackId, activeUser))
     }
 
     @Test
