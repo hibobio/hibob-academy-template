@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 class EmployeeDaoTest @Autowired constructor(private val sql: DSLContext) {
     private val employeeDao = EmployeeDao(sql)
     private val companyId1 = 1L
-    private val companyId2 = 2L
 
     @Test
     fun `should throw exception when employee does not exist`() {
@@ -21,7 +20,7 @@ class EmployeeDaoTest @Autowired constructor(private val sql: DSLContext) {
             firstName = "",
             lastName = "",
             role = RoleType.EMPLOYEE,
-            companyId = companyId1,
+            companyId = companyId1
         )
 
         val exception = assertThrows<RuntimeException> {
@@ -36,7 +35,7 @@ class EmployeeDaoTest @Autowired constructor(private val sql: DSLContext) {
             firstName = "Rachel",
             lastName = "Green",
             role = RoleType.ADMIN,
-            companyId = companyId1,
+            companyId = companyId1
         )
 
         val returnEmployee = employeeDao.getEmployee(employee)
@@ -50,6 +49,5 @@ class EmployeeDaoTest @Autowired constructor(private val sql: DSLContext) {
     @AfterEach
     fun cleanup() {
         employeeDao.deleteTable(companyId1)
-        employeeDao.deleteTable(companyId2)
     }
 }
