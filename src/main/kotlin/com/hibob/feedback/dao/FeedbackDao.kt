@@ -41,10 +41,10 @@ class FeedbackDao(private val sql: DSLContext) {
     }
 
 
-    fun createFeedback(feedback: Feedback, activeUser: ActiveUser): UUID {
+    fun createFeedback(feedback: FeedbackInput, activeUser: ActiveUser): UUID {
         return sql.insertInto(feedbackTables)
             .set(feedbackTables.employeeId, activeUser.employeeId)
-            .set(feedbackTables.companyId, feedback.companyId)
+            .set(feedbackTables.companyId, activeUser.companyId)
             .set(feedbackTables.status, Status.UNREVIEWED.toString())
             .set(feedbackTables.feedbackMessage, feedback.feedbackMessage)
             .returning(feedbackTables.feedbackId)

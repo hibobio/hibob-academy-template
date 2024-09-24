@@ -18,10 +18,10 @@ class FeedbackDaoTest @Autowired constructor(private val sql: DSLContext) {
     private val companyId = UUID.randomUUID()
 
     private val feedback =
-        Feedback(UUID.randomUUID(), Date.valueOf(LocalDate.now()), companyId, "Feedback for testing!")
+        FeedbackInput("Feedback for testing!", false)
     private val feedback1 =
-        Feedback(UUID.randomUUID(), Date.valueOf(LocalDate.now()), companyId, "Another feedback for testing!")
-    private val feedback2 = Feedback(UUID.randomUUID(), Date.valueOf(LocalDate.now()), companyId, "Another one")
+        FeedbackInput("Another feedback for testing!", false)
+    private val feedback2 = FeedbackInput("Another one", false)
     private val activeUser = ActiveUser(UUID.randomUUID(), companyId)
 
     @BeforeEach
@@ -49,7 +49,7 @@ class FeedbackDaoTest @Autowired constructor(private val sql: DSLContext) {
     @Test
     fun `create and the get should return feedback`() {
         val feedbackId = feedbackDao.createFeedback(feedback, activeUser)
-        assertEquals(feedback.copy(id = feedbackId), feedbackDao.getFeedback(feedbackId, activeUser))
+        assertEquals(Feedback(id = feedbackId, Date.valueOf(LocalDate.now()), companyId, feedback.feedbackMessage), feedbackDao.getFeedback(feedbackId, activeUser))
     }
 
     @Test
