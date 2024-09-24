@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import org.jooq.DSLContext
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.junit.jupiter.api.*
@@ -29,10 +28,13 @@ class FeedbackDaoTest @Autowired constructor(private val sql: DSLContext) {
     }
 
     @Test
-    fun `get feedback when no feedback exists`() {
-        val feedback = feedbackDao.getFeedbackById(999L, companyId)
+    fun `get feedback throws exception when no feedback exists`() {
 
-        assertNotNull(feedback)
+        val exception = assertThrows<RuntimeException> {
+            feedbackDao.getFeedbackById(999L, companyId)
+        }
+
+        assertEquals("Failed to fetch feedback", exception.message)
     }
 
     @Test
@@ -46,7 +48,6 @@ class FeedbackDaoTest @Autowired constructor(private val sql: DSLContext) {
 
     @Test
     fun `get feedback status throws exception when feedback does not exist`() {
-        // Act & Assert
         val exception = assertThrows<RuntimeException> {
             feedbackDao.getFeedbackStatus(999L, companyId)
         }

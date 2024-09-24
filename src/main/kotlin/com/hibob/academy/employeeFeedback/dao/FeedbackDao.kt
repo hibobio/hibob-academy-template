@@ -15,7 +15,7 @@ class FeedbackDao(private val sql: DSLContext) {
             record[feedbackTable.id],
             record[feedbackTable.employeeId],
             record[feedbackTable.content],
-            enumValueOf<FeedbackStatus>(record[feedbackTable.status]),
+            FeedbackStatus.stringToEnum(record[feedbackTable.status]),
             record[feedbackTable.companyId],
             record[feedbackTable.date]
         )
@@ -25,7 +25,7 @@ class FeedbackDao(private val sql: DSLContext) {
         val id = sql.insertInto(feedbackTable)
             .set(feedbackTable.employeeId, feedback.employeeId)
             .set(feedbackTable.content, feedback.content)
-            .set(feedbackTable.status, feedback.status.name)
+            .set(feedbackTable.status, FeedbackStatus.enumToString(feedback.status))
             .set(feedbackTable.companyId, feedback.companyId)
             .returning(feedbackTable.id)
             .fetchOne()
@@ -41,11 +41,11 @@ class FeedbackDao(private val sql: DSLContext) {
     }
 
     fun getFeedbackStatus(id: Long, companyId: Long): String {
-        return  sql.select(feedbackTable.status)
+        return sql.select(feedbackTable.status)
+            .from(feedbackTable)
             .where(feedbackTable.id.eq(id))
             .and(feedbackTable.companyId.eq(companyId))
-            .fetchOne()
-            ?.getValue(feedbackTable.status) ?: throw RuntimeException("companyId or feedbackId does not exist in the system")
+            .fetchOne(feedbackTable.status) ?: throw RuntimeException("companyId or feedbackId does not exist in the system")
     }
 
     fun deleteTable(companyId: Long) {

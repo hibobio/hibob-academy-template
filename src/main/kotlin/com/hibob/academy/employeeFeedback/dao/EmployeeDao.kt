@@ -13,7 +13,7 @@ class EmployeeDao(private val sql: DSLContext) {
             record[employeeTable.id],
             record[employeeTable.firstName],
             record[employeeTable.lastName],
-            enumValueOf<RoleType>(record[employeeTable.rol]),
+            RoleType.stringToEnum(record[employeeTable.rol]),
             record[employeeTable.companyId]
         )
     }
