@@ -1,7 +1,9 @@
 package com.hibob.feedback.dao
 
 
+
 import com.hibob.academy.utils.JooqTable
+
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.springframework.stereotype.Repository
@@ -11,6 +13,7 @@ import java.util.*
 
 @Repository
 class FeedbackDao(private val sql: DSLContext) {
+
     class FeedbackTable(tablename: String) : JooqTable(tablename) {
         val feedbackId = createUUIDField("id")
         val employeeId = createUUIDField("employee_id")
@@ -19,11 +22,11 @@ class FeedbackDao(private val sql: DSLContext) {
         val status = createVarcharField("status")
         val feedbackMessage = createVarcharField("feedback_message")
 
-
         companion object {
             val instance = FeedbackTable("feedback")
         }
     }
+
 
     private val feedbackTables = FeedbackTable.instance
 
