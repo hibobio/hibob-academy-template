@@ -21,7 +21,6 @@ data class FeedbackOut(
 data class EmployeeIn(
     val firstName: String,
     val lastName: String,
-    val role: RoleType,
     val companyId: Long,
 )
 
