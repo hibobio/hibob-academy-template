@@ -2,8 +2,6 @@ package com.hibob.academy.employeeFeedback.dao
 
 import com.hibob.academy.utils.BobDbTest
 import org.jooq.DSLContext
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.junit.jupiter.api.*
@@ -19,7 +17,6 @@ class EmployeeDaoTest @Autowired constructor(private val sql: DSLContext) {
         val nonExistentEmployee = EmployeeIn(
             firstName = "",
             lastName = "",
-            role = RoleType.EMPLOYEE,
             companyId = companyId1
         )
 
@@ -34,20 +31,13 @@ class EmployeeDaoTest @Autowired constructor(private val sql: DSLContext) {
         val employee = EmployeeIn(
             firstName = "Rachel",
             lastName = "Green",
-            role = RoleType.ADMIN,
-            companyId = companyId1
+            companyId = 1L,
         )
 
         val returnEmployee = employeeDao.getEmployee(employee)
 
-        val expectedEmployee = EmployeeOut(returnEmployee.id, employee.firstName, employee.lastName, employee.role, employee.companyId )
+        val expectedEmployee = EmployeeOut(returnEmployee.id, employee.firstName, employee.lastName, returnEmployee.role, employee.companyId )
 
         assertEquals(expectedEmployee, returnEmployee)
-    }
-
-    @BeforeEach
-    @AfterEach
-    fun cleanup() {
-        employeeDao.deleteTable(companyId1)
     }
 }

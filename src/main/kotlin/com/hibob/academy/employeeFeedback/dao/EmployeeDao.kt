@@ -3,7 +3,9 @@ package com.hibob.academy.employeeFeedback.dao
 import org.jooq.DSLContext
 import org.jooq.RecordMapper
 import org.jooq.Record
+import org.springframework.stereotype.Component
 
+@Component
 class EmployeeDao(private val sql: DSLContext) {
     private val employeeTable = EmployeeTable.instance
 
@@ -25,11 +27,5 @@ class EmployeeDao(private val sql: DSLContext) {
             .and(employeeTable.lastName.eq(employee.lastName))
             .and(employeeTable.companyId.eq(employee.companyId))
             .fetchOne(employeeMapper) ?: throw RuntimeException("Failed to fetch employee")
-    }
-
-    fun deleteTable(companyId: Long) {
-        sql.deleteFrom(employeeTable)
-            .where(employeeTable.companyId.eq(companyId))
-            .execute()
     }
 }

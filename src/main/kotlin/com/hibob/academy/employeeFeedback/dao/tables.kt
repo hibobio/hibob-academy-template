@@ -15,7 +15,7 @@ class FeedbackTable(tableName: String = "feedback") : JooqTable(tableName) {
     }
 }
 
-class EmployeeTable(tableName: String = "employee") : JooqTable(tableName) {
+class EmployeeTable(tableName: String = "employees") : JooqTable(tableName) {
     val id = createBigIntField("id")
     val firstName = createVarcharField("first_name")
     val lastName = createVarcharField("last_name")
