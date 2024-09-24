@@ -8,7 +8,7 @@ data class Feedback(
     val creationDate: Date,
     val companyId: UUID,
     val feedbackMessage: String,
-    val employeeId: UUID?
+    val employeeId: UUID? = null
 )
 
 data class FeedbackInput(
@@ -21,6 +21,13 @@ data class ActiveUser(
     val companyId: UUID
 )
 
+data class Employee(
+    val employeeId: UUID,
+    val companyId : UUID,
+    val role: Role,
+    val department: Department
+)
+
 enum class Department{
     RD,
     IT,
@@ -28,6 +35,12 @@ enum class Department{
     SALES,
     PRODUCT,
     FINANCE
+}
+
+enum class Role{
+    ADMIN,
+    MANAGER,
+    EMPLOYEE
 }
 
 enum class Status{

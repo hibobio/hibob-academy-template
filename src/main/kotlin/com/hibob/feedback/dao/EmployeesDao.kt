@@ -3,6 +3,8 @@ package com.hibob.feedback.dao
 import com.hibob.academy.utils.JooqTable
 import jakarta.ws.rs.BadRequestException
 import org.jooq.DSLContext
+import org.jooq.Record
+import org.jooq.RecordMapper
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -24,7 +26,16 @@ class EmployeesDao(private val sql: DSLContext) {
 
     private val employeesTable = EmployeesTable.instance
 
-    fun createEmployee(firstName: String, lastName: String, role: String, companyId: UUID, department: String): UUID{
+    private val employeeMapper = RecordMapper<Record, Employee> { record ->
+        Employee(
+            record[employeesTable.employeeId],
+            record[employeesTable.companyId],
+            Role.valueOf(record[employeesTable.role].uppercase()),
+            Department.valueOf(record[employeesTable.department].uppercase())
+        )
+    }
+
+    fun createEmployee(firstName: String, lastName: String, role: String, companyId: UUID, department: String): UUID {
         return sql.insertInto(employeesTable)
             .set(employeesTable.firstName, firstName)
             .set(employeesTable.lastName, lastName)
@@ -35,21 +46,13 @@ class EmployeesDao(private val sql: DSLContext) {
             .fetchOne()!![employeesTable.employeeId]
     }
 
-    fun getDepartmentById(employeeId: UUID, companyId: UUID): String { //MIGHT DELETE LATER
-        return sql.select(employeesTable.department)
+    fun getEmployeeByActiveUser(activeUser: ActiveUser): Employee {
+        return sql.select()
             .from(employeesTable)
-            .where(employeesTable.employeeId.eq(employeeId))
-            .and(employeesTable.companyId.eq(companyId))
-            .fetchOne()?.let { it[employeesTable.department] }
+            .where(employeesTable.employeeId.eq(activeUser.employeeId))
+            .and(employeesTable.companyId.eq(activeUser.companyId))
+            .fetchOne(employeeMapper)
             ?: throw BadRequestException("No employee with that id")
     }
 
-    fun getRoleById(employeeId: UUID, companyId: UUID): String {
-        return sql.select(employeesTable.role)
-            .from(employeesTable)
-            .where(employeesTable.employeeId.eq(employeeId))
-            .and(employeesTable.companyId.eq(companyId))
-            .fetchOne()?.let { it[employeesTable.role] }
-            ?: throw BadRequestException("No employee with that id")
-    }
 }
