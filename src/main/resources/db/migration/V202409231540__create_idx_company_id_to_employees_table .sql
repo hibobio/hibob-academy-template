@@ -1,0 +1,1 @@
+CREATE INDEX idx_employees_company_id ON employees (company_id);

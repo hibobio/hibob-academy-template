@@ -2,10 +2,17 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
+	id("org.flywaydb.flyway") version "10.4.1"
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.3.3"
 	id("io.spring.dependency-management") version "1.1.6"
+}
+
+buildscript {
+	dependencies {
+		classpath("org.flywaydb:flyway-database-postgresql:10.4.1")
+	}
 }
 
 java {
@@ -16,6 +23,11 @@ java {
 
 repositories {
 	mavenCentral()
+}
+
+flyway {
+	url = "jdbc:postgresql://localhost:5432/academy?user=bob&password=dev"
+	driver = "org.postgresql.Driver"
 }
 
 dependencies {
@@ -32,8 +44,11 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jooq:jooq:3.16.9")
+	implementation("org.jooq:jooq:3.17.9")
 	implementation("org.slf4j:slf4j-api")
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
 	implementation("org.postgresql:postgresql")
 
@@ -61,7 +76,7 @@ tasks {
 		if (dbUrl != null && dbUrl.isNotBlank()) {
 			systemProperty("DB_URL", dbUrl)
 		} else {
-			systemProperty("DB_URL", "jdbc:postgresql://localhost:5432/email_service?user=bob&password=dev")
+			systemProperty("DB_URL", "jdbc:postgresql://localhost:5432/academy?user=bob&password=dev")
 		}
 		systemProperty("spring.profiles.active", "development,test")
 	}
